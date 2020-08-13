@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/chess-pwa/static/css/main.5f361e03.chunk.css",
-    "main.js": "/chess-pwa/static/js/main.638352b2.chunk.js",
-    "main.js.map": "/chess-pwa/static/js/main.638352b2.chunk.js.map",
+    "main.js": "/chess-pwa/static/js/main.39ef3c03.chunk.js",
+    "main.js.map": "/chess-pwa/static/js/main.39ef3c03.chunk.js.map",
     "runtime-main.js": "/chess-pwa/static/js/runtime-main.cbb0f1fa.js",
     "runtime-main.js.map": "/chess-pwa/static/js/runtime-main.cbb0f1fa.js.map",
     "static/js/2.d1a9bdbe.chunk.js": "/chess-pwa/static/js/2.d1a9bdbe.chunk.js",
     "static/js/2.d1a9bdbe.chunk.js.map": "/chess-pwa/static/js/2.d1a9bdbe.chunk.js.map",
     "index.html": "/chess-pwa/index.html",
-    "precache-manifest.e05713c82eb536d3b36ead654820a91c.js": "/chess-pwa/precache-manifest.e05713c82eb536d3b36ead654820a91c.js",
+    "precache-manifest.8753d940926e7ceb5f91647ab5c05034.js": "/chess-pwa/precache-manifest.8753d940926e7ceb5f91647ab5c05034.js",
     "service-worker.js": "/chess-pwa/service-worker.js",
     "static/css/main.5f361e03.chunk.css.map": "/chess-pwa/static/css/main.5f361e03.chunk.css.map",
     "static/js/2.d1a9bdbe.chunk.js.LICENSE.txt": "/chess-pwa/static/js/2.d1a9bdbe.chunk.js.LICENSE.txt",
@@ -18,6 +18,6 @@
     "static/js/runtime-main.cbb0f1fa.js",
     "static/js/2.d1a9bdbe.chunk.js",
     "static/css/main.5f361e03.chunk.css",
-    "static/js/main.638352b2.chunk.js"
+    "static/js/main.39ef3c03.chunk.js"
   ]
 }
