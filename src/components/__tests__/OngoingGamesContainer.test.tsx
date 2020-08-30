@@ -3,7 +3,6 @@ import React from "react";
 import { OngoingGamesContainer } from "../OngoingGamesContainer";
 import { GamePreviewsList } from "../GamePreviewsList";
 import Game from "../../interfaces/Game";
-import mountTest from "../../tests/mountTest";
 
 jest.mock("../../services/api");
 
@@ -52,6 +51,7 @@ describe("OngoingGamesContainer", () => {
       await TestRenderer.act(async () => {
         testRenderer = TestRenderer.create(<OngoingGamesContainer />);
       });
+      /* eslint-disable @typescript-eslint/no-non-null-assertion */
       const testInstance = testRenderer!.root;
 
       expect(testInstance.findAllByType(GamePreviewsList).length).toBe(1);
@@ -65,6 +65,7 @@ describe("OngoingGamesContainer", () => {
         await TestRenderer.act(async () => {
           testRenderer = TestRenderer.create(<OngoingGamesContainer />);
         });
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
         const testInstance = testRenderer!.root;
 
         const gamePreviewsComponent = testInstance.findByType(GamePreviewsList);

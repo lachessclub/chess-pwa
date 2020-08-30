@@ -3,9 +3,7 @@ import { GamePreviewsList } from "./GamePreviewsList";
 import Game from "../interfaces/Game";
 import { getOngoingGames } from "../services/api";
 
-export interface OngoingGamesContainerProps {
-  [key: string]: any;
-}
+export type OngoingGamesContainerProps = Record<string, unknown>;
 
 export const OngoingGamesContainer: FC<OngoingGamesContainerProps> = () => {
   const [games, setGames] = useState<Game[]>([]);
