@@ -31,7 +31,7 @@ const games: Game[] = [
 const initialBoardFen =
   "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-describe("OngoingGames", () => {
+describe("GamePreviewsList", () => {
   mountTest(GamePreviewsList);
 
   it("Snapshot", () => {

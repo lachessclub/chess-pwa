@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`OngoingGames Snapshot 1`] = `
+exports[`GamePreviewsList Snapshot 1`] = `
 <div
   className="grid"
 />
