@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 
 const App: FC = () => {
   return (
@@ -18,7 +19,9 @@ const App: FC = () => {
 
         <Switch>
           <Route path="/game">Game</Route>
-          <Route path="/">Home</Route>
+          <Route path="/">
+            <HomePage />
+          </Route>
         </Switch>
       </div>
     </Router>
