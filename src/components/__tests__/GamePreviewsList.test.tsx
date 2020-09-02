@@ -11,7 +11,7 @@ const games: Game[] = [
     initialFen: "startpos",
     wtime: 300000,
     btime: 300000,
-    moves: "",
+    moves: "e2e4 e7e5 g1g3", // g1g3 is incorrect move and must be ignored
     status: "started",
     white: null,
     black: null,
@@ -27,9 +27,6 @@ const games: Game[] = [
     black: null,
   },
 ];
-
-const initialBoardFen =
-  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 describe("GamePreviewsList", () => {
   mountTest(GamePreviewsList);
@@ -61,7 +58,9 @@ describe("GamePreviewsList", () => {
 
         const boards = testInstance.findAllByType(Board);
 
-        expect(boards[0].props.position).toBe(initialBoardFen);
+        expect(boards[0].props.position).toBe(
+          "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2"
+        );
         expect(boards[1].props.position).toBe(
           "rnbqkbnr/8/8/8/8/8/8/RNBQKBNR w KQkq - 0 1"
         );
