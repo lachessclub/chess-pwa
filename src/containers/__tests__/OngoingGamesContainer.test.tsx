@@ -3,7 +3,7 @@
 import TestRenderer from "react-test-renderer";
 import React from "react";
 import { OngoingGamesContainer } from "../OngoingGamesContainer";
-import { GamePreviewsList } from "../GamePreviewsList";
+import { GamePreviewsList } from "../../components/GamePreviewsList";
 import Game from "../../interfaces/Game";
 import * as api from "../../services/api";
 

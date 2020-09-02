@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useReducer } from "react";
-import { GamePreviewsList } from "./GamePreviewsList";
+import { GamePreviewsList } from "../components/GamePreviewsList";
 import { getOngoingGames, watchGames } from "../services/api";
 import { reducer } from "./OngoingGamesContainer.reducer";
 

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { OngoingGamesContainer } from "../components/OngoingGamesContainer";
+import { OngoingGamesContainer } from "../containers/OngoingGamesContainer";
 
 const HomePage: FC<unknown> = () => {
   return <OngoingGamesContainer />;
