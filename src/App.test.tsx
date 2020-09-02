@@ -5,6 +5,8 @@ import App from "./App";
 import mountTest from "./tests/mountTest";
 import HomePage from "./pages/HomePage";
 
+jest.useFakeTimers();
+
 jest.mock("./services/api");
 
 describe("App", () => {
