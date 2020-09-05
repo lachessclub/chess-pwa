@@ -1,11 +1,11 @@
+/* eslint-disable import/prefer-default-export */
+
 import React, { FC, useEffect, useReducer } from "react";
 import { GamePreviewsList } from "../components/GamePreviewsList";
 import { getOngoingGames, watchGames } from "../services/api";
 import { reducer } from "./OngoingGamesContainer.reducer";
 
-export type OngoingGamesContainerProps = Record<string, unknown>;
-
-export const OngoingGamesContainer: FC<OngoingGamesContainerProps> = () => {
+export const OngoingGamesContainer: FC<unknown> = () => {
   const [state, dispatch] = useReducer(reducer, {
     games: [],
   });
