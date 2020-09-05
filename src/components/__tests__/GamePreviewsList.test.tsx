@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import TestRenderer from "react-test-renderer";
 import { Board } from "ii-react-chessboard";
 import { GamePreviewsList } from "../GamePreviewsList";
@@ -45,6 +46,22 @@ describe("GamePreviewsList", () => {
 
       testRenderer.update(<GamePreviewsList games={games} />);
       expect(testInstance.findAllByType(Board).length).toBe(2);
+    });
+
+    it("contains Link", () => {
+      const testRenderer = TestRenderer.create(<GamePreviewsList />);
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(Link).length).toBe(0);
+
+      testRenderer.update(<GamePreviewsList games={games} />);
+
+      const links = testInstance.findAllByType(Link);
+
+      expect(links.length).toBe(2);
+
+      expect(links[0].props.to).toBe("/game/1");
+      expect(links[1].props.to).toBe("/game/2");
     });
   });
 

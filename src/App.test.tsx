@@ -26,10 +26,13 @@ describe("App", () => {
     });
   });
 
+  // @todo. add tests for App contains HomePage and GamePage
+  // @todo. add tests about other content (link to Home Page)
+
   describe("DOM structure", () => {
     it("renders learn react link", () => {
       const { getByText } = render(<App />);
-      const linkElement = getByText(/Game/i);
+      const linkElement = getByText(/Home/i);
       expect(linkElement).toBeInTheDocument();
     });
   });

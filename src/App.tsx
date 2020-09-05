@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import HomePage from "./pages/HomePage";
+import GamePage from "./pages/GamePage";
 
 const App: FC = () => {
   return (
@@ -11,14 +12,13 @@ const App: FC = () => {
             <li>
               <Link to="/">Home</Link>
             </li>
-            <li>
-              <Link to="/game">Game</Link>
-            </li>
           </ul>
         </nav>
 
         <Switch>
-          <Route path="/game">Game</Route>
+          <Route path="/game/:id">
+            <GamePage />
+          </Route>
           <Route path="/">
             <HomePage />
           </Route>

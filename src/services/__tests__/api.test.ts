@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import Game from "../../interfaces/Game";
-import { getOngoingGames, watchGames } from "../api";
+import { getGame, getOngoingGames, watchGames } from "../api";
 import { SubscriptionData } from "../../interfaces/SubscriptionData";
 import ioClient from "../ioClient";
 
@@ -41,6 +41,19 @@ const games: Game[] = [
 ];
 
 describe("api service", () => {
+  it("getGame() success", () => {
+    (ioClient as any).setMockResponse(games[0]);
+    return expect(getGame(1)).resolves.toEqual(games[0]);
+  });
+
+  it("getGame() fail", () => {
+    (ioClient as any).setMockResponse("game not found", 404);
+    return expect(getGame(1)).rejects.toEqual({
+      statusCode: 404,
+      body: "game not found",
+    });
+  });
+
   it("getOngoingGames() success", () => {
     (ioClient as any).setMockResponse(games);
     return expect(getOngoingGames()).resolves.toEqual(games);

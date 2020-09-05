@@ -5,20 +5,7 @@ exports[`App Snapshot 1`] = `
   <nav>
     <ul>
       <li>
-        <a
-          href="/"
-          onClick={[Function]}
-        >
-          Home
-        </a>
-      </li>
-      <li>
-        <a
-          href="/game"
-          onClick={[Function]}
-        >
-          Game
-        </a>
+        Home
       </li>
     </ul>
   </nav>
