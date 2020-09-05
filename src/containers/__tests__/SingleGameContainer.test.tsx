@@ -5,6 +5,7 @@ import React from "react";
 import { SingleGameContainer } from "../SingleGameContainer";
 import * as api from "../../services/api";
 import { SingleGame } from "../../components/SingleGame";
+import mountTest from "../../tests/mountTest";
 
 // @todo. add tests about subscriptions. Warning: Can't perform a React state update on an unmounted component.
 //  This is a no-op, but it indicates a memory leak in your application. To fix,
@@ -15,7 +16,7 @@ jest.useFakeTimers();
 jest.mock("../../services/api");
 
 describe("SingleGameContainer", () => {
-  // mountTest(SingleGameContainer);
+  mountTest(SingleGameContainer, { id: 1 });
 
   describe("children components", () => {
     it("contains SingleGame", async () => {

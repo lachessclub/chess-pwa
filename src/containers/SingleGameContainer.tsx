@@ -3,11 +3,11 @@ import { getGame, watchGames } from "../services/api";
 import Game from "../interfaces/Game";
 import { SingleGame } from "../components/SingleGame";
 
-export interface GameContainerProps {
+export interface SingleGameContainerProps {
   id: number;
 }
 
-export const SingleGameContainer: FC<GameContainerProps> = ({ id }) => {
+export const SingleGameContainer: FC<SingleGameContainerProps> = ({ id }) => {
   const [game, setGame] = useState<Game | null>(null);
 
   useEffect(() => {
