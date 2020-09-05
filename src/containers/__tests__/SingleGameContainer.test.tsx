@@ -6,13 +6,16 @@ import { SingleGameContainer } from "../SingleGameContainer";
 import * as api from "../../services/api";
 import { SingleGame } from "../../components/SingleGame";
 
+// @todo. add tests about subscriptions. Warning: Can't perform a React state update on an unmounted component.
+//  This is a no-op, but it indicates a memory leak in your application. To fix,
+//  cancel all subscriptions and asynchronous tasks in a useEffect cleanup function
+
 jest.useFakeTimers();
 
 jest.mock("../../services/api");
 
 describe("SingleGameContainer", () => {
-  // @todo. need to fix GameContainer to work with components with async useEffect()
-  // mountTest(GameContainer);
+  // mountTest(SingleGameContainer);
 
   describe("children components", () => {
     it("contains SingleGame", async () => {

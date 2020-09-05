@@ -11,11 +11,23 @@ export const SingleGameContainer: FC<GameContainerProps> = ({ id }) => {
   const [game, setGame] = useState<Game | null>(null);
 
   useEffect(() => {
+    let mounted = true;
+
     getGame(id)
-      .then((res) => setGame(res))
+      .then((res) => {
+        if (!mounted) {
+          return;
+        }
+
+        setGame(res);
+      })
       .catch(() => {});
 
     watchGames((subscriptionData) => {
+      if (!mounted) {
+        return;
+      }
+
       if (subscriptionData.id === id) {
         if (subscriptionData.verb === "updated") {
           setGame({
@@ -25,6 +37,10 @@ export const SingleGameContainer: FC<GameContainerProps> = ({ id }) => {
         }
       }
     });
+
+    return () => {
+      mounted = false;
+    };
   }, [id]);
 
   if (game) {

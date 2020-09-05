@@ -6,6 +6,11 @@ import { OngoingGamesContainer } from "../OngoingGamesContainer";
 import { GamePreviewsList } from "../../components/GamePreviewsList";
 import Game from "../../interfaces/Game";
 import * as api from "../../services/api";
+import mountTest from "../../tests/mountTest";
+
+// @todo. add tests about subscriptions. Warning: Can't perform a React state update on an unmounted component.
+//  This is a no-op, but it indicates a memory leak in your application. To fix,
+//  cancel all subscriptions and asynchronous tasks in a useEffect cleanup function
 
 jest.useFakeTimers();
 
@@ -121,8 +126,7 @@ const gamesAfterCreatingNewOne: Game[] = [
 ];
 
 describe("OngoingGamesContainer", () => {
-  // @todo. need to fix mountTest to work with components with async useEffect()
-  // mountTest(OngoingGamesContainer);
+  mountTest(OngoingGamesContainer);
 
   describe("children components", () => {
     it("contains GamePreviewsList", async () => {
