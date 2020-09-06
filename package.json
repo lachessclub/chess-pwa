@@ -13,7 +13,7 @@
     "@types/react": "^16.9.0",
     "@types/react-dom": "^16.9.0",
     "chess.js": "^0.11.0",
-    "ii-react-chessboard": "^1.1.0",
+    "ii-react-chessboard": "^1.1.1",
     "lodash": "^4.17.20",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
