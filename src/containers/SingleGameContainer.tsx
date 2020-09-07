@@ -1,5 +1,8 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import React, { FC, useEffect, useState } from "react";
-import { getGame, watchGames } from "../services/api";
+import { Move } from "ii-react-chessboard";
+import { getGame, makeMove, watchGames } from "../services/api";
 import Game from "../interfaces/Game";
 import { SingleGame } from "../components/SingleGame";
 
@@ -13,15 +16,13 @@ export const SingleGameContainer: FC<SingleGameContainerProps> = ({ id }) => {
   useEffect(() => {
     let mounted = true;
 
-    getGame(id)
-      .then((res) => {
-        if (!mounted) {
-          return;
-        }
+    getGame(id).then((res) => {
+      if (!mounted) {
+        return;
+      }
 
-        setGame(res);
-      })
-      .catch(() => {});
+      setGame(res);
+    });
 
     watchGames((subscriptionData) => {
       if (!mounted) {
@@ -43,8 +44,19 @@ export const SingleGameContainer: FC<SingleGameContainerProps> = ({ id }) => {
     };
   }, [id]);
 
+  const onMove = (move: Move) => {
+    setGame({
+      ...(game as Game),
+      moves: `${game!.moves} ${move.from}${move.to}`.trim(),
+    });
+
+    makeMove(id, `${move.from}${move.to}`).then((updatedGame) => {
+      setGame(updatedGame);
+    });
+  };
+
   if (game) {
-    return <SingleGame game={game} />;
+    return <SingleGame game={game} onMove={onMove} />;
   }
   return null;
 };

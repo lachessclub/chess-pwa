@@ -22,6 +22,21 @@ ioClient.default.socket.get = (url: string, cb: any) => {
   });
 };
 
+ioClient.default.socket.post = (
+  url: string,
+  data: Record<string, any>,
+  cb: any
+) => {
+  if (mockResponse === undefined) {
+    throw Error("Please call setMockResponse() method before using this API");
+  }
+
+  cb(mockResponse, {
+    body: mockResponse,
+    statusCode,
+  });
+};
+
 ioClient.default.socket.on = (path: string, cb: (data: any) => void) => {
   if (mockResponse === undefined) {
     throw Error("Please call setMockResponse() method before using this API");

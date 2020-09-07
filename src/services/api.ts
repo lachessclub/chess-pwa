@@ -32,3 +32,19 @@ export const getGame = (id: number): Promise<Game> => {
     });
   });
 };
+
+export const makeMove = (gameId: number, move: string): Promise<Game> => {
+  return new Promise((resolve, reject) => {
+    ioClient.socket.post(
+      `/api/v1/board/game/${gameId}/move/${move}`,
+      {},
+      (body: Game, jwr: JWR) => {
+        if (jwr.statusCode === 200) {
+          resolve(body);
+        } else {
+          reject(jwr);
+        }
+      }
+    );
+  });
+};

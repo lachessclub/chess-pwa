@@ -8993,10 +8993,10 @@ ignore@^4.0.6:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-4.0.6.tgz#750e3db5862087b4737ebac8207ffd1ef27b25fc"
   integrity sha512-cyFDKrqc/YdcWFniJhzI42+AzS+gNwmUzOSFcRCQYwySuBBBy/KjuxWLZ/FHEH6Moq1NizMOBWyTcv8O4OZIMg==
 
-ii-react-chessboard@^1.1.1:
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/ii-react-chessboard/-/ii-react-chessboard-1.1.1.tgz#38aac9f7f4509a7fd0247d161560b4273ac70a35"
-  integrity sha512-/L2hfRgqEpkZmcRQo9nOyF2VHmQPICk4tdI5B5ws8sNP9+nnH7147WwedRZOiGn6253N02+jilQDNuItq4GHCg==
+ii-react-chessboard@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/ii-react-chessboard/-/ii-react-chessboard-1.3.0.tgz#cc5196dcd9dc4e35fa1555736447ae7c3257c87e"
+  integrity sha512-o3FrJiRKHT+7SpMN9yNGLK2oVv4cLtfjL6XQ8JPqziE89U63kxqJwArTPrYu1C+P10ogfewS34LjStmVgU6J4Q==
   dependencies:
     antd "^4.3.5"
     chess.js "^0.10.3"

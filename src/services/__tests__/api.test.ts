@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import Game from "../../interfaces/Game";
-import { getGame, getOngoingGames, watchGames } from "../api";
+import { getGame, getOngoingGames, makeMove, watchGames } from "../api";
 import { SubscriptionData } from "../../interfaces/SubscriptionData";
 import ioClient from "../ioClient";
 
@@ -89,6 +89,38 @@ describe("api service", () => {
         });
         resolve();
       });
+    });
+  });
+
+  it("makeMove() success", () => {
+    (ioClient as any).setMockResponse({
+      id: 1,
+      initialFen: "startpos",
+      wtime: 300000,
+      btime: 300000,
+      moves: "e2e4",
+      status: "started",
+      white: null,
+      black: null,
+    });
+
+    return expect(makeMove(1, "e2e4")).resolves.toEqual({
+      id: 1,
+      initialFen: "startpos",
+      wtime: 300000,
+      btime: 300000,
+      moves: "e2e4",
+      status: "started",
+      white: null,
+      black: null,
+    });
+  });
+
+  it("makeMove() fail", () => {
+    (ioClient as any).setMockResponse("game not found", 404);
+    return expect(makeMove(1, "e2e4")).rejects.toEqual({
+      statusCode: 404,
+      body: "game not found",
     });
   });
 });

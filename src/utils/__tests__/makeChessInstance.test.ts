@@ -1,7 +1,7 @@
 import Game from "../../interfaces/Game";
-import calculateGameFen from "../calculateGameFen";
+import makeChessInstance from "../makeChessInstance";
 
-describe("calculateGameFen", () => {
+describe("makeChessInstance", () => {
   it("startpos", () => {
     const game: Game = {
       id: 1,
@@ -14,7 +14,7 @@ describe("calculateGameFen", () => {
       black: null,
     };
 
-    expect(calculateGameFen(game)).toBe(
+    expect(makeChessInstance(game).fen()).toBe(
       "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
     );
   });
@@ -33,7 +33,7 @@ describe("calculateGameFen", () => {
       black: null,
     };
 
-    expect(calculateGameFen(game)).toBe(fen);
+    expect(makeChessInstance(game).fen()).toBe(fen);
   });
 
   it("not empty moves", () => {
@@ -48,7 +48,7 @@ describe("calculateGameFen", () => {
       black: null,
     };
 
-    expect(calculateGameFen(game)).toBe(
+    expect(makeChessInstance(game).fen()).toBe(
       "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2"
     );
   });
@@ -65,7 +65,7 @@ describe("calculateGameFen", () => {
       black: null,
     };
 
-    expect(calculateGameFen(game)).toBe(
+    expect(makeChessInstance(game).fen()).toBe(
       "rnbqkbnr/pppp1ppp/8/4p3/8/8/PPPPPPPP/RNBQKBNR w KQkq e6 0 2"
     );
   });

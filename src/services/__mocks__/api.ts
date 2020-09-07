@@ -72,3 +72,5 @@ export const watchGames = (cb: (data: SubscriptionData) => void): void => {
     cb(subscriptionData);
   }, watchDelay);
 };
+
+export const makeMove = jest.fn();
