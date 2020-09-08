@@ -3,9 +3,10 @@
 import TestRenderer from "react-test-renderer";
 import React from "react";
 import { SingleGameContainer } from "../SingleGameContainer";
-import * as api from "../../services/api";
 import { SingleGame } from "../../components/SingleGame";
 import mountTest from "../../tests/mountTest";
+import { getGame, makeMove, watchGames } from "../../services/api";
+import { SubscriptionData } from "../../interfaces/SubscriptionData";
 
 // @todo. add tests about subscriptions. Warning: Can't perform a React state update on an unmounted component.
 //  This is a no-op, but it indicates a memory leak in your application. To fix,
@@ -20,19 +21,22 @@ describe("SingleGameContainer", () => {
 
   describe("children components", () => {
     it("contains SingleGame", async () => {
-      // @ts-ignore
-      api.setMockGame({
-        id: 1,
-        initialFen: "startpos",
-        wtime: 300000,
-        btime: 300000,
-        moves: "",
-        status: "started",
-        white: null,
-        black: null,
+      (getGame as jest.Mock).mockImplementation(() => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({
+              id: 1,
+              initialFen: "startpos",
+              wtime: 300000,
+              btime: 300000,
+              moves: "",
+              status: "started",
+              white: null,
+              black: null,
+            });
+          }, 1000);
+        });
       });
-      // @ts-ignore
-      api.setGetGameDelay(1000);
 
       const testRenderer = TestRenderer.create(<SingleGameContainer id={1} />);
       const testInstance = testRenderer.root;
@@ -50,40 +54,47 @@ describe("SingleGameContainer", () => {
   describe("children components props", () => {
     describe("SingleGame", () => {
       it("game", async () => {
-        // @ts-ignore
-        api.setMockGame({
-          id: 1,
-          initialFen: "startpos",
-          wtime: 300000,
-          btime: 300000,
-          moves: "",
-          status: "started",
-          white: null,
-          black: null,
+        (getGame as jest.Mock).mockImplementation(() => {
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve({
+                id: 1,
+                initialFen: "startpos",
+                wtime: 300000,
+                btime: 300000,
+                moves: "",
+                status: "started",
+                white: null,
+                black: null,
+              });
+            }, 1000);
+          });
         });
-        // @ts-ignore
-        api.setGetGameDelay(1000);
-        // @ts-ignore
-        api.setMockSubscriptionData({
-          verb: "updated",
-          data: {
-            id: 1,
-            moves: "e2e4",
-          },
-          previous: {
-            id: 1,
-            initialFen: "startpos",
-            wtime: 300000,
-            btime: 300000,
-            moves: "",
-            status: "started",
-            white: null,
-            black: null,
-          },
-          id: 1,
-        });
-        // @ts-ignore
-        api.setWatchDelay(2000);
+
+        (watchGames as jest.Mock).mockImplementation(
+          (cb: (data: SubscriptionData) => void) => {
+            setTimeout(() => {
+              cb({
+                verb: "updated",
+                data: {
+                  id: 1,
+                  moves: "e2e4",
+                },
+                previous: {
+                  id: 1,
+                  initialFen: "startpos",
+                  wtime: 300000,
+                  btime: 300000,
+                  moves: "",
+                  status: "started",
+                  white: null,
+                  black: null,
+                },
+                id: 1,
+              });
+            }, 2000);
+          }
+        );
 
         const testRenderer = TestRenderer.create(
           <SingleGameContainer id={1} />
@@ -127,19 +138,22 @@ describe("SingleGameContainer", () => {
 
   describe("API calls", () => {
     it("makeMove", async () => {
-      // @ts-ignore
-      api.setMockGame({
-        id: 1,
-        initialFen: "startpos",
-        wtime: 300000,
-        btime: 300000,
-        moves: "",
-        status: "started",
-        white: null,
-        black: null,
+      (getGame as jest.Mock).mockImplementation(() => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve({
+              id: 1,
+              initialFen: "startpos",
+              wtime: 300000,
+              btime: 300000,
+              moves: "",
+              status: "started",
+              white: null,
+              black: null,
+            });
+          }, 1000);
+        });
       });
-      // @ts-ignore
-      api.setGetGameDelay(1000);
 
       const testRenderer = TestRenderer.create(<SingleGameContainer id={1} />);
       const testInstance = testRenderer.root;
@@ -150,7 +164,7 @@ describe("SingleGameContainer", () => {
 
       const singleGame = testInstance.findByType(SingleGame);
 
-      const makeMoveFn: jest.Mock = api.makeMove as jest.Mock;
+      const makeMoveFn = makeMove as jest.Mock;
 
       makeMoveFn.mockImplementation(() => {
         return new Promise((resolve) => {

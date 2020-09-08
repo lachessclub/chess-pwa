@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { JWR, RequestCallback } from "sails.io.js";
 import Game from "../../interfaces/Game";
 import { getGame, getOngoingGames, makeMove, watchGames } from "../api";
 import { SubscriptionData } from "../../interfaces/SubscriptionData";
@@ -40,14 +41,40 @@ const games: Game[] = [
   },
 ];
 
+const gameWithMove: Game = {
+  id: 1,
+  initialFen: "startpos",
+  wtime: 300000,
+  btime: 300000,
+  moves: "",
+  status: "started",
+  white: null,
+  black: null,
+};
+
 describe("api service", () => {
   it("getGame() success", () => {
-    (ioClient as any).setMockResponse(games[0]);
+    (ioClient.socket.get as jest.Mock).mockImplementationOnce(
+      (url: string, cb: RequestCallback) => {
+        cb(games[0], {
+          statusCode: 200,
+        } as JWR);
+      }
+    );
+
     return expect(getGame(1)).resolves.toEqual(games[0]);
   });
 
   it("getGame() fail", () => {
-    (ioClient as any).setMockResponse("game not found", 404);
+    (ioClient.socket.get as jest.Mock).mockImplementationOnce(
+      (url: string, cb: RequestCallback) => {
+        cb("game not found", {
+          body: "game not found",
+          statusCode: 404,
+        } as JWR);
+      }
+    );
+
     return expect(getGame(1)).rejects.toEqual({
       statusCode: 404,
       body: "game not found",
@@ -55,12 +82,28 @@ describe("api service", () => {
   });
 
   it("getOngoingGames() success", () => {
-    (ioClient as any).setMockResponse(games);
+    (ioClient.socket.get as jest.Mock).mockImplementationOnce(
+      (url: string, cb: RequestCallback) => {
+        cb(games, {
+          body: games,
+          statusCode: 200,
+        } as JWR);
+      }
+    );
+
     return expect(getOngoingGames()).resolves.toEqual(games);
   });
 
   it("getOngoingGames() fail", () => {
-    (ioClient as any).setMockResponse("route not found", 404);
+    (ioClient.socket.get as jest.Mock).mockImplementationOnce(
+      (url: string, cb: RequestCallback) => {
+        cb("route not found", {
+          body: "route not found",
+          statusCode: 404,
+        } as JWR);
+      }
+    );
+
     return expect(getOngoingGames()).rejects.toEqual({
       statusCode: 404,
       body: "route not found",
@@ -69,14 +112,18 @@ describe("api service", () => {
 
   it("watchGames()", () => {
     return new Promise((resolve) => {
-      (ioClient as any).setMockResponse({
-        verb: "updated",
-        data: {
-          id: 2,
-          moves: "e2e4",
-        },
-        id: 2,
-      });
+      (ioClient.socket.on as jest.Mock).mockImplementationOnce(
+        (url: string, cb: (...args: Array<any>) => any) => {
+          cb({
+            verb: "updated",
+            data: {
+              id: 2,
+              moves: "e2e4",
+            },
+            id: 2,
+          });
+        }
+      );
 
       watchGames((data: SubscriptionData) => {
         expect(data).toEqual({
@@ -93,31 +140,27 @@ describe("api service", () => {
   });
 
   it("makeMove() success", () => {
-    (ioClient as any).setMockResponse({
-      id: 1,
-      initialFen: "startpos",
-      wtime: 300000,
-      btime: 300000,
-      moves: "e2e4",
-      status: "started",
-      white: null,
-      black: null,
-    });
+    (ioClient.socket.post as jest.Mock).mockImplementationOnce(
+      (url: string, data: any, cb: RequestCallback) => {
+        cb(gameWithMove, {
+          body: gameWithMove,
+          statusCode: 200,
+        } as JWR);
+      }
+    );
 
-    return expect(makeMove(1, "e2e4")).resolves.toEqual({
-      id: 1,
-      initialFen: "startpos",
-      wtime: 300000,
-      btime: 300000,
-      moves: "e2e4",
-      status: "started",
-      white: null,
-      black: null,
-    });
+    return expect(makeMove(1, "e2e4")).resolves.toEqual(gameWithMove);
   });
 
   it("makeMove() fail", () => {
-    (ioClient as any).setMockResponse("game not found", 404);
+    (ioClient.socket.post as jest.Mock).mockImplementationOnce(
+      (url: string, data: any, cb: RequestCallback) => {
+        cb("game not found", {
+          body: "game not found",
+          statusCode: 404,
+        } as JWR);
+      }
+    );
     return expect(makeMove(1, "e2e4")).rejects.toEqual({
       statusCode: 404,
       body: "game not found",
