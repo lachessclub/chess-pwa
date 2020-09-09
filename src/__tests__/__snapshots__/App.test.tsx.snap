@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App Snapshot 1`] = `
+Array [
+  <button
+    className="btn btn-primary"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    Login / Register
+  </button>,
+  <div>
+    <nav>
+      <ul>
+        <li>
+          Home
+        </li>
+      </ul>
+    </nav>
+    <div
+      className="grid"
+    />
+  </div>,
+]
+`;

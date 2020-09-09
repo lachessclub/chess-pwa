@@ -2,10 +2,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 // @ts-ignore
-const ioClient = jest.genMockFromModule<any>("../api");
+const api = jest.genMockFromModule<any>("../api");
 
-ioClient.getOngoingGames.mockImplementation(() => new Promise(() => {}));
-ioClient.getGame.mockImplementation(() => new Promise(() => {}));
-ioClient.makeMove.mockImplementation(() => new Promise(() => {}));
+api.getOngoingGames.mockImplementation(() => new Promise(() => {}));
+api.getGame.mockImplementation(() => new Promise(() => {}));
+api.makeMove.mockImplementation(() => new Promise(() => {}));
+api.getCurrentUser.mockImplementation(() => new Promise(() => {}));
 
-module.exports = ioClient;
+module.exports = api;

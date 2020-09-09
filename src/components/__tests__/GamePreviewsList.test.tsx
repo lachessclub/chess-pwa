@@ -32,11 +32,6 @@ const games: Game[] = [
 describe("GamePreviewsList", () => {
   mountTest(GamePreviewsList);
 
-  it("Snapshot", () => {
-    const tree = TestRenderer.create(<GamePreviewsList />).toJSON();
-    expect(tree).toMatchSnapshot();
-  });
-
   describe("children components", () => {
     it("contains Board", () => {
       const testRenderer = TestRenderer.create(<GamePreviewsList />);
