@@ -9,6 +9,7 @@ import Game from "../../interfaces/Game";
 import ioClient from "../../services/ioClient";
 import gameSchema from "../schemas/gameSchema";
 import NormalizedData from "../interfaces/NormalizedData";
+import { challengeAiSuccess } from "./challengeSlice";
 
 interface OngoingGamesState {
   items: number[];
@@ -43,7 +44,16 @@ const ongoingGamesSlice = createSlice({
       state.error = action.payload;
     },
   },
-  extraReducers: {},
+  extraReducers: {
+    [challengeAiSuccess.type]: (
+      state,
+      action: PayloadAction<NormalizedData<number>>
+    ) => {
+      if (!state.items.includes(action.payload.result)) {
+        state.items.unshift(action.payload.result);
+      }
+    },
+  },
 });
 
 export const {

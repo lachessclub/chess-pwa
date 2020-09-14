@@ -12,8 +12,10 @@ import { AppThunk } from "../../app/store";
 import ioClient from "../../services/ioClient";
 import { getOngoingGamesSuccess } from "./ongoingGamesSlice";
 import { getSingleGameSuccess } from "./singleGameSlice";
+import { challengeAiSuccess } from "./challengeSlice";
 import NormalizedUserEntity from "../interfaces/NormalizedUserEntity";
 import NormalizedGameEntity from "../interfaces/NormalizedGameEntity";
+import { ChallengeAiData } from "../../interfaces/ChallengeAiData";
 
 export interface EntitiesState {
   users: Record<string, NormalizedUserEntity>;
@@ -46,8 +48,9 @@ const entitiesSlice = createSlice({
     makeMoveError(_state, _action: PayloadAction<string>) {},
   },
   extraReducers: {
-    [getOngoingGamesSuccess.toString()]: getNormalizedDataReducer,
-    [getSingleGameSuccess.toString()]: getNormalizedDataReducer,
+    [getOngoingGamesSuccess.type]: getNormalizedDataReducer,
+    [getSingleGameSuccess.type]: getNormalizedDataReducer,
+    [challengeAiSuccess.type]: getNormalizedDataReducer,
   },
 });
 

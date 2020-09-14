@@ -20,6 +20,9 @@ const stateSample1: RootState = {
   authModal: {
     isAuthModalVisible: false,
   },
+  challengeAiModal: {
+    isChallengeAiModalVisible: false,
+  },
   ongoingGames: {
     items: [],
     isLoading: false,
@@ -39,6 +42,9 @@ const stateSample2: RootState = {
   },
   authModal: {
     isAuthModalVisible: false,
+  },
+  challengeAiModal: {
+    isChallengeAiModalVisible: false,
   },
   ongoingGames: {
     items: [1],

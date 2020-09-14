@@ -25,7 +25,7 @@ export interface RegistrationFormData {
 }
 
 export interface RegistrationFormProps {
-  onSubmit(
+  onSubmit?(
     values: RegistrationFormData,
     formikHelpers: FormikHelpers<RegistrationFormData>
   ): void | Promise<any>;

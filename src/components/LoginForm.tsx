@@ -14,7 +14,7 @@ const loginSchema = Yup.object().shape({
 });
 
 export interface LoginFormProps {
-  onSubmit(
+  onSubmit?(
     values: LoginData,
     formikHelpers: FormikHelpers<LoginData>
   ): void | Promise<any>;

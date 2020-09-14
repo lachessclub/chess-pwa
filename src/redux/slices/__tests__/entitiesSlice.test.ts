@@ -13,6 +13,7 @@ import entitiesReducer, {
 } from "../entitiesSlice";
 import { getOngoingGamesSuccess } from "../ongoingGamesSlice";
 import { getSingleGameSuccess } from "../singleGameSlice";
+import { challengeAiSuccess } from "../challengeSlice";
 import Game from "../../../interfaces/Game";
 import { RootState } from "../../../app/rootReducer";
 import ioClient from "../../../services/ioClient";
@@ -38,6 +39,9 @@ const stateSample: RootState = {
   },
   authModal: {
     isAuthModalVisible: false,
+  },
+  challengeAiModal: {
+    isChallengeAiModalVisible: false,
   },
   ongoingGames: {
     items: [],
@@ -378,5 +382,17 @@ describe("entitiesSlice reducer", () => {
         },
       });
     });
+  });
+
+  it("should handle challengeAiSuccess", () => {
+    expect(
+      entitiesReducer(entitiesBefore, {
+        type: challengeAiSuccess.type,
+        payload: {
+          result: 2,
+          entities: payloadEntities,
+        },
+      })
+    ).toEqual(entitiesAfter);
   });
 });

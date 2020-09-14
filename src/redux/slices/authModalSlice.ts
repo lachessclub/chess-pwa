@@ -24,10 +24,10 @@ const authModalSlice = createSlice({
     },
   },
   extraReducers: {
-    [loginSuccess.toString()]: (state) => {
+    [loginSuccess.type]: (state) => {
       state.isAuthModalVisible = false;
     },
-    [registerSuccess.toString()]: (state) => {
+    [registerSuccess.type]: (state) => {
       state.isAuthModalVisible = false;
     },
   },

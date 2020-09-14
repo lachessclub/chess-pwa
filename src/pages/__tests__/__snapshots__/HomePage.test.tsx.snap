@@ -1,7 +1,17 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`HomePage Snapshot 1`] = `
-<div
-  className="grid"
-/>
+Array [
+  <button
+    className="btn btn-primary"
+    disabled={false}
+    onClick={[Function]}
+    type="button"
+  >
+    Play with the computer
+  </button>,
+  <div
+    className="grid"
+  />,
+]
 `;

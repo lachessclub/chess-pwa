@@ -4,7 +4,5 @@ import { LoginForm } from "../LoginForm";
 // @todo. add tests
 
 describe("LoginForm", () => {
-  mountTest(LoginForm, {
-    onSubmit() {},
-  });
+  mountTest(LoginForm);
 });
