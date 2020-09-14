@@ -9,6 +9,10 @@ import { challengeAiSuccess } from "../challengeSlice";
 import Game from "../../../interfaces/Game";
 import { RootState } from "../../../app/rootReducer";
 import ioClient from "../../../services/ioClient";
+import {
+  createGameBySubscription,
+  updateGameBySubscription,
+} from "../dataSubscriptionSlice";
 
 jest.mock("../../../services/ioClient");
 
@@ -90,6 +94,94 @@ describe("ongoingGamesSlice reducer", () => {
         },
         {
           type: challengeAiSuccess.type,
+          payload: {
+            result: 1,
+            entities: {},
+          },
+        }
+      )
+    ).toEqual({
+      items: [1],
+      isLoading: true,
+      error: "error text",
+    });
+  });
+
+  it("should handle createGameBySubscription", () => {
+    expect(
+      ongoingGamesReducer(
+        {
+          items: [1],
+          isLoading: true,
+          error: "error text",
+        },
+        {
+          type: createGameBySubscription.type,
+          payload: {
+            result: 2,
+            entities: {},
+          },
+        }
+      )
+    ).toEqual({
+      items: [2, 1],
+      isLoading: true,
+      error: "error text",
+    });
+
+    expect(
+      ongoingGamesReducer(
+        {
+          items: [1],
+          isLoading: true,
+          error: "error text",
+        },
+        {
+          type: createGameBySubscription.type,
+          payload: {
+            result: 1,
+            entities: {},
+          },
+        }
+      )
+    ).toEqual({
+      items: [1],
+      isLoading: true,
+      error: "error text",
+    });
+  });
+
+  it("should handle updateGameBySubscription", () => {
+    expect(
+      ongoingGamesReducer(
+        {
+          items: [1],
+          isLoading: true,
+          error: "error text",
+        },
+        {
+          type: updateGameBySubscription.type,
+          payload: {
+            result: 2,
+            entities: {},
+          },
+        }
+      )
+    ).toEqual({
+      items: [2, 1],
+      isLoading: true,
+      error: "error text",
+    });
+
+    expect(
+      ongoingGamesReducer(
+        {
+          items: [1],
+          isLoading: true,
+          error: "error text",
+        },
+        {
+          type: updateGameBySubscription.type,
           payload: {
             result: 1,
             entities: {},

@@ -7,12 +7,12 @@ import mountTest from "../../tests/mountTest";
 import HomePage from "../../pages/HomePage";
 import { RootState } from "../rootReducer";
 import { fetchCurrentUser } from "../../redux/slices/currentUserSlice";
-import { watchGames } from "../../redux/slices/entitiesSlice";
+import { watchGames } from "../../redux/slices/dataSubscriptionSlice";
 
 jest.useFakeTimers();
 
 jest.mock("../../redux/slices/currentUserSlice");
-jest.mock("../../redux/slices/entitiesSlice");
+jest.mock("../../redux/slices/dataSubscriptionSlice");
 
 const stateSample: RootState = {
   currentUser: {

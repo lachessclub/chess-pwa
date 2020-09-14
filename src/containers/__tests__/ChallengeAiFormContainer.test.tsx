@@ -41,12 +41,17 @@ describe("ChallengeAiFormContainer", () => {
       challengeAiFn.mockClear();
 
       TestRenderer.act(() => {
-        challengeAiForm.props.onSubmit({
-          level: 3,
-          color: "random",
-          clockLimit: 300,
-          clockIncrement: 10,
-        });
+        challengeAiForm.props.onSubmit(
+          {
+            level: 3,
+            color: "random",
+            clockLimit: 300,
+            clockIncrement: 10,
+          },
+          {
+            setStatus: () => {},
+          }
+        );
       });
 
       expect(challengeAiFn).toBeCalledTimes(1);

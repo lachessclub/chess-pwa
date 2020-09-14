@@ -13,9 +13,12 @@ import ioClient from "../../services/ioClient";
 import { getOngoingGamesSuccess } from "./ongoingGamesSlice";
 import { getSingleGameSuccess } from "./singleGameSlice";
 import { challengeAiSuccess } from "./challengeSlice";
+import {
+  updateGameBySubscription,
+  createGameBySubscription,
+} from "./dataSubscriptionSlice";
 import NormalizedUserEntity from "../interfaces/NormalizedUserEntity";
 import NormalizedGameEntity from "../interfaces/NormalizedGameEntity";
-import { ChallengeAiData } from "../../interfaces/ChallengeAiData";
 
 export interface EntitiesState {
   users: Record<string, NormalizedUserEntity>;
@@ -41,8 +44,6 @@ const entitiesSlice = createSlice({
   name: "entities",
   initialState,
   reducers: {
-    updateGameSuccess: getNormalizedDataReducer,
-    createGameSuccess: getNormalizedDataReducer,
     makeMoveRequest() {},
     makeMoveSuccess: getNormalizedDataReducer,
     makeMoveError(_state, _action: PayloadAction<string>) {},
@@ -51,37 +52,18 @@ const entitiesSlice = createSlice({
     [getOngoingGamesSuccess.type]: getNormalizedDataReducer,
     [getSingleGameSuccess.type]: getNormalizedDataReducer,
     [challengeAiSuccess.type]: getNormalizedDataReducer,
+    [updateGameBySubscription.type]: getNormalizedDataReducer,
+    [createGameBySubscription.type]: getNormalizedDataReducer,
   },
 });
 
 export const {
-  updateGameSuccess,
-  createGameSuccess,
   makeMoveRequest,
   makeMoveSuccess,
   makeMoveError,
 } = entitiesSlice.actions;
 
 export default entitiesSlice.reducer;
-
-export const watchGames = (): AppThunk<void> => (dispatch) => {
-  ioClient.socket.on("game", (subscriptionData: SubscriptionData) => {
-    if (subscriptionData.verb === "updated") {
-      const game = {
-        ...subscriptionData.previous,
-        ...subscriptionData.data,
-      };
-
-      const normalizedGame = normalize(game, gameSchema);
-
-      dispatch(updateGameSuccess(normalizedGame));
-    } else if (subscriptionData.verb === "created") {
-      const normalizedGame = normalize(subscriptionData.data, gameSchema);
-
-      dispatch(createGameSuccess(normalizedGame));
-    }
-  });
-};
 
 export const makeMove = (
   gameId: number,

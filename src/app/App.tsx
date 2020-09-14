@@ -12,7 +12,7 @@ import { fetchCurrentUser, logout } from "../redux/slices/currentUserSlice";
 import { showAuthModal, hideAuthModal } from "../redux/slices/authModalSlice";
 import User from "../interfaces/User";
 import userSchema from "../redux/schemas/userSchema";
-import { watchGames } from "../redux/slices/entitiesSlice";
+import { watchGames } from "../redux/slices/dataSubscriptionSlice";
 
 const App: FC = () => {
   const dispatch = useDispatch();
