@@ -2,9 +2,7 @@ import React from "react";
 import TestRenderer from "react-test-renderer";
 import mountTest from "../../tests/mountTest";
 import HomePage from "../HomePage";
-import { OngoingGamesContainer } from "../../containers/OngoingGamesContainer";
-
-jest.mock("../../services/api");
+import OngoingGamesContainer from "../../containers/OngoingGamesContainer";
 
 describe("HomePage", () => {
   mountTest(HomePage);

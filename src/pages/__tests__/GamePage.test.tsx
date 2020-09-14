@@ -4,8 +4,6 @@ import { MemoryRouter, Route } from "react-router-dom";
 import { SingleGameContainer } from "../../containers/SingleGameContainer";
 import GamePage from "../GamePage";
 
-jest.mock("../../services/api");
-
 describe("GamePage", () => {
   describe("children components", () => {
     it("contains OngoingGamesContainer", () => {

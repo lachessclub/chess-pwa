@@ -1,5 +1,6 @@
-import React, { FC, useContext } from "react";
+import React, { FC } from "react";
 import { Tab, Tabs } from "react-bootstrap";
+import { useDispatch } from "react-redux";
 import { FormikHelpers } from "formik";
 import { LoginForm } from "../components/LoginForm";
 import {
@@ -7,28 +8,23 @@ import {
   RegistrationFormData,
 } from "../components/RegistrationForm";
 import LoginData from "../interfaces/LoginData";
-import User from "../interfaces/User";
-import { login, register } from "../services/api";
-import { AppContext } from "../AppContext";
+import { login, register } from "../redux/slices/currentUserSlice";
+import { AppDispatch } from "../app/store";
 
 const LoginTabsContainer: FC<unknown> = () => {
-  const appContext = useContext(AppContext);
+  const dispatch = useDispatch<AppDispatch>();
 
   const doLogin = React.useCallback(
     (values: LoginData, formikHelpers: FormikHelpers<LoginData>) => {
-      return login(values)
-        .then((user: User) => {
-          appContext.dispatch({ type: "LOGIN", payload: user });
-        })
-        .catch((err) => {
-          if (err.statusCode === 401) {
-            formikHelpers.setStatus("Incorrect email or password");
-          } else {
-            formikHelpers.setStatus("Internal server error");
-          }
-        });
+      return dispatch(login(values)).catch((err) => {
+        if (err.statusCode === 401) {
+          formikHelpers.setStatus("Incorrect email or password");
+        } else {
+          formikHelpers.setStatus("Internal server error");
+        }
+      });
     },
-    [appContext]
+    [dispatch]
   );
 
   const doSignUp = React.useCallback(
@@ -36,23 +32,23 @@ const LoginTabsContainer: FC<unknown> = () => {
       values: RegistrationFormData,
       formikHelpers: FormikHelpers<RegistrationFormData>
     ) => {
-      return register({
-        fullName: values.fullName,
-        email: values.email,
-        password: values.password,
-      })
-        .then((user: User) => {
-          appContext.dispatch({ type: "LOGIN", payload: user });
+      return dispatch(
+        register({
+          fullName: values.fullName,
+          email: values.email,
+          password: values.password,
         })
-        .catch((err) => {
-          if (err.statusCode === 409) {
-            formikHelpers.setStatus("User with provided email already");
-          } else {
-            formikHelpers.setStatus("Internal server error");
-          }
-        });
+      ).catch((err) => {
+        if (err.statusCode === 409) {
+          formikHelpers.setStatus(
+            "The provided email address is already in use"
+          );
+        } else {
+          formikHelpers.setStatus("Internal server error");
+        }
+      });
     },
-    [appContext]
+    [dispatch]
   );
 
   return (

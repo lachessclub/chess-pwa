@@ -1,15 +1,15 @@
 import TestRenderer from "react-test-renderer";
 import React from "react";
+import { useDispatch } from "react-redux";
 import mountTest from "../../tests/mountTest";
 import LoginTabsContainer from "../LoginTabsContainer";
 import { LoginForm } from "../../components/LoginForm";
 import { RegistrationForm } from "../../components/RegistrationForm";
-import { login, register } from "../../services/api";
-import { AppContext } from "../../AppContext";
+import { login, register } from "../../redux/slices/currentUserSlice";
 
 jest.useFakeTimers();
 
-jest.mock("../../services/api");
+jest.mock("../../redux/slices/currentUserSlice");
 
 describe("LoginTabsContainer", () => {
   mountTest(LoginTabsContainer);
@@ -30,104 +30,76 @@ describe("LoginTabsContainer", () => {
     });
   });
 
-  describe("Context events", () => {
-    describe("dispatch LOGIN event", () => {
-      it("LoginForm onSubmit", async () => {
-        const dispatchFn = jest.fn();
+  describe("dispatch() calls", () => {
+    it("login()", () => {
+      const dispatch = jest.fn();
+      dispatch.mockReturnValue(Promise.resolve());
+      (useDispatch as jest.Mock).mockReturnValue(dispatch);
 
-        const testRenderer = TestRenderer.create(
-          <AppContext.Provider
-            value={{
-              user: null,
-              dispatch: dispatchFn,
-            }}
-          >
-            <LoginTabsContainer />
-          </AppContext.Provider>
-        );
-        const testInstance = testRenderer.root;
+      const testRenderer = TestRenderer.create(<LoginTabsContainer />);
+      const testInstance = testRenderer.root;
 
-        const loginForm = testInstance.findByType(LoginForm);
+      const loginForm = testInstance.findByType(LoginForm);
 
-        const loginFn = login as jest.Mock;
+      dispatch.mockClear();
 
-        loginFn.mockImplementationOnce(() => {
-          return Promise.resolve({
-            id: 1,
-            fullName: "David Wilson",
-          });
-        });
+      const loginFn = login as jest.Mock;
+      loginFn.mockReturnValue("loginFn return value");
 
-        await loginForm.props.onSubmit({
+      loginFn.mockClear();
+
+      TestRenderer.act(() => {
+        loginForm.props.onSubmit({
           email: "test@test.com",
           password: "123",
-        });
-
-        expect(loginFn).toBeCalledTimes(1);
-        expect(loginFn).toBeCalledWith({
-          email: "test@test.com",
-          password: "123",
-        });
-
-        expect(dispatchFn).toBeCalledTimes(1);
-        expect(dispatchFn).toBeCalledWith({
-          type: "LOGIN",
-          payload: {
-            id: 1,
-            fullName: "David Wilson",
-          },
         });
       });
 
-      it("RegistrationForm onSubmit", async () => {
-        const dispatchFn = jest.fn();
+      expect(loginFn).toBeCalledTimes(1);
+      expect(loginFn).toBeCalledWith({
+        email: "test@test.com",
+        password: "123",
+      });
 
-        const testRenderer = TestRenderer.create(
-          <AppContext.Provider
-            value={{
-              user: null,
-              dispatch: dispatchFn,
-            }}
-          >
-            <LoginTabsContainer />
-          </AppContext.Provider>
-        );
-        const testInstance = testRenderer.root;
+      expect(dispatch).toBeCalledTimes(1);
+      expect(dispatch).toBeCalledWith("loginFn return value");
+    });
 
-        const registrationForm = testInstance.findByType(RegistrationForm);
+    it("register()", () => {
+      const dispatch = jest.fn();
+      dispatch.mockReturnValue(Promise.resolve());
+      (useDispatch as jest.Mock).mockReturnValue(dispatch);
 
-        const registerFn = register as jest.Mock;
+      const testRenderer = TestRenderer.create(<LoginTabsContainer />);
+      const testInstance = testRenderer.root;
 
-        registerFn.mockImplementationOnce(() => {
-          return Promise.resolve({
-            id: 1,
-            fullName: "David Wilson",
-          });
-        });
+      const registrationForm = testInstance.findByType(RegistrationForm);
 
-        await registrationForm.props.onSubmit({
+      dispatch.mockClear();
+
+      const registerFn = register as jest.Mock;
+      registerFn.mockReturnValue("registerFn return value");
+
+      registerFn.mockClear();
+
+      TestRenderer.act(() => {
+        registrationForm.props.onSubmit({
           fullName: "David Wilson",
           email: "test@test.com",
           password: "123",
           confirmPassword: "123",
         });
-
-        expect(registerFn).toBeCalledTimes(1);
-        expect(registerFn).toBeCalledWith({
-          fullName: "David Wilson",
-          email: "test@test.com",
-          password: "123",
-        });
-
-        expect(dispatchFn).toBeCalledTimes(1);
-        expect(dispatchFn).toBeCalledWith({
-          type: "LOGIN",
-          payload: {
-            id: 1,
-            fullName: "David Wilson",
-          },
-        });
       });
+
+      expect(registerFn).toBeCalledTimes(1);
+      expect(registerFn).toBeCalledWith({
+        fullName: "David Wilson",
+        email: "test@test.com",
+        password: "123",
+      });
+
+      expect(dispatch).toBeCalledTimes(1);
+      expect(dispatch).toBeCalledWith("registerFn return value");
     });
   });
 });

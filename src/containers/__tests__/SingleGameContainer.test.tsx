@@ -1,51 +1,64 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-
 import TestRenderer from "react-test-renderer";
 import React from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { SingleGameContainer } from "../SingleGameContainer";
 import { SingleGame } from "../../components/SingleGame";
 import mountTest from "../../tests/mountTest";
-import { getGame, makeMove, watchGames } from "../../services/api";
-import { SubscriptionData } from "../../interfaces/SubscriptionData";
-
-// @todo. add tests about subscriptions. Warning: Can't perform a React state update on an unmounted component.
-//  This is a no-op, but it indicates a memory leak in your application. To fix,
-//  cancel all subscriptions and asynchronous tasks in a useEffect cleanup function
+import { RootState } from "../../app/rootReducer";
+import { makeMove } from "../../redux/slices/entitiesSlice";
+import { fetchGame } from "../../redux/slices/singleGameSlice";
 
 jest.useFakeTimers();
 
-jest.mock("../../services/api");
+jest.mock("../../redux/slices/entitiesSlice");
+jest.mock("../../redux/slices/singleGameSlice");
+
+const stateSample: RootState = {
+  currentUser: {
+    userId: null,
+    isLoading: false,
+    error: null,
+  },
+  authModal: {
+    isAuthModalVisible: false,
+  },
+  ongoingGames: {
+    items: [],
+    isLoading: false,
+    error: null,
+  },
+  entities: {
+    users: {},
+    games: {
+      "1": {
+        id: 1,
+        initialFen: "startpos",
+        wtime: 300000,
+        btime: 300000,
+        moves: "",
+        status: "started",
+        white: null,
+        black: null,
+      },
+    },
+  },
+};
 
 describe("SingleGameContainer", () => {
+  beforeEach(() => {
+    (useSelector as jest.Mock).mockImplementation((cb) => cb(stateSample));
+  });
+
   mountTest(SingleGameContainer, { id: 1 });
 
   describe("children components", () => {
     it("contains SingleGame", async () => {
-      (getGame as jest.Mock).mockImplementation(() => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve({
-              id: 1,
-              initialFen: "startpos",
-              wtime: 300000,
-              btime: 300000,
-              moves: "",
-              status: "started",
-              white: null,
-              black: null,
-            });
-          }, 1000);
-        });
-      });
-
-      const testRenderer = TestRenderer.create(<SingleGameContainer id={1} />);
+      const testRenderer = TestRenderer.create(<SingleGameContainer id={2} />);
       const testInstance = testRenderer.root;
 
       expect(testInstance.findAllByType(SingleGame).length).toBe(0);
 
-      await TestRenderer.act(async () => {
-        jest.advanceTimersByTime(1000);
-      });
+      testRenderer.update(<SingleGameContainer id={1} />);
 
       expect(testInstance.findAllByType(SingleGame).length).toBe(1);
     });
@@ -54,56 +67,10 @@ describe("SingleGameContainer", () => {
   describe("children components props", () => {
     describe("SingleGame", () => {
       it("game", async () => {
-        (getGame as jest.Mock).mockImplementation(() => {
-          return new Promise((resolve) => {
-            setTimeout(() => {
-              resolve({
-                id: 1,
-                initialFen: "startpos",
-                wtime: 300000,
-                btime: 300000,
-                moves: "",
-                status: "started",
-                white: null,
-                black: null,
-              });
-            }, 1000);
-          });
-        });
-
-        (watchGames as jest.Mock).mockImplementation(
-          (cb: (data: SubscriptionData) => void) => {
-            setTimeout(() => {
-              cb({
-                verb: "updated",
-                data: {
-                  id: 1,
-                  moves: "e2e4",
-                },
-                previous: {
-                  id: 1,
-                  initialFen: "startpos",
-                  wtime: 300000,
-                  btime: 300000,
-                  moves: "",
-                  status: "started",
-                  white: null,
-                  black: null,
-                },
-                id: 1,
-              });
-            }, 2000);
-          }
-        );
-
         const testRenderer = TestRenderer.create(
           <SingleGameContainer id={1} />
         );
         const testInstance = testRenderer.root;
-
-        await TestRenderer.act(async () => {
-          jest.advanceTimersByTime(1000);
-        });
 
         const singleGame = testInstance.findByType(SingleGame);
 
@@ -117,71 +84,24 @@ describe("SingleGameContainer", () => {
           white: null,
           black: null,
         });
-
-        await TestRenderer.act(async () => {
-          jest.advanceTimersByTime(1000);
-        });
-
-        expect(singleGame.props.game).toEqual({
-          id: 1,
-          initialFen: "startpos",
-          wtime: 300000,
-          btime: 300000,
-          moves: "e2e4",
-          status: "started",
-          white: null,
-          black: null,
-        });
       });
     });
   });
 
-  describe("API calls", () => {
-    it("makeMove", async () => {
-      (getGame as jest.Mock).mockImplementation(() => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve({
-              id: 1,
-              initialFen: "startpos",
-              wtime: 300000,
-              btime: 300000,
-              moves: "",
-              status: "started",
-              white: null,
-              black: null,
-            });
-          }, 1000);
-        });
-      });
+  describe("dispatch() calls", () => {
+    it("makeMove()", () => {
+      const dispatch = jest.fn();
+      (useDispatch as jest.Mock).mockReturnValue(dispatch);
 
       const testRenderer = TestRenderer.create(<SingleGameContainer id={1} />);
       const testInstance = testRenderer.root;
 
-      await TestRenderer.act(async () => {
-        jest.advanceTimersByTime(1000);
-      });
-
       const singleGame = testInstance.findByType(SingleGame);
 
-      const makeMoveFn = makeMove as jest.Mock;
+      dispatch.mockClear();
 
-      makeMoveFn.mockImplementation(() => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve({
-              id: 1,
-              initialFen: "startpos",
-              wtime: 300000,
-              btime: 300000,
-              moves: "e2e5", // actually there will be e2e4 in backend response
-              status: "started",
-              white: null,
-              black: null,
-            });
-          }, 1000);
-        });
-      });
+      const makeMoveFn = makeMove as jest.Mock;
+      makeMoveFn.mockReturnValue("makeMove return value");
 
       makeMoveFn.mockClear();
 
@@ -192,36 +112,38 @@ describe("SingleGameContainer", () => {
         });
       });
 
-      expect(makeMoveFn).toHaveBeenCalledTimes(1);
+      expect(makeMoveFn).toBeCalledTimes(1);
       expect(makeMoveFn).toBeCalledWith(1, "e2e4");
 
-      // change moves property immediately before sending request to backend API
-      expect(singleGame.props.game).toEqual({
-        id: 1,
-        initialFen: "startpos",
-        wtime: 300000,
-        btime: 300000,
-        moves: "e2e4",
-        status: "started",
-        white: null,
-        black: null,
+      expect(dispatch).toBeCalledTimes(1);
+      expect(dispatch).toBeCalledWith("makeMove return value");
+    });
+
+    it("fetchGame()", () => {
+      const dispatch = jest.fn();
+      (useDispatch as jest.Mock).mockReturnValue(dispatch);
+
+      const fetchGameFn = fetchGame as jest.Mock;
+      fetchGameFn.mockReturnValue("fetchGame return value");
+
+      fetchGameFn.mockClear();
+
+      const testRenderer = TestRenderer.create(<SingleGameContainer id={1} />);
+
+      expect(fetchGameFn).toBeCalledTimes(1);
+      expect(fetchGameFn).toBeCalledWith(1);
+
+      expect(dispatch).toBeCalledTimes(1);
+      expect(dispatch).toBeCalledWith("fetchGame return value");
+
+      fetchGameFn.mockClear();
+
+      TestRenderer.act(() => {
+        testRenderer.update(<SingleGameContainer id={2} />);
       });
 
-      await TestRenderer.act(async () => {
-        jest.advanceTimersByTime(1000);
-      });
-
-      // data from backend. e2e5 is just for testing. Actually backend should return e2e4
-      expect(singleGame.props.game).toEqual({
-        id: 1,
-        initialFen: "startpos",
-        wtime: 300000,
-        btime: 300000,
-        moves: "e2e5",
-        status: "started",
-        white: null,
-        black: null,
-      });
+      expect(fetchGameFn).toBeCalledTimes(1);
+      expect(fetchGameFn).toBeCalledWith(2);
     });
   });
 });

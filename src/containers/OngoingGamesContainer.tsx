@@ -1,42 +1,23 @@
-/* eslint-disable import/prefer-default-export */
-
-import React, { FC, useEffect, useReducer } from "react";
+import React, { FC, useEffect } from "react";
+import { denormalize } from "normalizr";
+import { useDispatch, useSelector } from "react-redux";
 import { GamePreviewsList } from "../components/GamePreviewsList";
-import { getOngoingGames, watchGames } from "../services/api";
-import { reducer } from "./OngoingGamesContainer.reducer";
+import { RootState } from "../app/rootReducer";
+import { fetchOngoingGames } from "../redux/slices/ongoingGamesSlice";
+import gameSchema from "../redux/schemas/gameSchema";
 
-export const OngoingGamesContainer: FC<unknown> = () => {
-  const [state, dispatch] = useReducer(reducer, {
-    games: [],
-  });
+const OngoingGamesContainer: FC<unknown> = () => {
+  const dispatch = useDispatch();
+
+  const items = useSelector((state: RootState) =>
+    denormalize(state.ongoingGames.items, [gameSchema], state.entities)
+  );
 
   useEffect(() => {
-    let mounted = true;
+    dispatch(fetchOngoingGames());
+  }, [dispatch]);
 
-    getOngoingGames().then((res) => {
-      if (!mounted) {
-        return;
-      }
-
-      dispatch({ type: "GET_GAMES", payload: res });
-    });
-
-    watchGames((subscriptionData) => {
-      if (!mounted) {
-        return;
-      }
-
-      if (subscriptionData.verb === "updated") {
-        dispatch({ type: "UPDATE_GAME", payload: subscriptionData });
-      } else if (subscriptionData.verb === "created") {
-        dispatch({ type: "CREATE_GAME", payload: subscriptionData });
-      }
-    });
-
-    return () => {
-      mounted = false;
-    };
-  }, []);
-
-  return <GamePreviewsList games={state.games} />;
+  return <GamePreviewsList games={items} />;
 };
+
+export default OngoingGamesContainer;

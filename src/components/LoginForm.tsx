@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React, { FC, FormEvent } from "react";
 import { Formik, FormikHelpers } from "formik";
 import { Alert, Button, Form } from "react-bootstrap";
@@ -15,7 +17,7 @@ export interface LoginFormProps {
   onSubmit(
     values: LoginData,
     formikHelpers: FormikHelpers<LoginData>
-  ): void | Promise<void>;
+  ): void | Promise<any>;
 }
 
 export const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
@@ -23,7 +25,7 @@ export const LoginForm: FC<LoginFormProps> = ({ onSubmit }) => {
     <Formik
       initialValues={{ email: "", password: "" }}
       validationSchema={loginSchema}
-      onSubmit={(values, formikHelpers): Promise<void> | void => {
+      onSubmit={(values, formikHelpers): Promise<any> | void => {
         if (onSubmit) {
           return onSubmit(values as LoginData, formikHelpers);
         }
