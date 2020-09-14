@@ -5,12 +5,12 @@ import { SingleGameContainer } from "../SingleGameContainer";
 import { SingleGame } from "../../components/SingleGame";
 import mountTest from "../../tests/mountTest";
 import { RootState } from "../../app/rootReducer";
-import { makeMove } from "../../redux/slices/entitiesSlice";
+import { makeMove } from "../../redux/slices/moveSlice";
 import { fetchGame } from "../../redux/slices/singleGameSlice";
 
 jest.useFakeTimers();
 
-jest.mock("../../redux/slices/entitiesSlice");
+jest.mock("../../redux/slices/moveSlice");
 jest.mock("../../redux/slices/singleGameSlice");
 
 const stateSample: RootState = {

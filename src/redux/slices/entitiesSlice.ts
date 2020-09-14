@@ -3,13 +3,6 @@
 /* eslint-disable import/no-cycle */
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { normalize } from "normalizr";
-import { JWR } from "sails.io.js";
-import Game from "../../interfaces/Game";
-import gameSchema from "../schemas/gameSchema";
-import { SubscriptionData } from "../../interfaces/SubscriptionData";
-import { AppThunk } from "../../app/store";
-import ioClient from "../../services/ioClient";
 import { getOngoingGamesSuccess } from "./ongoingGamesSlice";
 import { getSingleGameSuccess } from "./singleGameSlice";
 import { challengeAiSuccess } from "./challengeSlice";
@@ -17,6 +10,7 @@ import {
   updateGameBySubscription,
   createGameBySubscription,
 } from "./dataSubscriptionSlice";
+import { makeMoveSuccess } from "./moveSlice";
 import NormalizedUserEntity from "../interfaces/NormalizedUserEntity";
 import NormalizedGameEntity from "../interfaces/NormalizedGameEntity";
 
@@ -43,49 +37,15 @@ const getNormalizedDataReducer = (
 const entitiesSlice = createSlice({
   name: "entities",
   initialState,
-  reducers: {
-    makeMoveRequest() {},
-    makeMoveSuccess: getNormalizedDataReducer,
-    makeMoveError(_state, _action: PayloadAction<string>) {},
-  },
+  reducers: {},
   extraReducers: {
     [getOngoingGamesSuccess.type]: getNormalizedDataReducer,
     [getSingleGameSuccess.type]: getNormalizedDataReducer,
     [challengeAiSuccess.type]: getNormalizedDataReducer,
     [updateGameBySubscription.type]: getNormalizedDataReducer,
     [createGameBySubscription.type]: getNormalizedDataReducer,
+    [makeMoveSuccess.type]: getNormalizedDataReducer,
   },
 });
 
-export const {
-  makeMoveRequest,
-  makeMoveSuccess,
-  makeMoveError,
-} = entitiesSlice.actions;
-
 export default entitiesSlice.reducer;
-
-export const makeMove = (
-  gameId: number,
-  move: string
-): AppThunk<Promise<Game>> => (dispatch) => {
-  dispatch(makeMoveRequest());
-
-  return new Promise((resolve, reject) => {
-    ioClient.socket.post(
-      `/api/v1/board/game/${gameId}/move/${move}`,
-      {},
-      (body: unknown, jwr: JWR) => {
-        if (jwr.statusCode === 200) {
-          const normalizedGame = normalize(body as Game, gameSchema);
-
-          dispatch(makeMoveSuccess(normalizedGame));
-          resolve(body as Game);
-        } else {
-          dispatch(makeMoveError(body as string));
-          reject(jwr);
-        }
-      }
-    );
-  });
-};

@@ -14,7 +14,7 @@ interface DataSubscriptionState {}
 
 const initialState: DataSubscriptionState = {};
 
-const dataSubscriptionState = createSlice({
+const dataSubscriptionSlice = createSlice({
   name: "dataSubscription",
   initialState,
   reducers: {
@@ -33,9 +33,9 @@ const dataSubscriptionState = createSlice({
 export const {
   updateGameBySubscription,
   createGameBySubscription,
-} = dataSubscriptionState.actions;
+} = dataSubscriptionSlice.actions;
 
-export default dataSubscriptionState.reducer;
+export default dataSubscriptionSlice.reducer;
 
 export const watchGames = (): AppThunk<void> => (dispatch) => {
   ioClient.socket.on("game", (subscriptionData: SubscriptionData) => {

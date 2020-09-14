@@ -6,55 +6,52 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { JWR } from "sails.io.js";
 import { normalize } from "normalizr";
 import NormalizedData from "../interfaces/NormalizedData";
-import { ChallengeAiData } from "../../interfaces/ChallengeAiData";
 import { AppThunk } from "../../app/store";
 import Game from "../../interfaces/Game";
 import ioClient from "../../services/ioClient";
 import gameSchema from "../schemas/gameSchema";
 
-interface ChallengeState {}
+interface MoveState {}
 
-const initialState: ChallengeState = {};
+const initialState: MoveState = {};
 
-const challengeSlice = createSlice({
-  name: "challenge",
+const moveSlice = createSlice({
+  name: "move",
   initialState,
   reducers: {
-    challengeAiRequest() {},
-    challengeAiSuccess(
-      _state,
-      _action: PayloadAction<NormalizedData<number>>
-    ) {},
-    challengeAiError(_state, _action: PayloadAction<string>) {},
+    makeMoveRequest() {},
+    makeMoveSuccess(_state, _action: PayloadAction<NormalizedData<number>>) {},
+    makeMoveError(_state, _action: PayloadAction<string>) {},
   },
   extraReducers: {},
 });
 
 export const {
-  challengeAiRequest,
-  challengeAiSuccess,
-  challengeAiError,
-} = challengeSlice.actions;
+  makeMoveRequest,
+  makeMoveSuccess,
+  makeMoveError,
+} = moveSlice.actions;
 
-export default challengeSlice.reducer;
+export default moveSlice.reducer;
 
-export const challengeAi = (data: ChallengeAiData): AppThunk<Promise<Game>> => (
-  dispatch
-) => {
-  dispatch(challengeAiRequest());
+export const makeMove = (
+  gameId: number,
+  move: string
+): AppThunk<Promise<Game>> => (dispatch) => {
+  dispatch(makeMoveRequest());
 
   return new Promise((resolve, reject) => {
     ioClient.socket.post(
-      `/api/v1/challenge/ai`,
-      data,
+      `/api/v1/board/game/${gameId}/move/${move}`,
+      {},
       (body: unknown, jwr: JWR) => {
         if (jwr.statusCode === 200) {
           const normalizedGame = normalize(body as Game, gameSchema);
 
-          dispatch(challengeAiSuccess(normalizedGame));
+          dispatch(makeMoveSuccess(normalizedGame));
           resolve(body as Game);
         } else {
-          dispatch(challengeAiError(body as string));
+          dispatch(makeMoveError(body as string));
           reject(jwr);
         }
       }

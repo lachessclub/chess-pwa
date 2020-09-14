@@ -7,7 +7,7 @@ import { AppDispatch } from "../app/store";
 import { RootState } from "../app/rootReducer";
 import gameSchema from "../redux/schemas/gameSchema";
 import { fetchGame } from "../redux/slices/singleGameSlice";
-import { makeMove } from "../redux/slices/entitiesSlice";
+import { makeMove } from "../redux/slices/moveSlice";
 
 export interface SingleGameContainerProps {
   id: number;

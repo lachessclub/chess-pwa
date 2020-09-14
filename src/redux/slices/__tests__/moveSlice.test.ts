@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import { JWR, RequestCallback } from "sails.io.js";
-import challengeReducer, {
-  challengeAi,
-  challengeAiRequest,
-  challengeAiSuccess,
-  challengeAiError,
-} from "../challengeSlice";
 import ioClient from "../../../services/ioClient";
 import { RootState } from "../../../app/rootReducer";
 import Game from "../../../interfaces/Game";
+import moveReducer, {
+  makeMove,
+  makeMoveRequest,
+  makeMoveSuccess,
+  makeMoveError,
+} from "../moveSlice";
 
 jest.mock("../../../services/ioClient");
 
@@ -47,32 +47,32 @@ const stateSample: RootState = {
   },
 };
 
-describe("challengeSlice reducer", () => {
+describe("moveSlice reducer", () => {
   it("should handle initial state", () => {
     expect(
-      challengeReducer(undefined, {
+      moveReducer(undefined, {
         type: "",
       })
     ).toEqual({});
   });
 
-  it("should handle challengeAiRequest", () => {
+  it("should handle makeMoveRequest", () => {
     expect(
-      challengeReducer(
+      moveReducer(
         {},
         {
-          type: challengeAiRequest.type,
+          type: makeMoveRequest.type,
         }
       )
     ).toEqual({});
   });
 
-  it("should handle challengeAiSuccess", () => {
+  it("should handle makeMoveSuccess", () => {
     expect(
-      challengeReducer(
+      moveReducer(
         {},
         {
-          type: challengeAiSuccess.type,
+          type: makeMoveSuccess.type,
           payload: {
             result: 1,
             entities: {},
@@ -82,19 +82,19 @@ describe("challengeSlice reducer", () => {
     ).toEqual({});
   });
 
-  it("should handle challengeAiError", () => {
+  it("should handle makeMoveError", () => {
     expect(
-      challengeReducer(
+      moveReducer(
         {},
         {
-          type: challengeAiError.type,
+          type: makeMoveError.type,
           payload: "error text",
         }
       )
     ).toEqual({});
   });
 
-  describe("should handle challengeAi", () => {
+  describe("should handle makeMove", () => {
     it("success", async () => {
       const dispatch = jest.fn();
 
@@ -107,21 +107,16 @@ describe("challengeSlice reducer", () => {
         }
       );
 
-      const result = challengeAi({
-        level: 3,
-        color: "random",
-        clockLimit: 300,
-        clockIncrement: 10,
-      })(dispatch, () => stateSample, null);
+      const result = makeMove(1, "e2e4")(dispatch, () => stateSample, null);
 
       await expect(result).resolves.toEqual(gameWithMoveSample);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
-        type: challengeAiRequest.type,
+        type: makeMoveRequest.type,
       });
       expect(dispatch).toHaveBeenNthCalledWith(2, {
-        type: challengeAiSuccess.type,
+        type: makeMoveSuccess.type,
         payload: {
           result: 1,
           entities: {
@@ -138,32 +133,27 @@ describe("challengeSlice reducer", () => {
 
       (ioClient.socket.post as jest.Mock).mockImplementationOnce(
         (url: string, data: any, cb: RequestCallback) => {
-          cb("internal server error", {
-            body: "internal server error",
-            statusCode: 500,
+          cb("game not found", {
+            body: "game not found",
+            statusCode: 404,
           } as JWR);
         }
       );
 
-      const result = challengeAi({
-        level: 3,
-        color: "random",
-        clockLimit: 300,
-        clockIncrement: 10,
-      })(dispatch, () => stateSample, null);
+      const result = makeMove(1, "e2e4")(dispatch, () => stateSample, null);
 
       await expect(result).rejects.toEqual({
-        body: "internal server error",
-        statusCode: 500,
+        body: "game not found",
+        statusCode: 404,
       });
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
-        type: challengeAiRequest.type,
+        type: makeMoveRequest.type,
       });
       expect(dispatch).toHaveBeenNthCalledWith(2, {
-        type: challengeAiError.type,
-        payload: "internal server error",
+        type: makeMoveError.type,
+        payload: "game not found",
       });
     });
   });
