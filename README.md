@@ -1,3 +1,8 @@
+<h1 align="center">Chess PWA</h1>
+
+[![codecov](https://codecov.io/gh/ildar-icoosoft/chess-pwa/branch/master/graph/badge.svg)](https://codecov.io/gh/ildar-icoosoft/chess-pwa)
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
