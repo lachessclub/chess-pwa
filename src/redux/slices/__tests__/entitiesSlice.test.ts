@@ -1,93 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import entitiesReducer, { EntitiesState } from "../entitiesSlice";
+import entitiesReducer from "../entitiesSlice";
 import { getOngoingGamesSuccess } from "../ongoingGamesSlice";
 import { getSingleGameSuccess } from "../singleGameSlice";
 import { challengeAiSuccess } from "../challengeSlice";
-import { makeMoveSuccess } from "../moveSlice";
+import { makeMoveRequest, makeMoveSuccess } from "../moveSlice";
 import {
   createGameBySubscription,
   updateGameBySubscription,
 } from "../dataSubscriptionSlice";
+import {
+  addGamePayloadSample,
+  entitiesSample,
+  entitiesSampleAfterAddingGame,
+  entitiesSampleAfterMove,
+} from "../../../test-utils/data-sample/entities";
 
 jest.mock("../../../services/ioClient");
-
-const entitiesBefore: EntitiesState = {
-  users: {
-    1: {
-      id: 1,
-      fullName: "Robert Johnson",
-    },
-  },
-  games: {
-    1: {
-      id: 1,
-      initialFen: "startpos",
-      wtime: 300000,
-      btime: 300000,
-      moves: "",
-      status: "started",
-      white: null,
-      black: null,
-    },
-  },
-};
-
-const payloadEntities: EntitiesState = {
-  users: {
-    2: {
-      id: 1,
-      fullName: "Robert Johnson",
-    },
-  },
-  games: {
-    2: {
-      id: 2,
-      initialFen: "startpos",
-      wtime: 300000,
-      btime: 300000,
-      moves: "",
-      status: "started",
-      white: null,
-      black: null,
-    },
-  },
-};
-
-const entitiesAfter: EntitiesState = {
-  users: {
-    1: {
-      id: 1,
-      fullName: "Robert Johnson",
-    },
-    2: {
-      id: 1,
-      fullName: "Robert Johnson",
-    },
-  },
-  games: {
-    1: {
-      id: 1,
-      initialFen: "startpos",
-      wtime: 300000,
-      btime: 300000,
-      moves: "",
-      status: "started",
-      white: null,
-      black: null,
-    },
-    2: {
-      id: 2,
-      initialFen: "startpos",
-      wtime: 300000,
-      btime: 300000,
-      moves: "",
-      status: "started",
-      white: null,
-      black: null,
-    },
-  },
-};
 
 describe("entitiesSlice reducer", () => {
   it("should handle initial state", () => {
@@ -103,73 +32,85 @@ describe("entitiesSlice reducer", () => {
 
   it("should handle updateGameSuccess", () => {
     expect(
-      entitiesReducer(entitiesBefore, {
+      entitiesReducer(entitiesSample, {
         type: updateGameBySubscription.type,
         payload: {
           result: 2,
-          entities: payloadEntities,
+          entities: addGamePayloadSample,
         },
       })
-    ).toEqual(entitiesAfter);
+    ).toEqual(entitiesSampleAfterAddingGame);
   });
 
   it("should handle createGameSuccess", () => {
     expect(
-      entitiesReducer(entitiesBefore, {
+      entitiesReducer(entitiesSample, {
         type: createGameBySubscription.type,
         payload: {
           result: 2,
-          entities: payloadEntities,
+          entities: addGamePayloadSample,
         },
       })
-    ).toEqual(entitiesAfter);
+    ).toEqual(entitiesSampleAfterAddingGame);
+  });
+
+  it("should handle makeMoveRequest", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: makeMoveRequest.type,
+        payload: {
+          gameId: 1,
+          move: "e2e4",
+        },
+      })
+    ).toEqual(entitiesSampleAfterMove);
   });
 
   it("should handle makeMoveSuccess", () => {
     expect(
-      entitiesReducer(entitiesBefore, {
+      entitiesReducer(entitiesSample, {
         type: makeMoveSuccess.type,
         payload: {
-          result: 2,
-          entities: payloadEntities,
+          result: 1,
+          entities: entitiesSampleAfterMove,
         },
       })
-    ).toEqual(entitiesAfter);
+    ).toEqual(entitiesSampleAfterMove);
   });
 
   it("should handle getOngoingGamesSuccess", () => {
     expect(
-      entitiesReducer(entitiesBefore, {
+      entitiesReducer(entitiesSample, {
         type: getOngoingGamesSuccess.type,
         payload: {
           result: [2],
-          entities: payloadEntities,
+          entities: addGamePayloadSample,
         },
       })
-    ).toEqual(entitiesAfter);
+    ).toEqual(entitiesSampleAfterAddingGame);
   });
 
   it("should handle getSingleGameSuccess", () => {
     expect(
-      entitiesReducer(entitiesBefore, {
+      entitiesReducer(entitiesSample, {
         type: getSingleGameSuccess.type,
         payload: {
           result: 2,
-          entities: payloadEntities,
+          entities: addGamePayloadSample,
         },
       })
-    ).toEqual(entitiesAfter);
+    ).toEqual(entitiesSampleAfterAddingGame);
   });
 
   it("should handle challengeAiSuccess", () => {
     expect(
-      entitiesReducer(entitiesBefore, {
+      entitiesReducer(entitiesSample, {
         type: challengeAiSuccess.type,
         payload: {
           result: 2,
-          entities: payloadEntities,
+          entities: addGamePayloadSample,
         },
       })
-    ).toEqual(entitiesAfter);
+    ).toEqual(entitiesSampleAfterAddingGame);
   });
 });

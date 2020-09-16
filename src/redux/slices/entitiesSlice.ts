@@ -10,7 +10,11 @@ import {
   updateGameBySubscription,
   createGameBySubscription,
 } from "./dataSubscriptionSlice";
-import { makeMoveSuccess } from "./moveSlice";
+import {
+  makeMoveRequest,
+  makeMoveSuccess,
+  MoveRequestPayload,
+} from "./moveSlice";
 import NormalizedUserEntity from "../interfaces/NormalizedUserEntity";
 import NormalizedGameEntity from "../interfaces/NormalizedGameEntity";
 
@@ -44,6 +48,14 @@ const entitiesSlice = createSlice({
     [challengeAiSuccess.type]: getNormalizedDataReducer,
     [updateGameBySubscription.type]: getNormalizedDataReducer,
     [createGameBySubscription.type]: getNormalizedDataReducer,
+    [makeMoveRequest.type]: (
+      state: EntitiesState,
+      action: PayloadAction<MoveRequestPayload>
+    ) => {
+      state.games[action.payload.gameId].moves = `${
+        state.games[action.payload.gameId].moves
+      } ${action.payload.move}`.trim();
+    },
     [makeMoveSuccess.type]: getNormalizedDataReducer,
   },
 });

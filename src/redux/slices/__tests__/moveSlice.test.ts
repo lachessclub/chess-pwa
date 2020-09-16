@@ -80,6 +80,10 @@ describe("moveSlice reducer", () => {
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
         type: makeMoveRequest.type,
+        payload: {
+          gameId: 2,
+          move: "e2e4",
+        },
       });
       expect(dispatch).toHaveBeenNthCalledWith(2, {
         type: makeMoveSuccess.type,
@@ -116,6 +120,10 @@ describe("moveSlice reducer", () => {
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
         type: makeMoveRequest.type,
+        payload: {
+          gameId: 1,
+          move: "e2e4",
+        },
       });
       expect(dispatch).toHaveBeenNthCalledWith(2, {
         type: makeMoveError.type,

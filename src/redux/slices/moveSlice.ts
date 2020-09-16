@@ -19,7 +19,7 @@ const moveSlice = createSlice({
   name: "move",
   initialState,
   reducers: {
-    makeMoveRequest() {},
+    makeMoveRequest(_state, _action: PayloadAction<MoveRequestPayload>) {},
     makeMoveSuccess(_state, _action: PayloadAction<NormalizedData<number>>) {},
     makeMoveError(_state, _action: PayloadAction<string>) {},
   },
@@ -34,11 +34,21 @@ export const {
 
 export default moveSlice.reducer;
 
+export interface MoveRequestPayload {
+  gameId: number;
+  move: string;
+}
+
 export const makeMove = (
   gameId: number,
   move: string
 ): AppThunk<Promise<Game>> => (dispatch) => {
-  dispatch(makeMoveRequest());
+  dispatch(
+    makeMoveRequest({
+      gameId,
+      move,
+    })
+  );
 
   return new Promise((resolve, reject) => {
     ioClient.socket.post(
