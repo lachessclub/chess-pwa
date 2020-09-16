@@ -13,34 +13,11 @@ import currentUserReducer, {
   register,
   logout,
 } from "../currentUserSlice";
-import { RootState } from "../../../app/rootReducer";
 import User from "../../../interfaces/User";
 import ioClient from "../../../services/ioClient";
+import { defaultState } from "../../../test-utils/data-sample/state";
 
 jest.mock("../../../services/ioClient");
-
-const stateSample: RootState = {
-  currentUser: {
-    userId: null,
-    isLoading: false,
-    error: null,
-  },
-  authModal: {
-    isAuthModalVisible: false,
-  },
-  challengeAiModal: {
-    isChallengeAiModalVisible: false,
-  },
-  ongoingGames: {
-    items: [],
-    isLoading: false,
-    error: null,
-  },
-  entities: {
-    users: {},
-    games: {},
-  },
-};
 
 describe("currentUserSlice reducer", () => {
   it("should handle initial state", () => {
@@ -214,7 +191,7 @@ describe("currentUserSlice reducer", () => {
         }
       );
 
-      const result = fetchCurrentUser()(dispatch, () => stateSample, null);
+      const result = fetchCurrentUser()(dispatch, () => defaultState, null);
 
       await expect(result).resolves.toEqual(user);
 
@@ -250,7 +227,7 @@ describe("currentUserSlice reducer", () => {
         }
       );
 
-      const result = fetchCurrentUser()(dispatch, () => stateSample, null);
+      const result = fetchCurrentUser()(dispatch, () => defaultState, null);
 
       await expect(result).resolves.toBeNull();
 
@@ -276,7 +253,7 @@ describe("currentUserSlice reducer", () => {
         }
       );
 
-      const result = fetchCurrentUser()(dispatch, () => stateSample, null);
+      const result = fetchCurrentUser()(dispatch, () => defaultState, null);
 
       await expect(result).rejects.toEqual({
         body: "Not found",
@@ -315,7 +292,7 @@ describe("currentUserSlice reducer", () => {
       const result = login({
         email: "test@test.com",
         password: "123",
-      })(dispatch, () => stateSample, null);
+      })(dispatch, () => defaultState, null);
 
       await expect(result).resolves.toEqual(user);
 
@@ -351,7 +328,7 @@ describe("currentUserSlice reducer", () => {
       const result = login({
         email: "test@test.com",
         password: "123",
-      })(dispatch, () => stateSample, null);
+      })(dispatch, () => defaultState, null);
 
       await expect(result).rejects.toEqual({
         body: "Not authenticated",
@@ -384,7 +361,7 @@ describe("currentUserSlice reducer", () => {
         fullName: "Christopher Garcia",
         email: "test@test.com",
         password: "123",
-      })(dispatch, () => stateSample, null);
+      })(dispatch, () => defaultState, null);
 
       await expect(result).resolves.toEqual(user);
 
@@ -421,7 +398,7 @@ describe("currentUserSlice reducer", () => {
         fullName: "Christopher Garcia",
         email: "test@test.com",
         password: "123",
-      })(dispatch, () => stateSample, null);
+      })(dispatch, () => defaultState, null);
 
       await expect(result).rejects.toEqual({
         body: "User already exists",
@@ -445,7 +422,7 @@ describe("currentUserSlice reducer", () => {
         }
       );
 
-      const result = logout()(dispatch, () => stateSample, null);
+      const result = logout()(dispatch, () => defaultState, null);
 
       return expect(result).resolves.toBeUndefined();
     });
@@ -462,7 +439,7 @@ describe("currentUserSlice reducer", () => {
         }
       );
 
-      const result = logout()(dispatch, () => stateSample, null);
+      const result = logout()(dispatch, () => defaultState, null);
 
       return expect(result).rejects.toEqual({
         body: "error text",

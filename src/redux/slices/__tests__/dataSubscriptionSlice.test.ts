@@ -6,32 +6,9 @@ import dataSubscriptionReducer, {
   watchGames,
 } from "../dataSubscriptionSlice";
 import ioClient from "../../../services/ioClient";
-import { RootState } from "../../../app/rootReducer";
+import { defaultState } from "../../../test-utils/data-sample/state";
 
 jest.mock("../../../services/ioClient");
-
-const stateSample: RootState = {
-  currentUser: {
-    userId: null,
-    isLoading: false,
-    error: null,
-  },
-  authModal: {
-    isAuthModalVisible: false,
-  },
-  challengeAiModal: {
-    isChallengeAiModalVisible: false,
-  },
-  ongoingGames: {
-    items: [],
-    isLoading: false,
-    error: null,
-  },
-  entities: {
-    users: {},
-    games: {},
-  },
-};
 
 describe("dataSubscriptionSlice reducer", () => {
   it("should handle initial state", () => {
@@ -99,7 +76,7 @@ describe("dataSubscriptionSlice reducer", () => {
         }
       );
 
-      watchGames()(dispatch, () => stateSample, null);
+      watchGames()(dispatch, () => defaultState, null);
 
       expect(dispatch).toBeCalledTimes(1);
       expect(dispatch).toBeCalledWith({
@@ -146,7 +123,7 @@ describe("dataSubscriptionSlice reducer", () => {
         }
       );
 
-      watchGames()(dispatch, () => stateSample, null);
+      watchGames()(dispatch, () => defaultState, null);
 
       expect(dispatch).toBeCalledTimes(1);
       expect(dispatch).toBeCalledWith({

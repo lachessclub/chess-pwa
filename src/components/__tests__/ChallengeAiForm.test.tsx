@@ -1,4 +1,4 @@
-import mountTest from "../../tests/mountTest";
+import mountTest from "../../test-utils/mountTest";
 import { ChallengeAiForm } from "../ChallengeAiForm";
 
 // @todo. add tests

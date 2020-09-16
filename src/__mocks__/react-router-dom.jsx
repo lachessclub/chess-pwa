@@ -8,4 +8,15 @@ import rrd from "react-router-dom";
 // rrd.BrowserRouter = ({ children }) => <div>{children}</div>;
 rrd.Link = ({ children }) => <>{children}</>;
 
-module.exports = rrd;
+const historyPushFn = jest.fn();
+const historyListenFn = jest.fn();
+
+module.exports = {
+  ...rrd,
+  // @see https://stackoverflow.com/questions/58392815/how-to-mock-usehistory-hook-in-jest
+  useHistory: () => ({
+    push: historyPushFn,
+    location: {},
+    listen: historyListenFn,
+  }),
+};

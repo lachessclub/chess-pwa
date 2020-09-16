@@ -4,8 +4,4 @@
 // @ts-ignore
 const currentUserSlice = jest.genMockFromModule<any>("../currentUserSlice");
 
-currentUserSlice.login.mockImplementation(() => new Promise(() => {}));
-currentUserSlice.register.mockImplementation(() => new Promise(() => {}));
-currentUserSlice.logout.mockImplementation(() => new Promise(() => {}));
-
 module.exports = currentUserSlice;

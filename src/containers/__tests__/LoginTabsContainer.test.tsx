@@ -1,7 +1,9 @@
+/* eslint-disable prefer-promise-reject-errors */
+
 import TestRenderer from "react-test-renderer";
 import React from "react";
 import { useDispatch } from "react-redux";
-import mountTest from "../../tests/mountTest";
+import mountTest from "../../test-utils/mountTest";
 import LoginTabsContainer from "../LoginTabsContainer";
 import { LoginForm } from "../../components/LoginForm";
 import { RegistrationForm } from "../../components/RegistrationForm";
@@ -12,6 +14,10 @@ jest.useFakeTimers();
 jest.mock("../../redux/slices/currentUserSlice");
 
 describe("LoginTabsContainer", () => {
+  beforeEach(() => {
+    useDispatch<jest.Mock>().mockClear();
+  });
+
   mountTest(LoginTabsContainer);
 
   describe("children components", () => {
@@ -31,22 +37,20 @@ describe("LoginTabsContainer", () => {
   });
 
   describe("dispatch() calls", () => {
-    it("login()", () => {
-      const dispatch = jest.fn();
-      dispatch.mockReturnValue(Promise.resolve());
-      (useDispatch as jest.Mock).mockReturnValue(dispatch);
+    it("should call dispatch(login())", () => {
+      const dispatch = useDispatch<jest.Mock>();
+      dispatch.mockImplementationOnce(() => new Promise(() => {}));
 
       const testRenderer = TestRenderer.create(<LoginTabsContainer />);
       const testInstance = testRenderer.root;
 
       const loginForm = testInstance.findByType(LoginForm);
 
-      dispatch.mockClear();
+      const loginReturnedValue = Symbol("login");
 
       const loginFn = login as jest.Mock;
-      loginFn.mockReturnValue("loginFn return value");
-
       loginFn.mockClear();
+      loginFn.mockReturnValue(loginReturnedValue);
 
       TestRenderer.act(() => {
         loginForm.props.onSubmit({
@@ -61,26 +65,85 @@ describe("LoginTabsContainer", () => {
         password: "123",
       });
 
-      expect(dispatch).toBeCalledTimes(1);
-      expect(dispatch).toBeCalledWith("loginFn return value");
+      expect(dispatch).toBeCalledWith(loginReturnedValue);
     });
 
-    it("register()", () => {
-      const dispatch = jest.fn();
-      dispatch.mockReturnValue(Promise.resolve());
-      (useDispatch as jest.Mock).mockReturnValue(dispatch);
+    it("should handle dispatch(login()) fail 401", async () => {
+      const dispatch = useDispatch<jest.Mock>();
+      dispatch.mockImplementationOnce(() =>
+        Promise.reject({
+          statusCode: 401,
+        })
+      );
+
+      const testRenderer = TestRenderer.create(<LoginTabsContainer />);
+      const testInstance = testRenderer.root;
+
+      const loginForm = testInstance.findByType(LoginForm);
+
+      const formikSetStatusFn = jest.fn();
+
+      await TestRenderer.act(async () => {
+        loginForm.props.onSubmit(
+          {
+            email: "test@test.com",
+            password: "123",
+          },
+          {
+            setStatus: formikSetStatusFn,
+          }
+        );
+      });
+
+      expect(formikSetStatusFn).toBeCalledTimes(1);
+      expect(formikSetStatusFn).toBeCalledWith("Incorrect email or password");
+    });
+
+    it("should handle dispatch(login()) fail NOT 401", async () => {
+      const dispatch = useDispatch<jest.Mock>();
+      dispatch.mockImplementationOnce(() =>
+        Promise.reject({
+          statusCode: 500,
+        })
+      );
+
+      const testRenderer = TestRenderer.create(<LoginTabsContainer />);
+      const testInstance = testRenderer.root;
+
+      const loginForm = testInstance.findByType(LoginForm);
+
+      const formikSetStatusFn = jest.fn();
+
+      await TestRenderer.act(async () => {
+        loginForm.props.onSubmit(
+          {
+            email: "test@test.com",
+            password: "123",
+          },
+          {
+            setStatus: formikSetStatusFn,
+          }
+        );
+      });
+
+      expect(formikSetStatusFn).toBeCalledTimes(1);
+      expect(formikSetStatusFn).toBeCalledWith("Internal server error");
+    });
+
+    it("should call dispatch(register())", () => {
+      const dispatch = useDispatch<jest.Mock>();
+      dispatch.mockImplementationOnce(() => new Promise(() => {}));
 
       const testRenderer = TestRenderer.create(<LoginTabsContainer />);
       const testInstance = testRenderer.root;
 
       const registrationForm = testInstance.findByType(RegistrationForm);
 
-      dispatch.mockClear();
+      const registerReturnedValue = Symbol("register");
 
       const registerFn = register as jest.Mock;
-      registerFn.mockReturnValue("registerFn return value");
-
       registerFn.mockClear();
+      registerFn.mockReturnValue(registerReturnedValue);
 
       TestRenderer.act(() => {
         registrationForm.props.onSubmit({
@@ -98,8 +161,71 @@ describe("LoginTabsContainer", () => {
         password: "123",
       });
 
-      expect(dispatch).toBeCalledTimes(1);
-      expect(dispatch).toBeCalledWith("registerFn return value");
+      expect(dispatch).toBeCalledWith(registerReturnedValue);
+    });
+
+    it("should handle dispatch(register()) fail 409", async () => {
+      const dispatch = useDispatch<jest.Mock>();
+      dispatch.mockImplementationOnce(() =>
+        Promise.reject({
+          statusCode: 409,
+        })
+      );
+
+      const testRenderer = TestRenderer.create(<LoginTabsContainer />);
+      const testInstance = testRenderer.root;
+
+      const registrationForm = testInstance.findByType(RegistrationForm);
+
+      const formikSetStatusFn = jest.fn();
+
+      await TestRenderer.act(async () => {
+        registrationForm.props.onSubmit(
+          {
+            email: "test@test.com",
+            password: "123",
+          },
+          {
+            setStatus: formikSetStatusFn,
+          }
+        );
+      });
+
+      expect(formikSetStatusFn).toBeCalledTimes(1);
+      expect(formikSetStatusFn).toBeCalledWith(
+        "The provided email address is already in use"
+      );
+    });
+
+    it("should handle dispatch(register()) fail NOT 409", async () => {
+      const dispatch = useDispatch<jest.Mock>();
+      dispatch.mockImplementationOnce(() =>
+        Promise.reject({
+          statusCode: 500,
+        })
+      );
+
+      const testRenderer = TestRenderer.create(<LoginTabsContainer />);
+      const testInstance = testRenderer.root;
+
+      const registrationForm = testInstance.findByType(RegistrationForm);
+
+      const formikSetStatusFn = jest.fn();
+
+      await TestRenderer.act(async () => {
+        registrationForm.props.onSubmit(
+          {
+            email: "test@test.com",
+            password: "123",
+          },
+          {
+            setStatus: formikSetStatusFn,
+          }
+        );
+      });
+
+      expect(formikSetStatusFn).toBeCalledTimes(1);
+      expect(formikSetStatusFn).toBeCalledWith("Internal server error");
     });
   });
 });

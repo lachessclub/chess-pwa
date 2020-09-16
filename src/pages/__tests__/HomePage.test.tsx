@@ -1,7 +1,7 @@
 import React from "react";
 import TestRenderer from "react-test-renderer";
 import { useSelector } from "react-redux";
-import mountTest from "../../tests/mountTest";
+import mountTest from "../../test-utils/mountTest";
 import HomePage from "../HomePage";
 import OngoingGamesContainer from "../../containers/OngoingGamesContainer";
 import { RootState } from "../../app/rootReducer";

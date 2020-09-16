@@ -1,45 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import TestRenderer from "react-test-renderer";
 import { useDispatch, useSelector } from "react-redux";
 import { render } from "@testing-library/react";
 import App from "../App";
-import mountTest from "../../tests/mountTest";
+import mountTest from "../../test-utils/mountTest";
 import HomePage from "../../pages/HomePage";
-import { RootState } from "../rootReducer";
 import { fetchCurrentUser } from "../../redux/slices/currentUserSlice";
 import { watchGames } from "../../redux/slices/dataSubscriptionSlice";
+import { defaultState } from "../../test-utils/data-sample/state";
 
 jest.useFakeTimers();
 
 jest.mock("../../redux/slices/currentUserSlice");
 jest.mock("../../redux/slices/dataSubscriptionSlice");
 
-const stateSample: RootState = {
-  currentUser: {
-    userId: null,
-    isLoading: false,
-    error: null,
-  },
-  authModal: {
-    isAuthModalVisible: false,
-  },
-  challengeAiModal: {
-    isChallengeAiModalVisible: false,
-  },
-  ongoingGames: {
-    items: [],
-    isLoading: false,
-    error: null,
-  },
-  entities: {
-    users: {},
-    games: {},
-  },
-};
-
 describe("App", () => {
+  beforeAll(() => {
+    (useSelector as jest.Mock).mockImplementation((cb) => cb(defaultState));
+  });
   beforeEach(() => {
-    (useSelector as jest.Mock).mockImplementation((cb) => cb(stateSample));
+    useDispatch<jest.Mock>().mockClear();
+    (useEffect as jest.Mock).mockReset();
   });
 
   mountTest(App);
@@ -72,44 +53,42 @@ describe("App", () => {
   });
 
   describe("dispatch() calls", () => {
-    it("fetchCurrentUser()", () => {
-      const dispatch = jest.fn();
-      (useDispatch as jest.Mock).mockReturnValue(dispatch);
-      dispatch.mockClear();
+    it("should call dispatch(fetchCurrentUser())", () => {
+      const dispatch = useDispatch<jest.Mock>();
+
+      (useEffect as jest.Mock).mockImplementationOnce((cb) => cb());
+
+      const fetchCurrentUserReturnedValue = Symbol("fetchCurrentUser");
 
       const fetchCurrentUserFn = fetchCurrentUser as jest.Mock;
-      fetchCurrentUserFn.mockReturnValue("fetchCurrentUserFn return value");
-
       fetchCurrentUserFn.mockClear();
+      fetchCurrentUserFn.mockReturnValue(fetchCurrentUserReturnedValue);
 
-      TestRenderer.act(() => {
-        TestRenderer.create(<App />);
-      });
+      TestRenderer.create(<App />);
 
       expect(fetchCurrentUserFn).toBeCalledTimes(1);
       expect(fetchCurrentUserFn).toBeCalledWith();
 
-      expect(dispatch).toBeCalledWith("fetchCurrentUserFn return value");
+      expect(dispatch).toBeCalledWith(fetchCurrentUserReturnedValue);
     });
 
     it("watchGames()", () => {
-      const dispatch = jest.fn();
-      (useDispatch as jest.Mock).mockReturnValue(dispatch);
-      dispatch.mockClear();
+      const dispatch = useDispatch<jest.Mock>();
+
+      (useEffect as jest.Mock).mockImplementationOnce((cb) => cb());
+
+      const watchGamesReturnedValue = Symbol("watchGames");
 
       const watchGamesFn = watchGames as jest.Mock;
-      watchGamesFn.mockReturnValue("watchGamesFn return value");
-
       watchGamesFn.mockClear();
+      watchGamesFn.mockReturnValue(watchGamesReturnedValue);
 
-      TestRenderer.act(() => {
-        TestRenderer.create(<App />);
-      });
+      TestRenderer.create(<App />);
 
       expect(watchGamesFn).toBeCalledTimes(1);
       expect(watchGamesFn).toBeCalledWith();
 
-      expect(dispatch).toBeCalledWith("watchGamesFn return value");
+      expect(dispatch).toBeCalledWith(watchGamesReturnedValue);
     });
   });
 });

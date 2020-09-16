@@ -6,44 +6,10 @@ import singleGameReducer, {
   fetchGame,
 } from "../singleGameSlice";
 import ioClient from "../../../services/ioClient";
-import Game from "../../../interfaces/Game";
-import { RootState } from "../../../app/rootReducer";
+import { defaultState } from "../../../test-utils/data-sample/state";
+import { gameSample } from "../../../test-utils/data-sample/game";
 
 jest.mock("../../../services/ioClient");
-
-const gameSample: Game = {
-  id: 1,
-  initialFen: "startpos",
-  wtime: 300000,
-  btime: 300000,
-  moves: "",
-  status: "started",
-  white: null,
-  black: null,
-};
-
-const stateSample: RootState = {
-  currentUser: {
-    userId: null,
-    isLoading: false,
-    error: null,
-  },
-  authModal: {
-    isAuthModalVisible: false,
-  },
-  challengeAiModal: {
-    isChallengeAiModalVisible: false,
-  },
-  ongoingGames: {
-    items: [],
-    isLoading: false,
-    error: null,
-  },
-  entities: {
-    users: {},
-    games: {},
-  },
-};
 
 describe("singleGameSlice reducer", () => {
   it("should handle initial state", () => {
@@ -216,7 +182,7 @@ describe("singleGameSlice reducer", () => {
         }
       );
 
-      const result = fetchGame(1)(dispatch, () => stateSample, null);
+      const result = fetchGame(1)(dispatch, () => defaultState, null);
 
       await expect(result).resolves.toEqual(gameSample);
 
@@ -250,7 +216,7 @@ describe("singleGameSlice reducer", () => {
         }
       );
 
-      const result = fetchGame(1)(dispatch, () => stateSample, null);
+      const result = fetchGame(1)(dispatch, () => defaultState, null);
 
       await expect(result).rejects.toEqual({
         body: "game not found",

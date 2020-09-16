@@ -2,29 +2,15 @@ import TestRenderer from "react-test-renderer";
 import React from "react";
 import { Board, PieceColor, ValidMoves } from "ii-react-chessboard";
 import { SingleGame } from "../SingleGame";
-import Game from "../../interfaces/Game";
-
-const gameSample: Game = {
-  id: 1,
-  initialFen: "startpos",
-  wtime: 300000,
-  btime: 300000,
-  moves: "",
-  status: "started",
-  white: null,
-  black: null,
-};
-
-const gameWithCheckmateSample: Game = {
-  id: 1,
-  initialFen: "4k3/4Q3/4K3/8/8/8/8/8 b - - 0 1",
-  wtime: 300000,
-  btime: 300000,
-  moves: "",
-  status: "mate",
-  white: null,
-  black: null,
-};
+import {
+  gameWithMovesSample,
+  gameSample,
+  gameWithCheckmateSample,
+  blackTurnGameSample,
+  whiteTurnGameSample,
+  gameSampleFen,
+  gameWithMovesSampleFen,
+} from "../../test-utils/data-sample/game";
 
 describe("SingleGame", () => {
   describe("children components", () => {
@@ -44,45 +30,17 @@ describe("SingleGame", () => {
     describe("Board", () => {
       it("position", () => {
         const testRenderer = TestRenderer.create(
-          <SingleGame
-            game={{
-              id: 1,
-              initialFen: "startpos",
-              wtime: 300000,
-              btime: 300000,
-              moves: "e2e4 e7e5 g1g3", // g1g3 is incorrect move and must be ignored
-              status: "started",
-              white: null,
-              black: null,
-            }}
-          />
+          <SingleGame game={gameSample} />
         );
         const testInstance = testRenderer.root;
 
         const board = testInstance.findByType(Board);
 
-        expect(board.props.position).toBe(
-          "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2"
-        );
+        expect(board.props.position).toBe(gameSampleFen);
 
-        testRenderer.update(
-          <SingleGame
-            game={{
-              id: 2,
-              initialFen: "rnbqkbnr/8/8/8/8/8/8/RNBQKBNR w KQkq - 0 1",
-              wtime: 300000,
-              btime: 300000,
-              moves: "",
-              status: "started",
-              white: null,
-              black: null,
-            }}
-          />
-        );
+        testRenderer.update(<SingleGame game={gameWithMovesSample} />);
 
-        expect(board.props.position).toBe(
-          "rnbqkbnr/8/8/8/8/8/8/RNBQKBNR w KQkq - 0 1"
-        );
+        expect(board.props.position).toBe(gameWithMovesSampleFen);
       });
 
       it("allowMarkers", () => {
@@ -135,18 +93,7 @@ describe("SingleGame", () => {
 
       it("turnColor", () => {
         const testRenderer = TestRenderer.create(
-          <SingleGame
-            game={{
-              id: 1,
-              initialFen: "startpos",
-              wtime: 300000,
-              btime: 300000,
-              moves: "e2e4 e7e5 g8f6 g1f3", // g8f6 is invalid move and must be ignored
-              status: "started",
-              white: null,
-              black: null,
-            }}
-          />
+          <SingleGame game={blackTurnGameSample} />
         );
         const testInstance = testRenderer.root;
 
@@ -154,20 +101,7 @@ describe("SingleGame", () => {
 
         expect(board.props.turnColor).toBe(PieceColor.BLACK);
 
-        testRenderer.update(
-          <SingleGame
-            game={{
-              id: 2,
-              initialFen: "rnbqkbnr/8/8/8/8/8/8/RNBQKBNR b KQkq - 0 1",
-              wtime: 300000,
-              btime: 300000,
-              moves: "e8e7",
-              status: "started",
-              white: null,
-              black: null,
-            }}
-          />
-        );
+        testRenderer.update(<SingleGame game={whiteTurnGameSample} />);
 
         expect(board.props.turnColor).toBe(PieceColor.WHITE);
       });

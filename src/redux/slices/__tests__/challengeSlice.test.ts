@@ -8,44 +8,10 @@ import challengeReducer, {
   challengeAiError,
 } from "../challengeSlice";
 import ioClient from "../../../services/ioClient";
-import { RootState } from "../../../app/rootReducer";
-import Game from "../../../interfaces/Game";
+import { defaultState } from "../../../test-utils/data-sample/state";
+import { gameWithMovesSample } from "../../../test-utils/data-sample/game";
 
 jest.mock("../../../services/ioClient");
-
-const gameWithMoveSample: Game = {
-  id: 1,
-  initialFen: "startpos",
-  wtime: 300000,
-  btime: 300000,
-  moves: "e2e4",
-  status: "started",
-  white: null,
-  black: null,
-};
-
-const stateSample: RootState = {
-  currentUser: {
-    userId: null,
-    isLoading: false,
-    error: null,
-  },
-  authModal: {
-    isAuthModalVisible: false,
-  },
-  challengeAiModal: {
-    isChallengeAiModalVisible: false,
-  },
-  ongoingGames: {
-    items: [],
-    isLoading: false,
-    error: null,
-  },
-  entities: {
-    users: {},
-    games: {},
-  },
-};
 
 describe("challengeSlice reducer", () => {
   it("should handle initial state", () => {
@@ -100,8 +66,8 @@ describe("challengeSlice reducer", () => {
 
       (ioClient.socket.post as jest.Mock).mockImplementationOnce(
         (url: string, data: any, cb: RequestCallback) => {
-          cb(gameWithMoveSample, {
-            body: gameWithMoveSample,
+          cb(gameWithMovesSample, {
+            body: gameWithMovesSample,
             statusCode: 200,
           } as JWR);
         }
@@ -112,9 +78,9 @@ describe("challengeSlice reducer", () => {
         color: "random",
         clockLimit: 300,
         clockIncrement: 10,
-      })(dispatch, () => stateSample, null);
+      })(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual(gameWithMoveSample);
+      await expect(result).resolves.toEqual(gameWithMovesSample);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -123,10 +89,10 @@ describe("challengeSlice reducer", () => {
       expect(dispatch).toHaveBeenNthCalledWith(2, {
         type: challengeAiSuccess.type,
         payload: {
-          result: 1,
+          result: 2,
           entities: {
             games: {
-              "1": gameWithMoveSample,
+              "2": gameWithMovesSample,
             },
           },
         },
@@ -150,7 +116,7 @@ describe("challengeSlice reducer", () => {
         color: "random",
         clockLimit: 300,
         clockIncrement: 10,
-      })(dispatch, () => stateSample, null);
+      })(dispatch, () => defaultState, null);
 
       await expect(result).rejects.toEqual({
         body: "internal server error",
