@@ -4,34 +4,11 @@ import { useSelector } from "react-redux";
 import mountTest from "../../test-utils/mountTest";
 import HomePage from "../HomePage";
 import OngoingGamesContainer from "../../containers/OngoingGamesContainer";
-import { RootState } from "../../app/rootReducer";
-
-const stateSample: RootState = {
-  currentUser: {
-    userId: null,
-    isLoading: false,
-    error: null,
-  },
-  authModal: {
-    isAuthModalVisible: false,
-  },
-  challengeAiModal: {
-    isChallengeAiModalVisible: false,
-  },
-  ongoingGames: {
-    items: [],
-    isLoading: false,
-    error: null,
-  },
-  entities: {
-    users: {},
-    games: {},
-  },
-};
+import { defaultState } from "../../test-utils/data-sample/state";
 
 describe("HomePage", () => {
   beforeEach(() => {
-    (useSelector as jest.Mock).mockImplementation((cb) => cb(stateSample));
+    (useSelector as jest.Mock).mockImplementation((cb) => cb(defaultState));
   });
 
   mountTest(HomePage);

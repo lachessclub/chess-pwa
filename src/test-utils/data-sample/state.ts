@@ -12,6 +12,7 @@ export const defaultState: RootState = {
   challengeAiModal: {
     isChallengeAiModalVisible: false,
   },
+  singleGame: {},
   ongoingGames: {
     items: [],
     isLoading: false,
@@ -35,6 +36,7 @@ export const stateWithOngoingGamesSample: RootState = {
   challengeAiModal: {
     isChallengeAiModalVisible: false,
   },
+  singleGame: {},
   ongoingGames: {
     items: [1],
     isLoading: false,

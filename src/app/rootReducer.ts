@@ -6,7 +6,7 @@ import currentUserReducer from "../redux/slices/currentUserSlice";
 import authModalReducer from "../redux/slices/authModalSlice";
 import challengeAiModalReducer from "../redux/slices/challengeAiModalSlice";
 import entitiesReducer from "../redux/slices/entitiesSlice";
-// import singleGameReducer from "../redux/slices/singleGameSlice";
+import singleGameReducer from "../redux/slices/singleGameSlice";
 // import dataSubscriptionReducer from "../redux/slices/dataSubscriptionSlice";
 
 const rootReducer = combineReducers({
@@ -17,7 +17,7 @@ const rootReducer = combineReducers({
   ongoingGames: ongoingGamesReducer,
   entities: entitiesReducer,
   // dataSubscription: dataSubscriptionReducer,
-  // singleGame: singleGameReducer,
+  singleGame: singleGameReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
