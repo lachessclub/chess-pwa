@@ -21,6 +21,31 @@ export const entitiesSample: EntitiesState = {
   },
 };
 
+export const emptyEntitiesSample: EntitiesState = {
+  users: {},
+  games: {},
+};
+
+export const addUserPayloadSample: EntitiesState = {
+  users: {
+    1: {
+      id: 1,
+      fullName: "Robert Johnson",
+    },
+  },
+  games: {},
+};
+
+export const entitiesWithUserSample: EntitiesState = {
+  users: {
+    1: {
+      id: 1,
+      fullName: "Robert Johnson",
+    },
+  },
+  games: {},
+};
+
 export const entitiesSampleAfterMove: EntitiesState = {
   users: {
     1: {

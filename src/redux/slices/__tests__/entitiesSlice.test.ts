@@ -6,14 +6,22 @@ import { getSingleGameSuccess } from "../singleGameSlice";
 import { challengeAiSuccess } from "../challengeSlice";
 import { makeMoveRequest, makeMoveSuccess } from "../moveSlice";
 import {
+  getCurrentUserSuccess,
+  loginSuccess,
+  registerSuccess,
+} from "../currentUserSlice";
+import {
   createGameBySubscription,
   updateGameBySubscription,
 } from "../dataSubscriptionSlice";
 import {
   addGamePayloadSample,
+  addUserPayloadSample,
+  emptyEntitiesSample,
   entitiesSample,
   entitiesSampleAfterAddingGame,
   entitiesSampleAfterMove,
+  entitiesWithUserSample,
 } from "../../../test-utils/data-sample/entities";
 
 jest.mock("../../../services/ioClient");
@@ -28,6 +36,42 @@ describe("entitiesSlice reducer", () => {
       users: {},
       games: {},
     });
+  });
+
+  it("should handle getCurrentUserSuccess", () => {
+    expect(
+      entitiesReducer(emptyEntitiesSample, {
+        type: getCurrentUserSuccess.type,
+        payload: {
+          result: 1,
+          entities: addUserPayloadSample,
+        },
+      })
+    ).toEqual(entitiesWithUserSample);
+  });
+
+  it("should handle loginSuccess", () => {
+    expect(
+      entitiesReducer(emptyEntitiesSample, {
+        type: loginSuccess.type,
+        payload: {
+          result: 1,
+          entities: addUserPayloadSample,
+        },
+      })
+    ).toEqual(entitiesWithUserSample);
+  });
+
+  it("should handle registerSuccess", () => {
+    expect(
+      entitiesReducer(emptyEntitiesSample, {
+        type: registerSuccess.type,
+        payload: {
+          result: 1,
+          entities: addUserPayloadSample,
+        },
+      })
+    ).toEqual(entitiesWithUserSample);
   });
 
   it("should handle updateGameSuccess", () => {

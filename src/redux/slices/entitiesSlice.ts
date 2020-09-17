@@ -3,6 +3,11 @@
 /* eslint-disable import/no-cycle */
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import {
+  getCurrentUserSuccess,
+  loginSuccess,
+  registerSuccess,
+} from "./currentUserSlice";
 import { getOngoingGamesSuccess } from "./ongoingGamesSlice";
 import { getSingleGameSuccess } from "./singleGameSlice";
 import { challengeAiSuccess } from "./challengeSlice";
@@ -43,6 +48,9 @@ const entitiesSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
+    [getCurrentUserSuccess.type]: getNormalizedDataReducer,
+    [loginSuccess.type]: getNormalizedDataReducer,
+    [registerSuccess.type]: getNormalizedDataReducer,
     [getOngoingGamesSuccess.type]: getNormalizedDataReducer,
     [getSingleGameSuccess.type]: getNormalizedDataReducer,
     [challengeAiSuccess.type]: getNormalizedDataReducer,
