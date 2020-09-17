@@ -38,6 +38,15 @@ describe("entitiesSlice reducer", () => {
     });
   });
 
+  it("should handle getCurrentUserSuccess null", () => {
+    expect(
+      entitiesReducer(emptyEntitiesSample, {
+        type: getCurrentUserSuccess.type,
+        payload: null,
+      })
+    ).toEqual(emptyEntitiesSample);
+  });
+
   it("should handle getCurrentUserSuccess", () => {
     expect(
       entitiesReducer(emptyEntitiesSample, {

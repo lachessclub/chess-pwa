@@ -48,7 +48,19 @@ const entitiesSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [getCurrentUserSuccess.type]: getNormalizedDataReducer,
+    [getCurrentUserSuccess.type]: (
+      state: EntitiesState,
+      action: PayloadAction<null | {
+        entities: Partial<EntitiesState>;
+      }>
+    ) => {
+      if (action.payload) {
+        getNormalizedDataReducer(state, {
+          type: action.type,
+          payload: action.payload,
+        });
+      }
+    },
     [loginSuccess.type]: getNormalizedDataReducer,
     [registerSuccess.type]: getNormalizedDataReducer,
     [getOngoingGamesSuccess.type]: getNormalizedDataReducer,
