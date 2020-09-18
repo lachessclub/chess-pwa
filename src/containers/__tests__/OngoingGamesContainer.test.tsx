@@ -7,7 +7,7 @@ import mountTest from "../../test-utils/mountTest";
 import { fetchOngoingGames } from "../../redux/slices/ongoingGamesSlice";
 import {
   defaultState,
-  stateWithOngoingGamesSample,
+  stateWithDataSample,
 } from "../../test-utils/data-sample/state";
 
 jest.useFakeTimers();
@@ -43,7 +43,7 @@ describe("OngoingGamesContainer", () => {
         expect(gamePreviewsComponent.props.games).toEqual([]);
 
         (useSelector as jest.Mock).mockImplementation((cb) =>
-          cb(stateWithOngoingGamesSample)
+          cb(stateWithDataSample)
         );
 
         testRenderer.update(<OngoingGamesContainer />);

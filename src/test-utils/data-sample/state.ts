@@ -24,7 +24,49 @@ export const defaultState: RootState = {
   },
 };
 
-export const stateWithOngoingGamesSample: RootState = {
+// authenticated user
+export const stateWithDataSample: RootState = {
+  currentUser: {
+    userId: 1,
+    isLoading: false,
+    error: null,
+  },
+  authModal: {
+    isAuthModalVisible: false,
+  },
+  challengeAiModal: {
+    isChallengeAiModalVisible: false,
+  },
+  singleGame: {},
+  ongoingGames: {
+    items: [1],
+    isLoading: false,
+    error: null,
+  },
+  entities: {
+    users: {
+      "1": {
+        id: 1,
+        fullName: "Thomas Miller",
+      },
+    },
+    games: {
+      "1": {
+        id: 1,
+        initialFen: "startpos",
+        wtime: 300000,
+        btime: 300000,
+        moves: "",
+        status: "started",
+        white: null,
+        black: null,
+      },
+    },
+  },
+};
+
+// not authenticated user
+export const stateWithDataSample2: RootState = {
   currentUser: {
     userId: null,
     isLoading: false,
@@ -43,7 +85,12 @@ export const stateWithOngoingGamesSample: RootState = {
     error: null,
   },
   entities: {
-    users: {},
+    users: {
+      "1": {
+        id: 1,
+        fullName: "Thomas Miller",
+      },
+    },
     games: {
       "1": {
         id: 1,

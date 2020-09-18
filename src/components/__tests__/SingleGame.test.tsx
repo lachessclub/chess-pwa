@@ -10,7 +10,10 @@ import {
   whiteTurnGameSample,
   gameSampleFen,
   gameWithMovesSampleFen,
+  gameSample2,
+  gameSample3,
 } from "../../test-utils/data-sample/game";
+import userSample from "../../test-utils/data-sample/user";
 
 describe("SingleGame", () => {
   describe("children components", () => {
@@ -144,11 +147,90 @@ describe("SingleGame", () => {
 
         const board = testInstance.findByType(Board);
 
-        expect(board.props.viewOnly).toBeFalsy();
-
-        testRenderer.update(<SingleGame game={gameWithCheckmateSample} />);
-
+        // true because currentUser is null
         expect(board.props.viewOnly).toBeTruthy();
+
+        testRenderer.update(
+          <SingleGame currentUser={userSample} game={gameWithCheckmateSample} />
+        );
+        // true because game is over
+        expect(board.props.viewOnly).toBeTruthy();
+
+        testRenderer.update(
+          <SingleGame currentUser={userSample} game={gameSample} />
+        );
+        // true because currentUser is not a gamer of this game
+        expect(board.props.viewOnly).toBeTruthy();
+
+        testRenderer.update(
+          <SingleGame currentUser={userSample} game={gameSample2} />
+        );
+        // false because currentUser is a gamer of this game and game is not over
+        expect(board.props.viewOnly).toBeFalsy();
+      });
+
+      it("movableColor", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGame game={gameSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const board = testInstance.findByType(Board);
+
+        // undefined because currentUser is null
+        expect(board.props.movableColor).toBeUndefined();
+
+        testRenderer.update(
+          <SingleGame currentUser={userSample} game={gameSample} />
+        );
+        // undefined because currentUser is not a gamer of this game
+        expect(board.props.viewOnly).toBeTruthy();
+
+        testRenderer.update(
+          <SingleGame currentUser={userSample} game={gameSample2} />
+        );
+        // PieceColor.BLACK because currentUser plays with black
+        expect(board.props.movableColor).toBe(PieceColor.BLACK);
+
+        testRenderer.update(
+          <SingleGame currentUser={userSample} game={gameSample3} />
+        );
+        // PieceColor.BLACK because currentUser plays with white
+        expect(board.props.movableColor).toBe(PieceColor.WHITE);
+      });
+
+      it("orientation", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGame game={gameSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const board = testInstance.findByType(Board);
+
+        // white by default
+        expect(board.props.orientation).toBe(PieceColor.WHITE);
+
+        testRenderer.update(
+          <SingleGame currentUser={userSample} game={gameSample2} />
+        );
+        // black because current user plays black
+        expect(board.props.orientation).toBe(PieceColor.BLACK);
+      });
+
+      it("lastMoveSquares", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGame game={gameSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const board = testInstance.findByType(Board);
+
+        // no moves
+        expect(board.props.lastMoveSquares).toBeUndefined();
+
+        testRenderer.update(<SingleGame game={gameWithMovesSample} />);
+        // actually last move is g1g3, but it is incorrect move. Last correct move is e7e5
+        expect(board.props.lastMoveSquares).toEqual(["e7", "e5"]);
       });
     });
   });

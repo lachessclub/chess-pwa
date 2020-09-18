@@ -10,6 +10,36 @@ export const gameSample: Game = {
   white: null,
   black: null,
 };
+
+// with black user
+export const gameSample2: Game = {
+  id: 1,
+  initialFen: "startpos",
+  wtime: 300000,
+  btime: 300000,
+  moves: "",
+  status: "started",
+  white: null,
+  black: {
+    id: 1,
+    fullName: "Thomas Miller",
+  },
+};
+
+// with white user
+export const gameSample3: Game = {
+  id: 1,
+  initialFen: "startpos",
+  wtime: 300000,
+  btime: 300000,
+  moves: "",
+  status: "started",
+  white: {
+    id: 1,
+    fullName: "Thomas Miller",
+  },
+  black: null,
+};
 export const gameSampleFen =
   "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 

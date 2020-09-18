@@ -10,13 +10,19 @@ import {
 import Game from "../interfaces/Game";
 import makeChessInstance from "../utils/makeChessInstance";
 import getTurnColor from "../utils/getTurnColor";
+import User from "../interfaces/User";
 
 export interface SingleGameProps {
   game?: Game;
+  currentUser?: User;
   onMove?(move: Move): void;
 }
 
-export const SingleGame: FC<SingleGameProps> = ({ game, onMove }) => {
+export const SingleGame: FC<SingleGameProps> = ({
+  game,
+  currentUser,
+  onMove,
+}) => {
   if (!game) {
     return null;
   }
@@ -32,16 +38,49 @@ export const SingleGame: FC<SingleGameProps> = ({ game, onMove }) => {
 
   const validMoves: ValidMoves = getValidMoves(chess);
 
+  let viewOnly = true;
+  if (
+    currentUser &&
+    (currentUser.id === game.white?.id || currentUser.id === game.black?.id) &&
+    game.status === "started"
+  ) {
+    viewOnly = false;
+  }
+
+  let movableColor: PieceColor | undefined;
+  if (currentUser && currentUser.id === game.white?.id) {
+    movableColor = PieceColor.WHITE;
+  }
+  if (currentUser && currentUser.id === game.black?.id) {
+    movableColor = PieceColor.BLACK;
+  }
+
+  let orientation = PieceColor.WHITE;
+  if (currentUser && currentUser.id === game.black?.id) {
+    orientation = PieceColor.BLACK;
+  }
+
+  const movesHistory = chess.history({ verbose: true });
+
+  let lastMoveSquares: string[] | undefined;
+  if (movesHistory.length) {
+    const lastMove = movesHistory[movesHistory.length - 1];
+    lastMoveSquares = [lastMove.from, lastMove.to];
+  }
+
   return (
     <Board
       allowMarkers
       check={check}
       clickable
       draggable
+      orientation={orientation}
       position={fen}
       turnColor={turnColor}
+      lastMoveSquares={lastMoveSquares}
+      movableColor={movableColor}
       validMoves={validMoves}
-      viewOnly={game.status !== "started"}
+      viewOnly={viewOnly}
       onMove={onMove}
     />
   );
