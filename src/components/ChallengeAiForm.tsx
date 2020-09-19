@@ -79,7 +79,7 @@ export const ChallengeAiForm: FC<ChallengeAiFormProps> = ({ onSubmit }) => {
 
           <Row>
             <ButtonGroup className={cx("mx-auto", css.levelButtonGroup)}>
-              {[1, 2, 3, 4, 5, 6, 7, 8].map((level) => (
+              {[1, 2, 3, 4].map((level) => (
                 <Button
                   key={level}
                   type="button"
