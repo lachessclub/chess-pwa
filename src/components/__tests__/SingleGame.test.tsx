@@ -229,7 +229,6 @@ describe("SingleGame", () => {
         expect(board.props.lastMoveSquares).toBeUndefined();
 
         testRenderer.update(<SingleGame game={gameWithMovesSample} />);
-        // actually last move is g1g3, but it is incorrect move. Last correct move is e7e5
         expect(board.props.lastMoveSquares).toEqual(["e7", "e5"]);
       });
     });

@@ -53,20 +53,18 @@ describe("makeChessInstance", () => {
     );
   });
 
-  it("incorrect moves must be ignored", () => {
+  it("throws error if move is incorrect", () => {
     const game: Game = {
       id: 1,
       initialFen: "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR b KQkq - 0 1",
       wtime: 300000,
       btime: 300000,
-      moves: "e2e4 e7e5", // e2e4 is incorrect, because black to move
+      moves: "e2e4 e7e5", // e2e4 is incorrect
       status: "started",
       white: null,
       black: null,
     };
 
-    expect(makeChessInstance(game).fen()).toBe(
-      "rnbqkbnr/pppp1ppp/8/4p3/8/8/PPPPPPPP/RNBQKBNR w KQkq e6 0 2"
-    );
+    expect(() => makeChessInstance(game)).toThrow(`incorrect move: e2e4`);
   });
 });

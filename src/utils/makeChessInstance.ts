@@ -14,9 +14,13 @@ export default (game: Game): ChessInstance => {
 
   if (game.moves) {
     game.moves.split(" ").forEach((move) => {
-      chess.move(move, {
+      const result = chess.move(move, {
         sloppy: true,
       });
+
+      if (!result) {
+        throw Error(`incorrect move: ${move}`);
+      }
     });
   }
 

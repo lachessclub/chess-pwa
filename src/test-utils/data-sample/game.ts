@@ -48,7 +48,7 @@ export const gameWithMovesSample: Game = {
   initialFen: "startpos",
   wtime: 300000,
   btime: 300000,
-  moves: "e2e4 e7e5 g1g3", // g1g3 is incorrect move and must be ignored
+  moves: "e2e4 e7e5",
   status: "started",
   white: null,
   black: null,
@@ -72,7 +72,7 @@ export const blackTurnGameSample: Game = {
   initialFen: "startpos",
   wtime: 300000,
   btime: 300000,
-  moves: "e2e4 e7e5 g8f6 g1f3", // g8f6 is invalid move and must be ignored
+  moves: "e2e4 e7e5 g1f3",
   status: "started",
   white: null,
   black: null,
