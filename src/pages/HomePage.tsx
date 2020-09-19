@@ -1,14 +1,14 @@
 import React, { FC } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import OngoingGamesContainer from "../containers/OngoingGamesContainer";
-import ChallengeAiFormContainer from "../containers/ChallengeAiFormContainer";
+import OngoingGamesContainer from "../features/ongoing-games/OngoingGamesContainer";
+import ChallengeAiFormContainer from "../features/challenge-ai-modal/ChallengeAiFormContainer";
 
 import { RootState } from "../app/rootReducer";
 import {
   hideChallengeAiModal,
   showChallengeAiModal,
-} from "../redux/slices/challengeAiModalSlice";
+} from "../features/challenge-ai-modal/challengeAiModalSlice";
 import { AppDispatch } from "../app/store";
 
 const HomePage: FC<unknown> = () => {

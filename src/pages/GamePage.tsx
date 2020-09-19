@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { useParams } from "react-router-dom";
-import { SingleGameContainer } from "../containers/SingleGameContainer";
+import { SingleGameContainer } from "../features/single-game/SingleGameContainer";
 
 interface GamePageParams {
   id: string;

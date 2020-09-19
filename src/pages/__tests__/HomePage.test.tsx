@@ -3,7 +3,7 @@ import TestRenderer from "react-test-renderer";
 import { useSelector } from "react-redux";
 import mountTest from "../../test-utils/mountTest";
 import HomePage from "../HomePage";
-import OngoingGamesContainer from "../../containers/OngoingGamesContainer";
+import OngoingGamesContainer from "../../features/ongoing-games/OngoingGamesContainer";
 import { defaultState } from "../../test-utils/data-sample/state";
 
 describe("HomePage", () => {

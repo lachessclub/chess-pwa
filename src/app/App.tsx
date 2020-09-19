@@ -6,13 +6,19 @@ import { Button, Modal } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import HomePage from "../pages/HomePage";
 import GamePage from "../pages/GamePage";
-import LoginTabsContainer from "../containers/LoginTabsContainer";
+import LoginTabsContainer from "../features/auth-modal/LoginTabsContainer";
 import { RootState } from "./rootReducer";
-import { fetchCurrentUser, logout } from "../redux/slices/currentUserSlice";
-import { showAuthModal, hideAuthModal } from "../redux/slices/authModalSlice";
+import {
+  fetchCurrentUser,
+  logout,
+} from "../features/current-user/currentUserSlice";
+import {
+  showAuthModal,
+  hideAuthModal,
+} from "../features/auth-modal/authModalSlice";
 import User from "../interfaces/User";
-import userSchema from "../redux/schemas/userSchema";
-import { watchGames } from "../redux/slices/dataSubscriptionSlice";
+import userSchema from "../normalizr/schemas/userSchema";
+import { watchGames } from "../features/data-subscription/dataSubscriptionSlice";
 
 const App: FC = () => {
   const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 import React from "react";
 import TestRenderer from "react-test-renderer";
 import { MemoryRouter, Route } from "react-router-dom";
-import { SingleGameContainer } from "../../containers/SingleGameContainer";
+import { SingleGameContainer } from "../../features/single-game/SingleGameContainer";
 import GamePage from "../GamePage";
 
 describe("GamePage", () => {

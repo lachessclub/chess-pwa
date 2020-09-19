@@ -1,5 +1,5 @@
 import React from "react";
-import { GamePreviewsList } from "../components/GamePreviewsList";
+import { GamePreviewsList } from "../features/ongoing-games/GamePreviewsList";
 import Game from "../interfaces/Game";
 
 export default {

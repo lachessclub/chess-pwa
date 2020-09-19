@@ -1,12 +1,12 @@
 /* eslint-disable import/no-cycle */
 
 import { combineReducers } from "@reduxjs/toolkit";
-import ongoingGamesReducer from "../redux/slices/ongoingGamesSlice";
-import currentUserReducer from "../redux/slices/currentUserSlice";
-import authModalReducer from "../redux/slices/authModalSlice";
-import challengeAiModalReducer from "../redux/slices/challengeAiModalSlice";
-import entitiesReducer from "../redux/slices/entitiesSlice";
-import singleGameReducer from "../redux/slices/singleGameSlice";
+import ongoingGamesReducer from "../features/ongoing-games/ongoingGamesSlice";
+import currentUserReducer from "../features/current-user/currentUserSlice";
+import authModalReducer from "../features/auth-modal/authModalSlice";
+import challengeAiModalReducer from "../features/challenge-ai-modal/challengeAiModalSlice";
+import entitiesReducer from "../features/entities/entitiesSlice";
+import singleGameReducer from "../features/single-game/singleGameSlice";
 // import dataSubscriptionReducer from "../redux/slices/dataSubscriptionSlice";
 
 const rootReducer = combineReducers({

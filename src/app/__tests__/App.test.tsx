@@ -5,14 +5,14 @@ import { render } from "@testing-library/react";
 import App from "../App";
 import mountTest from "../../test-utils/mountTest";
 import HomePage from "../../pages/HomePage";
-import { fetchCurrentUser } from "../../redux/slices/currentUserSlice";
-import { watchGames } from "../../redux/slices/dataSubscriptionSlice";
+import { fetchCurrentUser } from "../../features/current-user/currentUserSlice";
+import { watchGames } from "../../features/data-subscription/dataSubscriptionSlice";
 import { defaultState } from "../../test-utils/data-sample/state";
 
 jest.useFakeTimers();
 
-jest.mock("../../redux/slices/currentUserSlice");
-jest.mock("../../redux/slices/dataSubscriptionSlice");
+jest.mock("../../features/current-user/currentUserSlice");
+jest.mock("../../features/data-subscription/dataSubscriptionSlice");
 
 describe("App", () => {
   beforeAll(() => {

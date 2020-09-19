@@ -1,4 +1,4 @@
-import { EntitiesState } from "../../redux/slices/entitiesSlice";
+import { EntitiesState } from "../../features/entities/entitiesSlice";
 
 export const entitiesSample: EntitiesState = {
   users: {
