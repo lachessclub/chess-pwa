@@ -3,6 +3,9 @@ import User from "./User";
 
 export default interface Game {
   id: number;
+  aiLevel: number;
+  clockLimit: number;
+  clockIncrement: number;
   initialFen: string;
   wtime: number;
   btime: number;
@@ -10,4 +13,5 @@ export default interface Game {
   status: GameStatus;
   white: User | null;
   black: User | null;
+  winner: "black" | "white" | null;
 }

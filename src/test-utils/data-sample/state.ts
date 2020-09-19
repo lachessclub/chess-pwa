@@ -53,6 +53,9 @@ export const stateWithDataSample: RootState = {
     games: {
       "1": {
         id: 1,
+        aiLevel: 3,
+        clockLimit: 300,
+        clockIncrement: 3,
         initialFen: "startpos",
         wtime: 300000,
         btime: 300000,
@@ -60,6 +63,7 @@ export const stateWithDataSample: RootState = {
         status: "started",
         white: null,
         black: null,
+        winner: null,
       },
     },
   },
@@ -94,6 +98,9 @@ export const stateWithDataSample2: RootState = {
     games: {
       "1": {
         id: 1,
+        aiLevel: 3,
+        clockLimit: 300,
+        clockIncrement: 3,
         initialFen: "startpos",
         wtime: 300000,
         btime: 300000,
@@ -101,6 +108,7 @@ export const stateWithDataSample2: RootState = {
         status: "started",
         white: null,
         black: null,
+        winner: null,
       },
     },
   },

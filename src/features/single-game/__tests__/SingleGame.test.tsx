@@ -1,19 +1,22 @@
 import TestRenderer from "react-test-renderer";
 import React from "react";
-import { Board, PieceColor, ValidMoves } from "ii-react-chessboard";
+import { Board, PieceColor } from "ii-react-chessboard";
 import { SingleGame } from "../SingleGame";
 import {
   gameWithMovesSample,
   gameSample,
-  gameWithCheckmateSample,
+  gameWithCheckmateByWhiteSample,
   blackTurnGameSample,
   whiteTurnGameSample,
   gameSampleFen,
   gameWithMovesSampleFen,
   gameSample2,
   gameSample3,
+  gameWithSmallAmountOfPiecesSample,
+  gameWithSmallAmountOfPiecesSampleValidMoves,
 } from "../../../test-utils/data-sample/game";
 import userSample from "../../../test-utils/data-sample/user";
+import { GameMeta } from "../GameMeta";
 
 describe("SingleGame", () => {
   describe("children components", () => {
@@ -26,6 +29,17 @@ describe("SingleGame", () => {
       testRenderer.update(<SingleGame game={gameSample} />);
 
       expect(testInstance.findAllByType(Board).length).toBe(1);
+    });
+
+    it("contains GameMeta", () => {
+      const testRenderer = TestRenderer.create(<SingleGame />);
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(GameMeta).length).toBe(0);
+
+      testRenderer.update(<SingleGame game={gameSample} />);
+
+      expect(testInstance.findAllByType(GameMeta).length).toBe(1);
     });
   });
 
@@ -67,7 +81,9 @@ describe("SingleGame", () => {
 
         expect(board.props.check).toBeFalsy();
 
-        testRenderer.update(<SingleGame game={gameWithCheckmateSample} />);
+        testRenderer.update(
+          <SingleGame game={gameWithCheckmateByWhiteSample} />
+        );
 
         expect(board.props.check).toBeTruthy();
       });
@@ -110,33 +126,16 @@ describe("SingleGame", () => {
       });
 
       it("validMoves", async () => {
-        const initialFen = "8/4p3/8/5k2/8/3p4/4PP2/4K3 w KQkq - 0 1";
-
-        const initialPositionValidMoves: ValidMoves = {
-          e1: ["d2", "f1", "d1", "g1", "c1"],
-          e2: ["e3", "e4", "d3"],
-          f2: ["f3", "f4"],
-        };
-
         const testRenderer = TestRenderer.create(
-          <SingleGame
-            game={{
-              id: 2,
-              initialFen,
-              wtime: 300000,
-              btime: 300000,
-              moves: "",
-              status: "started",
-              white: null,
-              black: null,
-            }}
-          />
+          <SingleGame game={gameWithSmallAmountOfPiecesSample} />
         );
         const testInstance = testRenderer.root;
 
         const board = testInstance.findByType(Board);
 
-        expect(board.props.validMoves).toEqual(initialPositionValidMoves);
+        expect(board.props.validMoves).toEqual(
+          gameWithSmallAmountOfPiecesSampleValidMoves
+        );
       });
 
       it("viewOnly", () => {
@@ -151,7 +150,10 @@ describe("SingleGame", () => {
         expect(board.props.viewOnly).toBeTruthy();
 
         testRenderer.update(
-          <SingleGame currentUser={userSample} game={gameWithCheckmateSample} />
+          <SingleGame
+            currentUser={userSample}
+            game={gameWithCheckmateByWhiteSample}
+          />
         );
         // true because game is over
         expect(board.props.viewOnly).toBeTruthy();

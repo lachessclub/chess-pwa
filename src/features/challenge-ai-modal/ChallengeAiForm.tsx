@@ -17,7 +17,12 @@ export interface ChallengeAiFormProps {
 export const ChallengeAiForm: FC<ChallengeAiFormProps> = ({ onSubmit }) => {
   return (
     <Formik
-      initialValues={{ level: 3, color: "", clockLimit: 5, clockIncrement: 3 }}
+      initialValues={{
+        level: 3,
+        color: "",
+        clockLimit: 300,
+        clockIncrement: 3,
+      }}
       onSubmit={(values, formikHelpers): Promise<any> | void => {
         if (onSubmit) {
           return onSubmit(
@@ -47,15 +52,18 @@ export const ChallengeAiForm: FC<ChallengeAiFormProps> = ({ onSubmit }) => {
           {!!status && <Alert variant="danger">{status}</Alert>}
           <fieldset>
             <Form.Group>
-              <Form.Label>Minutes per side: {values.clockLimit}</Form.Label>
+              <Form.Label>
+                Minutes per side: {values.clockLimit / 60}
+              </Form.Label>
               <Form.Control
                 type="range"
                 name="clockLimit"
                 onBlur={handleBlur}
                 value={values.clockLimit}
                 onChange={handleChange}
-                min="1"
-                max="30"
+                min="60"
+                max="1800"
+                step="60"
               />
             </Form.Group>
 

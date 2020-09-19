@@ -11,6 +11,7 @@ import Game from "../../interfaces/Game";
 import makeChessInstance from "../../utils/makeChessInstance";
 import getTurnColor from "../../utils/getTurnColor";
 import User from "../../interfaces/User";
+import { GameMeta } from "./GameMeta";
 
 export interface SingleGameProps {
   game?: Game;
@@ -69,19 +70,22 @@ export const SingleGame: FC<SingleGameProps> = ({
   }
 
   return (
-    <Board
-      allowMarkers
-      check={check}
-      clickable
-      draggable
-      orientation={orientation}
-      position={fen}
-      turnColor={turnColor}
-      lastMoveSquares={lastMoveSquares}
-      movableColor={movableColor}
-      validMoves={validMoves}
-      viewOnly={viewOnly}
-      onMove={onMove}
-    />
+    <>
+      <GameMeta game={game} />
+      <Board
+        allowMarkers
+        check={check}
+        clickable
+        draggable
+        orientation={orientation}
+        position={fen}
+        turnColor={turnColor}
+        lastMoveSquares={lastMoveSquares}
+        movableColor={movableColor}
+        validMoves={validMoves}
+        viewOnly={viewOnly}
+        onMove={onMove}
+      />
+    </>
   );
 };

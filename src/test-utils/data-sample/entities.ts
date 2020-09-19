@@ -10,6 +10,9 @@ export const entitiesSample: EntitiesState = {
   games: {
     1: {
       id: 1,
+      aiLevel: 3,
+      clockLimit: 300,
+      clockIncrement: 3,
       initialFen: "startpos",
       wtime: 300000,
       btime: 300000,
@@ -17,6 +20,7 @@ export const entitiesSample: EntitiesState = {
       status: "started",
       white: null,
       black: null,
+      winner: null,
     },
   },
 };
@@ -56,6 +60,9 @@ export const entitiesSampleAfterMove: EntitiesState = {
   games: {
     1: {
       id: 1,
+      aiLevel: 3,
+      clockLimit: 300,
+      clockIncrement: 3,
       initialFen: "startpos",
       wtime: 300000,
       btime: 300000,
@@ -63,6 +70,7 @@ export const entitiesSampleAfterMove: EntitiesState = {
       status: "started",
       white: null,
       black: null,
+      winner: null,
     },
   },
 };
@@ -77,6 +85,9 @@ export const addGamePayloadSample: EntitiesState = {
   games: {
     2: {
       id: 2,
+      aiLevel: 3,
+      clockLimit: 300,
+      clockIncrement: 3,
       initialFen: "startpos",
       wtime: 300000,
       btime: 300000,
@@ -84,6 +95,7 @@ export const addGamePayloadSample: EntitiesState = {
       status: "started",
       white: null,
       black: null,
+      winner: null,
     },
   },
 };
@@ -102,6 +114,9 @@ export const entitiesSampleAfterAddingGame: EntitiesState = {
   games: {
     1: {
       id: 1,
+      aiLevel: 3,
+      clockLimit: 300,
+      clockIncrement: 3,
       initialFen: "startpos",
       wtime: 300000,
       btime: 300000,
@@ -109,9 +124,13 @@ export const entitiesSampleAfterAddingGame: EntitiesState = {
       status: "started",
       white: null,
       black: null,
+      winner: null,
     },
     2: {
       id: 2,
+      aiLevel: 3,
+      clockLimit: 300,
+      clockIncrement: 3,
       initialFen: "startpos",
       wtime: 300000,
       btime: 300000,
@@ -119,6 +138,7 @@ export const entitiesSampleAfterAddingGame: EntitiesState = {
       status: "started",
       white: null,
       black: null,
+      winner: null,
     },
   },
 };

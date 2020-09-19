@@ -51,6 +51,9 @@ describe("OngoingGamesContainer", () => {
         expect(gamePreviewsComponent.props.games).toEqual([
           {
             id: 1,
+            aiLevel: 3,
+            clockLimit: 300,
+            clockIncrement: 3,
             initialFen: "startpos",
             wtime: 300000,
             btime: 300000,
@@ -58,6 +61,7 @@ describe("OngoingGamesContainer", () => {
             status: "started",
             white: null,
             black: null,
+            winner: null,
           },
         ]);
       });
