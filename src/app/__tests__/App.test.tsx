@@ -8,10 +8,12 @@ import HomePage from "../../pages/HomePage";
 import { fetchCurrentUser } from "../../features/current-user/currentUserSlice";
 import { watchGames } from "../../features/data-subscription/dataSubscriptionSlice";
 import { defaultState } from "../../test-utils/data-sample/state";
+import { startGameClock } from "../../features/game-clock/gameClockSlice";
 
 jest.useFakeTimers();
 
 jest.mock("../../features/current-user/currentUserSlice");
+jest.mock("../../features/game-clock/gameClockSlice");
 jest.mock("../../features/data-subscription/dataSubscriptionSlice");
 
 describe("App", () => {
@@ -53,6 +55,25 @@ describe("App", () => {
   });
 
   describe("dispatch() calls", () => {
+    it("should call dispatch(startGameClock())", () => {
+      const dispatch = useDispatch<jest.Mock>();
+
+      (useEffect as jest.Mock).mockImplementationOnce((cb) => cb());
+
+      const startGameClockReturnedValue = Symbol("startGameClock");
+
+      const startGameClockFn = startGameClock as jest.Mock;
+      startGameClockFn.mockClear();
+      startGameClockFn.mockReturnValue(startGameClockReturnedValue);
+
+      TestRenderer.create(<App />);
+
+      expect(startGameClockFn).toBeCalledTimes(1);
+      expect(startGameClockFn).toBeCalledWith();
+
+      expect(dispatch).toBeCalledWith(startGameClockReturnedValue);
+    });
+
     it("should call dispatch(fetchCurrentUser())", () => {
       const dispatch = useDispatch<jest.Mock>();
 

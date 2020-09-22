@@ -19,6 +19,7 @@ import {
 import User from "../interfaces/User";
 import userSchema from "../normalizr/schemas/userSchema";
 import { watchGames } from "../features/data-subscription/dataSubscriptionSlice";
+import { startGameClock } from "../features/game-clock/gameClockSlice";
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -36,6 +37,7 @@ const App: FC = () => {
   useEffect(() => {
     dispatch(fetchCurrentUser());
     dispatch(watchGames());
+    dispatch(startGameClock());
   }, [dispatch]);
 
   return (

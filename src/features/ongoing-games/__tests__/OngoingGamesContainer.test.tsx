@@ -55,6 +55,7 @@ describe("OngoingGamesContainer", () => {
             clockLimit: 300,
             clockIncrement: 3,
             initialFen: "startpos",
+            turn: "white",
             wtime: 300000,
             btime: 300000,
             moves: "",

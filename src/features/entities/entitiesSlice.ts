@@ -11,6 +11,7 @@ import {
 import { getOngoingGamesSuccess } from "../ongoing-games/ongoingGamesSlice";
 import { getSingleGameSuccess } from "../single-game/singleGameSlice";
 import { challengeAiSuccess } from "../challenge/challengeSlice";
+import { oneSecondPassed } from "../game-clock/gameClockSlice";
 import {
   updateGameBySubscription,
   createGameBySubscription,
@@ -72,11 +73,34 @@ const entitiesSlice = createSlice({
       state: EntitiesState,
       action: PayloadAction<MoveRequestPayload>
     ) => {
+      state.games[action.payload.gameId].turn =
+        state.games[action.payload.gameId].turn === "white" ? "black" : "white";
       state.games[action.payload.gameId].moves = `${
         state.games[action.payload.gameId].moves
       } ${action.payload.move}`.trim();
     },
     [makeMoveSuccess.type]: getNormalizedDataReducer,
+    [oneSecondPassed.type]: (state: EntitiesState) => {
+      const gameIds = Object.keys(state.games);
+
+      gameIds.forEach((gameId) => {
+        const game = state.games[gameId];
+
+        if (game.status === "started") {
+          const timePropName = game.turn === "white" ? "wtime" : "btime";
+
+          game[timePropName] -= 1000;
+          if (game[timePropName] < 0) {
+            game[timePropName] = 0;
+          }
+
+          if (game[timePropName] === 0) {
+            game.status = "outoftime";
+            game.winner = game.turn === "white" ? "black" : "white";
+          }
+        }
+      });
+    },
   },
 });
 

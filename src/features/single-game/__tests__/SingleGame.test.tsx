@@ -17,6 +17,7 @@ import {
 } from "../../../test-utils/data-sample/game";
 import userSample from "../../../test-utils/data-sample/user";
 import { GameMeta } from "../GameMeta";
+import { GameControlPanel } from "../GameControlPanel";
 
 describe("SingleGame", () => {
   describe("children components", () => {
@@ -40,6 +41,17 @@ describe("SingleGame", () => {
       testRenderer.update(<SingleGame game={gameSample} />);
 
       expect(testInstance.findAllByType(GameMeta).length).toBe(1);
+    });
+
+    it("contains GameControlPanel", () => {
+      const testRenderer = TestRenderer.create(<SingleGame />);
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(GameControlPanel).length).toBe(0);
+
+      testRenderer.update(<SingleGame game={gameSample} />);
+
+      expect(testInstance.findAllByType(GameControlPanel).length).toBe(1);
     });
   });
 
@@ -232,6 +244,49 @@ describe("SingleGame", () => {
 
         testRenderer.update(<SingleGame game={gameWithMovesSample} />);
         expect(board.props.lastMoveSquares).toEqual(["e7", "e5"]);
+      });
+    });
+
+    describe("GameMeta", () => {
+      it("game", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGame game={gameSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameMeta = testInstance.findByType(GameMeta);
+
+        expect(gameMeta.props.game).toBe(gameSample);
+      });
+    });
+
+    describe("GameControlPanel", () => {
+      it("game", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGame game={gameSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameMeta = testInstance.findByType(GameControlPanel);
+
+        expect(gameMeta.props.game).toBe(gameSample);
+      });
+
+      it("orientation", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGame game={gameSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameMeta = testInstance.findByType(GameControlPanel);
+
+        expect(gameMeta.props.orientation).toBe("white");
+
+        testRenderer.update(
+          <SingleGame game={gameSample2} currentUser={userSample} />
+        );
+
+        expect(gameMeta.props.orientation).toBe("black");
       });
     });
   });
