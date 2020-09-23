@@ -97,7 +97,7 @@ export const login = (data: LoginData): AppThunk<Promise<User>> => (
     ioClient.socket.put(
       "/api/v1/entrance/login",
       {
-        rememberMe: true,
+        // rememberMe: true, // because of warning in backend @see https://tracker.yandex.ru/CHESSPWA-47
         emailAddress: data.email,
         password: data.password,
       },
