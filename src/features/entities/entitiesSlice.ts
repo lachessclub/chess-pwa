@@ -23,6 +23,7 @@ import {
 } from "../move/moveSlice";
 import NormalizedUserEntity from "../../normalizr/interfaces/NormalizedUserEntity";
 import NormalizedGameEntity from "../../normalizr/interfaces/NormalizedGameEntity";
+import makeChessInstance from "../../utils/makeChessInstance";
 
 export interface EntitiesState {
   users: Record<string, NormalizedUserEntity>;
@@ -87,16 +88,20 @@ const entitiesSlice = createSlice({
         const game = state.games[gameId];
 
         if (game.status === "started") {
-          const timePropName = game.turn === "white" ? "wtime" : "btime";
+          const chess = makeChessInstance(game);
 
-          game[timePropName] -= 1000;
-          if (game[timePropName] < 0) {
-            game[timePropName] = 0;
-          }
+          if (chess.history().length > 1) {
+            const timePropName = game.turn === "white" ? "wtime" : "btime";
 
-          if (game[timePropName] === 0) {
-            game.status = "outoftime";
-            game.winner = game.turn === "white" ? "black" : "white";
+            game[timePropName] -= 1000;
+            if (game[timePropName] < 0) {
+              game[timePropName] = 0;
+            }
+
+            if (game[timePropName] === 0) {
+              game.status = "outoftime";
+              game.winner = game.turn === "white" ? "black" : "white";
+            }
           }
         }
       });

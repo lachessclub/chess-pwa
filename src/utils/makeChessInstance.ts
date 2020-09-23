@@ -4,7 +4,7 @@ import Game from "../interfaces/Game";
 const startPositionFen =
   "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
-export default (game: Game): ChessInstance => {
+export default (game: Pick<Game, "initialFen" | "moves">): ChessInstance => {
   let { initialFen } = game;
   if (initialFen === "startpos") {
     initialFen = startPositionFen;

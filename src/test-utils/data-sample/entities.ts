@@ -26,32 +26,6 @@ export const entitiesSample: EntitiesState = {
   },
 };
 
-export const entitiesAfterOneSecondSample: EntitiesState = {
-  users: {
-    1: {
-      id: 1,
-      fullName: "Robert Johnson",
-    },
-  },
-  games: {
-    1: {
-      id: 1,
-      aiLevel: 3,
-      clockLimit: 300,
-      clockIncrement: 3,
-      initialFen: "startpos",
-      turn: "white",
-      wtime: 299000,
-      btime: 300000,
-      moves: "",
-      status: "started",
-      white: null,
-      black: null,
-      winner: null,
-    },
-  },
-};
-
 export const entitiesBeforeTimeOutSample: EntitiesState = {
   users: {
     1: {
@@ -69,7 +43,7 @@ export const entitiesBeforeTimeOutSample: EntitiesState = {
       turn: "white",
       wtime: 800,
       btime: 300000,
-      moves: "",
+      moves: "e2e4 e7e5",
       status: "started",
       white: null,
       black: null,
@@ -95,7 +69,7 @@ export const entitiesAfterTimeOutSample: EntitiesState = {
       turn: "white",
       wtime: 0,
       btime: 300000,
-      moves: "",
+      moves: "e2e4 e7e5",
       status: "outoftime",
       white: null,
       black: null,
@@ -147,6 +121,58 @@ export const entitiesAfterMoveSample: EntitiesState = {
       wtime: 300000,
       btime: 300000,
       moves: "e2e4",
+      status: "started",
+      white: null,
+      black: null,
+      winner: null,
+    },
+  },
+};
+
+export const entitiesAfterTwoMovesSample: EntitiesState = {
+  users: {
+    1: {
+      id: 1,
+      fullName: "Robert Johnson",
+    },
+  },
+  games: {
+    1: {
+      id: 1,
+      aiLevel: 3,
+      clockLimit: 300,
+      clockIncrement: 3,
+      initialFen: "startpos",
+      turn: "white",
+      wtime: 300000,
+      btime: 300000,
+      moves: "e2e4 e7e5",
+      status: "started",
+      white: null,
+      black: null,
+      winner: null,
+    },
+  },
+};
+
+export const entitiesAfterTwoMovesAndOneSecondSample: EntitiesState = {
+  users: {
+    1: {
+      id: 1,
+      fullName: "Robert Johnson",
+    },
+  },
+  games: {
+    1: {
+      id: 1,
+      aiLevel: 3,
+      clockLimit: 300,
+      clockIncrement: 3,
+      initialFen: "startpos",
+      turn: "white",
+      wtime: 299000,
+      btime: 300000,
+      moves: "e2e4 e7e5",
       status: "started",
       white: null,
       black: null,

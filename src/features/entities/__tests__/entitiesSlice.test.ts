@@ -23,9 +23,10 @@ import {
   entitiesAfterAddingGameSample,
   entitiesAfterMoveSample,
   entitiesWithUserSample,
-  entitiesAfterOneSecondSample,
   entitiesAfterTimeOutSample,
   entitiesBeforeTimeOutSample,
+  entitiesAfterTwoMovesSample,
+  entitiesAfterTwoMovesAndOneSecondSample,
 } from "../../../test-utils/data-sample/entities";
 
 jest.mock("../../../services/ioClient");
@@ -148,11 +149,26 @@ describe("entitiesSlice reducer", () => {
   });
 
   it("should handle oneSecondPassed", () => {
+    // do not change time because there is no moves
     expect(
       entitiesReducer(entitiesSample, {
         type: oneSecondPassed.type,
       })
-    ).toEqual(entitiesAfterOneSecondSample);
+    ).toEqual(entitiesSample);
+
+    // do not change time because there is only one move (time starts to go after two moves)
+    expect(
+      entitiesReducer(entitiesAfterMoveSample, {
+        type: oneSecondPassed.type,
+      })
+    ).toEqual(entitiesAfterMoveSample);
+
+    // do not change time because there is only one move (time starts to go after two moves)
+    expect(
+      entitiesReducer(entitiesAfterTwoMovesSample, {
+        type: oneSecondPassed.type,
+      })
+    ).toEqual(entitiesAfterTwoMovesAndOneSecondSample);
 
     expect(
       entitiesReducer(entitiesBeforeTimeOutSample, {
