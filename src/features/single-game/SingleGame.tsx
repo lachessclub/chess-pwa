@@ -12,17 +12,22 @@ import makeChessInstance from "../../utils/makeChessInstance";
 import User from "../../interfaces/User";
 import { GameMeta } from "./GameMeta";
 import { GameControlPanel } from "./GameControlPanel";
+import { PieceColor as AppPieceColor } from "../../types/PieceColor";
 
 export interface SingleGameProps {
   game?: Game;
   currentUser?: User;
+  isFlipped?: boolean;
   onMove?(move: Move): void;
+  onFlipBoard?(): void;
 }
 
 export const SingleGame: FC<SingleGameProps> = ({
   game,
   currentUser,
+  isFlipped = false,
   onMove,
+  onFlipBoard,
 }) => {
   if (!game) {
     return null;
@@ -60,6 +65,10 @@ export const SingleGame: FC<SingleGameProps> = ({
   if (currentUser && currentUser.id === game.black?.id) {
     orientation = PieceColor.BLACK;
   }
+  if (isFlipped) {
+    orientation =
+      orientation === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+  }
 
   const movesHistory = chess.history({ verbose: true });
 
@@ -72,7 +81,11 @@ export const SingleGame: FC<SingleGameProps> = ({
   return (
     <>
       <GameMeta game={game} />
-      <GameControlPanel game={game} orientation={orientation} />
+      <GameControlPanel
+        game={game}
+        orientation={orientation as AppPieceColor}
+        onFlipBoard={onFlipBoard}
+      />
       <Board
         allowMarkers
         check={check}

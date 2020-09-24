@@ -229,6 +229,12 @@ describe("SingleGame", () => {
         );
         // black because current user plays black
         expect(board.props.orientation).toBe(PieceColor.BLACK);
+
+        testRenderer.update(
+          <SingleGame currentUser={userSample} game={gameSample2} isFlipped />
+        );
+        // white because flipped is true
+        expect(board.props.orientation).toBe(PieceColor.WHITE);
       });
 
       it("lastMoveSquares", () => {
@@ -244,6 +250,20 @@ describe("SingleGame", () => {
 
         testRenderer.update(<SingleGame game={gameWithMovesSample} />);
         expect(board.props.lastMoveSquares).toEqual(["e7", "e5"]);
+      });
+
+      it("onMove", () => {
+        const onMove = jest.fn();
+
+        const testInstance = TestRenderer.create(
+          <SingleGame game={gameSample} onMove={onMove} />
+        ).root;
+
+        const board: TestRenderer.ReactTestInstance = testInstance.findByType(
+          Board
+        );
+
+        expect(board.props.onMove).toBe(onMove);
       });
     });
 
@@ -287,34 +307,26 @@ describe("SingleGame", () => {
         );
 
         expect(gameMeta.props.orientation).toBe("black");
-      });
-    });
-  });
 
-  describe("Events", () => {
-    it("onMove", () => {
-      const onMove = jest.fn();
+        testRenderer.update(
+          <SingleGame game={gameSample2} currentUser={userSample} isFlipped />
+        );
 
-      const testInstance = TestRenderer.create(
-        <SingleGame game={gameSample} onMove={onMove} />
-      ).root;
-
-      const board: TestRenderer.ReactTestInstance = testInstance.findByType(
-        Board
-      );
-
-      TestRenderer.act(() => {
-        board.props.onMove({
-          from: "e2",
-          to: "e4",
-        });
+        expect(gameMeta.props.orientation).toBe("white");
       });
 
-      expect(onMove).toBeCalledTimes(1);
+      it("onFlipBoard", () => {
+        const onFlipBoard = jest.fn();
 
-      expect(onMove).toBeCalledWith({
-        from: "e2",
-        to: "e4",
+        const testInstance = TestRenderer.create(
+          <SingleGame game={gameSample} onFlipBoard={onFlipBoard} />
+        ).root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        expect(gameControlPanel.props.onFlipBoard).toBe(onFlipBoard);
       });
     });
   });

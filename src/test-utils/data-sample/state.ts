@@ -70,7 +70,7 @@ export const stateWithDataSample: RootState = {
   },
 };
 
-// not authenticated user
+// not authenticated user, isFlipped: false
 export const stateWithDataSample2: RootState = {
   currentUser: {
     userId: null,
@@ -83,7 +83,65 @@ export const stateWithDataSample2: RootState = {
   challengeAiModal: {
     isChallengeAiModalVisible: false,
   },
-  singleGame: {},
+  singleGame: {
+    "1": {
+      isLoading: true,
+      error: null,
+      isFlipped: false,
+    },
+  },
+  ongoingGames: {
+    items: [1],
+    isLoading: false,
+    error: null,
+  },
+  entities: {
+    users: {
+      "1": {
+        id: 1,
+        fullName: "Thomas Miller",
+      },
+    },
+    games: {
+      "1": {
+        id: 1,
+        aiLevel: 3,
+        clockLimit: 300,
+        clockIncrement: 3,
+        initialFen: "startpos",
+        turn: "white",
+        wtime: 300000,
+        btime: 300000,
+        moves: "",
+        status: "started",
+        white: null,
+        black: null,
+        winner: null,
+      },
+    },
+  },
+};
+
+// not authenticated user, isFlipped: true
+export const stateWithDataSample3: RootState = {
+  currentUser: {
+    userId: null,
+    isLoading: false,
+    error: null,
+  },
+  authModal: {
+    isAuthModalVisible: false,
+  },
+  challengeAiModal: {
+    isChallengeAiModalVisible: false,
+  },
+  singleGame: {
+    "1": {
+      isLoading: true,
+      error: null,
+      isFlipped: true,
+    },
+  },
   ongoingGames: {
     items: [1],
     isLoading: false,

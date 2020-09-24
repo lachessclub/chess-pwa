@@ -4,6 +4,7 @@ import singleGameReducer, {
   getSingleGameSuccess,
   getSingleGameError,
   fetchGame,
+  flipBoard,
 } from "../singleGameSlice";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
@@ -27,6 +28,7 @@ describe("singleGameSlice reducer", () => {
           "1": {
             isLoading: false,
             error: "error text",
+            isFlipped: true,
           },
         },
         {
@@ -38,6 +40,7 @@ describe("singleGameSlice reducer", () => {
       "1": {
         isLoading: true,
         error: null,
+        isFlipped: true,
       },
     });
 
@@ -47,6 +50,7 @@ describe("singleGameSlice reducer", () => {
           "1": {
             isLoading: false,
             error: "error text",
+            isFlipped: true,
           },
         },
         {
@@ -58,10 +62,12 @@ describe("singleGameSlice reducer", () => {
       "1": {
         isLoading: false,
         error: "error text",
+        isFlipped: true,
       },
       "2": {
         isLoading: true,
         error: null,
+        isFlipped: false,
       },
     });
   });
@@ -73,6 +79,7 @@ describe("singleGameSlice reducer", () => {
           "1": {
             isLoading: true,
             error: "error text",
+            isFlipped: true,
           },
         },
         {
@@ -87,6 +94,7 @@ describe("singleGameSlice reducer", () => {
       "1": {
         isLoading: false,
         error: null,
+        isFlipped: true,
       },
     });
 
@@ -96,6 +104,7 @@ describe("singleGameSlice reducer", () => {
           "1": {
             isLoading: true,
             error: "error text",
+            isFlipped: true,
           },
         },
         {
@@ -110,10 +119,12 @@ describe("singleGameSlice reducer", () => {
       "1": {
         isLoading: true,
         error: "error text",
+        isFlipped: true,
       },
       "2": {
         isLoading: false,
         error: null,
+        isFlipped: false,
       },
     });
   });
@@ -125,6 +136,7 @@ describe("singleGameSlice reducer", () => {
           "1": {
             isLoading: true,
             error: null,
+            isFlipped: true,
           },
         },
         {
@@ -139,6 +151,7 @@ describe("singleGameSlice reducer", () => {
       "1": {
         isLoading: false,
         error: "error text",
+        isFlipped: true,
       },
     });
 
@@ -148,6 +161,7 @@ describe("singleGameSlice reducer", () => {
           "1": {
             isLoading: true,
             error: null,
+            isFlipped: true,
           },
         },
         {
@@ -162,10 +176,12 @@ describe("singleGameSlice reducer", () => {
       "1": {
         isLoading: true,
         error: null,
+        isFlipped: true,
       },
       "2": {
         isLoading: false,
         error: "error text",
+        isFlipped: false,
       },
     });
   });
@@ -235,6 +251,52 @@ describe("singleGameSlice reducer", () => {
           error: "game not found",
         },
       });
+    });
+  });
+
+  it("should handle flipBoard", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: false,
+            error: "error text",
+            isFlipped: true,
+          },
+        },
+        {
+          type: flipBoard.type,
+          payload: 1,
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: false,
+        error: "error text",
+        isFlipped: false,
+      },
+    });
+
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: false,
+            error: "error text",
+            isFlipped: false,
+          },
+        },
+        {
+          type: flipBoard.type,
+          payload: 1,
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: false,
+        error: "error text",
+        isFlipped: true,
+      },
     });
   });
 });
