@@ -58,7 +58,7 @@ describe("OngoingGamesContainer", () => {
             turn: "white",
             wtime: 300000,
             btime: 300000,
-            moves: "",
+            moves: "e2e4 e7e5 g1f3 g8f6",
             status: "started",
             white: null,
             black: null,

@@ -5,6 +5,7 @@ import singleGameReducer, {
   getSingleGameError,
   fetchGame,
   flipBoard,
+  rewindToMove,
 } from "../singleGameSlice";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
@@ -29,6 +30,7 @@ describe("singleGameSlice reducer", () => {
             isLoading: false,
             error: "error text",
             isFlipped: true,
+            rewindToMoveIndex: 2,
           },
         },
         {
@@ -41,6 +43,7 @@ describe("singleGameSlice reducer", () => {
         isLoading: true,
         error: null,
         isFlipped: true,
+        rewindToMoveIndex: 2,
       },
     });
 
@@ -51,6 +54,7 @@ describe("singleGameSlice reducer", () => {
             isLoading: false,
             error: "error text",
             isFlipped: true,
+            rewindToMoveIndex: 2,
           },
         },
         {
@@ -63,11 +67,13 @@ describe("singleGameSlice reducer", () => {
         isLoading: false,
         error: "error text",
         isFlipped: true,
+        rewindToMoveIndex: 2,
       },
       "2": {
         isLoading: true,
         error: null,
         isFlipped: false,
+        rewindToMoveIndex: null,
       },
     });
   });
@@ -80,6 +86,7 @@ describe("singleGameSlice reducer", () => {
             isLoading: true,
             error: "error text",
             isFlipped: true,
+            rewindToMoveIndex: 2,
           },
         },
         {
@@ -95,6 +102,7 @@ describe("singleGameSlice reducer", () => {
         isLoading: false,
         error: null,
         isFlipped: true,
+        rewindToMoveIndex: 2,
       },
     });
 
@@ -105,6 +113,7 @@ describe("singleGameSlice reducer", () => {
             isLoading: true,
             error: "error text",
             isFlipped: true,
+            rewindToMoveIndex: 2,
           },
         },
         {
@@ -120,11 +129,13 @@ describe("singleGameSlice reducer", () => {
         isLoading: true,
         error: "error text",
         isFlipped: true,
+        rewindToMoveIndex: 2,
       },
       "2": {
         isLoading: false,
         error: null,
         isFlipped: false,
+        rewindToMoveIndex: null,
       },
     });
   });
@@ -137,6 +148,7 @@ describe("singleGameSlice reducer", () => {
             isLoading: true,
             error: null,
             isFlipped: true,
+            rewindToMoveIndex: 2,
           },
         },
         {
@@ -152,6 +164,7 @@ describe("singleGameSlice reducer", () => {
         isLoading: false,
         error: "error text",
         isFlipped: true,
+        rewindToMoveIndex: 2,
       },
     });
 
@@ -162,6 +175,7 @@ describe("singleGameSlice reducer", () => {
             isLoading: true,
             error: null,
             isFlipped: true,
+            rewindToMoveIndex: 2,
           },
         },
         {
@@ -177,11 +191,13 @@ describe("singleGameSlice reducer", () => {
         isLoading: true,
         error: null,
         isFlipped: true,
+        rewindToMoveIndex: 2,
       },
       "2": {
         isLoading: false,
         error: "error text",
         isFlipped: false,
+        rewindToMoveIndex: null,
       },
     });
   });
@@ -262,6 +278,7 @@ describe("singleGameSlice reducer", () => {
             isLoading: false,
             error: "error text",
             isFlipped: true,
+            rewindToMoveIndex: 2,
           },
         },
         {
@@ -274,6 +291,7 @@ describe("singleGameSlice reducer", () => {
         isLoading: false,
         error: "error text",
         isFlipped: false,
+        rewindToMoveIndex: 2,
       },
     });
 
@@ -284,6 +302,7 @@ describe("singleGameSlice reducer", () => {
             isLoading: false,
             error: "error text",
             isFlipped: false,
+            rewindToMoveIndex: 2,
           },
         },
         {
@@ -296,6 +315,63 @@ describe("singleGameSlice reducer", () => {
         isLoading: false,
         error: "error text",
         isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  it("should handle rewindToMove", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: false,
+            error: "error text",
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: rewindToMove.type,
+          payload: {
+            gameId: 1,
+            moveIndex: 3,
+          },
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: false,
+        error: "error text",
+        isFlipped: true,
+        rewindToMoveIndex: 3,
+      },
+    });
+
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: false,
+            error: "error text",
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: rewindToMove.type,
+          payload: {
+            gameId: 1,
+            moveIndex: null,
+          },
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: false,
+        error: "error text",
+        isFlipped: true,
+        rewindToMoveIndex: null,
       },
     });
   });

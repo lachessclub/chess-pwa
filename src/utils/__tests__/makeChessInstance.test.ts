@@ -3,6 +3,7 @@ import {
   gameSample,
   gameSampleFen,
   gameWithIncorrectMoveSample,
+  gameWithMovesRewoundToIndex2SampleFen,
   gameWithMovesSample,
   gameWithMovesSampleFen,
 } from "../../test-utils/data-sample/game";
@@ -15,6 +16,12 @@ describe("makeChessInstance", () => {
   it("not empty moves", () => {
     expect(makeChessInstance(gameWithMovesSample).fen()).toBe(
       gameWithMovesSampleFen
+    );
+  });
+
+  it("not empty moves and rewindToMoveIndex", () => {
+    expect(makeChessInstance(gameWithMovesSample, 2).fen()).toBe(
+      gameWithMovesRewoundToIndex2SampleFen
     );
   });
 

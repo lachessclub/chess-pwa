@@ -12,10 +12,16 @@ import gameSchema from "../../normalizr/schemas/gameSchema";
 import ItemErrorPayload from "../../interfaces/ItemErrorPayload";
 import NormalizedData from "../../normalizr/interfaces/NormalizedData";
 
+export interface RewindToMovePayload {
+  gameId: number;
+  moveIndex: number | null;
+}
+
 interface SingleGameItemState {
   isLoading: boolean;
   error: string | null;
   isFlipped: boolean;
+  rewindToMoveIndex: number | null;
 }
 
 interface SingleGameState {
@@ -26,6 +32,7 @@ export const defaultSingleGameItemState: SingleGameItemState = {
   isLoading: true,
   error: null,
   isFlipped: false,
+  rewindToMoveIndex: null,
 };
 
 const initialState: SingleGameState = {};
@@ -70,6 +77,9 @@ const singleGameSlice = createSlice({
     flipBoard(state, action: PayloadAction<number>) {
       state[action.payload].isFlipped = !state[action.payload].isFlipped;
     },
+    rewindToMove(state, action: PayloadAction<RewindToMovePayload>) {
+      state[action.payload.gameId].rewindToMoveIndex = action.payload.moveIndex;
+    },
   },
   extraReducers: {},
 });
@@ -79,6 +89,7 @@ export const {
   getSingleGameSuccess,
   getSingleGameError,
   flipBoard,
+  rewindToMove,
 } = singleGameSlice.actions;
 
 export default singleGameSlice.reducer;

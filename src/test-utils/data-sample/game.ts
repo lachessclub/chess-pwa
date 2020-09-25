@@ -19,6 +19,12 @@ export const gameSample: Game = {
 export const gameSampleFen =
   "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
+// @todo. use this function to create samples.
+export const makeGameSample = (data: Partial<Game>): Game => ({
+  ...gameSample,
+  ...data,
+});
+
 export const gameWith10Plus5MinControlSample: Game = {
   id: 1,
   aiLevel: 3,
@@ -137,14 +143,34 @@ export const gameWithMovesSample: Game = {
   turn: "white",
   wtime: 300000,
   btime: 300000,
-  moves: "e2e4 e7e5",
+  moves: "e2e4 e7e5 g1f3 g8f6",
   status: "started",
   white: null,
   black: null,
   winner: null,
 };
 export const gameWithMovesSampleFen =
-  "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2";
+  "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3";
+export const gameWithMovesRewoundToIndex2SampleFen =
+  "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2";
+export const gameWithMovesAndUserSample: Game = {
+  id: 2,
+  aiLevel: 3,
+  clockLimit: 300,
+  clockIncrement: 3,
+  initialFen: "startpos",
+  turn: "white",
+  wtime: 300000,
+  btime: 300000,
+  moves: "e2e4 e7e5 g1f3 g8f6",
+  status: "started",
+  white: {
+    id: 1,
+    fullName: "Thomas Miller",
+  },
+  black: null,
+  winner: null,
+};
 
 export const gameWithCheckmateByWhiteSample: Game = {
   id: 3,

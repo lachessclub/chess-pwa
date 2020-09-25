@@ -16,6 +16,14 @@ describe("GameMoves", () => {
       expect(getByTestId("move-0")).toContainHTML("e2e4");
       expect(getByTestId("move-1")).toContainHTML("e7e5");
     });
+
+    it("should contain selected class", () => {
+      const { getByTestId } = render(
+        <GameMoves game={gameWithMovesSample} rewindToMoveIndex={0} />
+      );
+
+      expect(getByTestId("move-0")).toHaveClass("selected");
+    });
   });
 
   describe("Events", () => {

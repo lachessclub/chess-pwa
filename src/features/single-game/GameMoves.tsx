@@ -5,11 +5,14 @@
 import React, { FC } from "react";
 import { chunk as _chunk } from "lodash";
 import { Move } from "chess.js";
+import cx from "classnames";
 import Game from "../../interfaces/Game";
 import makeChessInstance from "../../utils/makeChessInstance";
+import css from "./GameMoves.module.scss";
 
 export interface GameMovesProps {
   game?: Game;
+  rewindToMoveIndex?: number | null;
   onRewindToMove?(moveIndex: number): void;
 }
 
@@ -17,7 +20,11 @@ const formatMove = (move: Move): string => {
   return `${move.from}${move.to}`;
 };
 
-export const GameMoves: FC<GameMovesProps> = ({ game, onRewindToMove }) => {
+export const GameMoves: FC<GameMovesProps> = ({
+  game,
+  rewindToMoveIndex = null,
+  onRewindToMove,
+}) => {
   if (!game) {
     return null;
   }
@@ -47,6 +54,9 @@ export const GameMoves: FC<GameMovesProps> = ({ game, onRewindToMove }) => {
                 data-testid={`move-${index * 2}`}
                 onClick={makeRewindToMoveHandler(index * 2)}
                 role="button"
+                className={cx({
+                  [css.selected]: rewindToMoveIndex === index * 2,
+                })}
               >
                 {formatMove(pair[0])}
               </div>
@@ -57,6 +67,9 @@ export const GameMoves: FC<GameMovesProps> = ({ game, onRewindToMove }) => {
                   data-testid={`move-${index * 2 + 1}`}
                   onClick={makeRewindToMoveHandler(index * 2 + 1)}
                   role="button"
+                  className={cx({
+                    [css.selected]: rewindToMoveIndex === index * 2 + 1,
+                  })}
                 >
                   {formatMove(pair[1])}
                 </div>

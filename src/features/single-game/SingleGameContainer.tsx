@@ -10,6 +10,7 @@ import {
   defaultSingleGameItemState,
   fetchGame,
   flipBoard,
+  rewindToMove,
 } from "./singleGameSlice";
 import { makeMove } from "../move/moveSlice";
 import User from "../../interfaces/User";
@@ -41,23 +42,37 @@ export const SingleGameContainer: FC<SingleGameContainerProps> = ({ id }) => {
     dispatch(fetchGame(id));
   }, [dispatch, id]);
 
-  const onMove = useCallback(
+  const handleMove = useCallback(
     (move: Move) => {
       dispatch(makeMove(id, `${move.from}${move.to}`));
     },
     [dispatch, id]
   );
-  const onFlipBoard = useCallback(() => {
+  const handleFlipBoard = useCallback(() => {
     dispatch(flipBoard(id));
   }, [dispatch, id]);
+
+  const handleRewindToMove = useCallback(
+    (moveIndex: number | null) => {
+      dispatch(
+        rewindToMove({
+          moveIndex,
+          gameId: id,
+        })
+      );
+    },
+    [dispatch, id]
+  );
 
   if (game) {
     return (
       <SingleGame
         game={game}
         currentUser={currentUser}
-        onMove={onMove}
-        onFlipBoard={onFlipBoard}
+        rewindToMoveIndex={singleGameItemState.rewindToMoveIndex}
+        onMove={handleMove}
+        onFlipBoard={handleFlipBoard}
+        onRewindToMove={handleRewindToMove}
         isFlipped={singleGameItemState.isFlipped}
       />
     );

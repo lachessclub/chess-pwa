@@ -18,22 +18,31 @@ export interface SingleGameProps {
   game?: Game;
   currentUser?: User;
   isFlipped?: boolean;
+  rewindToMoveIndex?: number | null;
   onMove?(move: Move): void;
   onFlipBoard?(): void;
+  onRewindToMove?(moveIndex: number | null): void;
 }
 
 export const SingleGame: FC<SingleGameProps> = ({
   game,
   currentUser,
   isFlipped = false,
+  rewindToMoveIndex = null,
   onMove,
   onFlipBoard,
+  onRewindToMove,
 }) => {
   if (!game) {
     return null;
   }
 
-  const chess: ChessInstance = makeChessInstance(game);
+  const chessWithAllMoves: ChessInstance = makeChessInstance(game);
+
+  const chess: ChessInstance =
+    rewindToMoveIndex === null
+      ? chessWithAllMoves
+      : makeChessInstance(game, rewindToMoveIndex);
 
   const check: boolean = chess.in_check();
 
@@ -48,7 +57,8 @@ export const SingleGame: FC<SingleGameProps> = ({
   if (
     currentUser &&
     (currentUser.id === game.white?.id || currentUser.id === game.black?.id) &&
-    game.status === "started"
+    game.status === "started" &&
+    rewindToMoveIndex === null
   ) {
     viewOnly = false;
   }
@@ -70,13 +80,65 @@ export const SingleGame: FC<SingleGameProps> = ({
       orientation === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
   }
 
-  const movesHistory = chess.history({ verbose: true });
+  const movesHistory = chessWithAllMoves.history({ verbose: true });
 
   let lastMoveSquares: string[] | undefined;
-  if (movesHistory.length) {
-    const lastMove = movesHistory[movesHistory.length - 1];
+  if (rewindToMoveIndex === null) {
+    if (movesHistory.length) {
+      const lastMove = movesHistory[movesHistory.length - 1];
+      lastMoveSquares = [lastMove.from, lastMove.to];
+    }
+  } else {
+    const lastMove = movesHistory[rewindToMoveIndex];
     lastMoveSquares = [lastMove.from, lastMove.to];
   }
+
+  // @todo. use useCallback hook
+  const handleRewindToMove = (moveIndex: number) => {
+    if (onRewindToMove) {
+      if (moveIndex === movesHistory.length - 1) {
+        onRewindToMove(null);
+      } else {
+        onRewindToMove(moveIndex);
+      }
+    }
+  };
+
+  // @todo. use useCallback hook
+  const handleRewindToFirstMove = () => {
+    if (onRewindToMove) {
+      onRewindToMove(0);
+    }
+  };
+
+  // @todo. use useCallback hook
+  const handleRewindToLastMove = () => {
+    if (onRewindToMove) {
+      onRewindToMove(null);
+    }
+  };
+
+  // @todo. use useCallback hook
+  const handleRewindToPrevMove = () => {
+    if (onRewindToMove) {
+      if (rewindToMoveIndex === null) {
+        onRewindToMove(movesHistory.length - 2);
+      } else {
+        onRewindToMove(rewindToMoveIndex - 1);
+      }
+    }
+  };
+
+  // @todo. use useCallback hook
+  const handleRewindToNextMove = () => {
+    if (onRewindToMove) {
+      if (rewindToMoveIndex === movesHistory.length - 2) {
+        onRewindToMove(null);
+      } else {
+        onRewindToMove((rewindToMoveIndex as number) + 1);
+      }
+    }
+  };
 
   return (
     <>
@@ -84,7 +146,13 @@ export const SingleGame: FC<SingleGameProps> = ({
       <GameControlPanel
         game={game}
         orientation={orientation as AppPieceColor}
+        rewindToMoveIndex={rewindToMoveIndex}
         onFlipBoard={onFlipBoard}
+        onRewindToMove={handleRewindToMove}
+        onRewindToFirstMove={handleRewindToFirstMove}
+        onRewindToLastMove={handleRewindToLastMove}
+        onRewindToPrevMove={handleRewindToPrevMove}
+        onRewindToNextMove={handleRewindToNextMove}
       />
       <Board
         allowMarkers

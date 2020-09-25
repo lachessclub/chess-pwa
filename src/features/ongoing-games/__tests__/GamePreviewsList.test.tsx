@@ -7,6 +7,8 @@ import mountTest from "../../../test-utils/mountTest";
 import {
   gameWithMovesSample,
   gameSample,
+  gameWithMovesSampleFen,
+  gameSampleFen,
 } from "../../../test-utils/data-sample/game";
 import Game from "../../../interfaces/Game";
 
@@ -53,12 +55,8 @@ describe("GamePreviewsList", () => {
 
         const boards = testInstance.findAllByType(Board);
 
-        expect(boards[0].props.position).toBe(
-          "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-        );
-        expect(boards[1].props.position).toBe(
-          "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2"
-        );
+        expect(boards[0].props.position).toBe(gameSampleFen);
+        expect(boards[1].props.position).toBe(gameWithMovesSampleFen);
       });
 
       it("viewOnly", () => {

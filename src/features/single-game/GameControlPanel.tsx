@@ -6,10 +6,12 @@ import { GameMoves } from "./GameMoves";
 import { GameControlPanelUserName } from "./GameControlPanelUserName";
 import { GameControlPanelTopToolbar } from "./GameControlPanelTopToolbar";
 import { GameControlPanelBottomToolbar } from "./GameControlPanelBottomToolbar";
+import makeChessInstance from "../../utils/makeChessInstance";
 
 export interface GameControlPanelProps {
   game?: Game;
   orientation?: PieceColor;
+  rewindToMoveIndex?: number | null;
   onRewindToMove?(moveIndex: number): void;
   onFlipBoard?(): void;
   onRewindToPrevMove?(): void;
@@ -24,6 +26,7 @@ export interface GameControlPanelProps {
 export const GameControlPanel: FC<GameControlPanelProps> = ({
   game,
   orientation = "white",
+  rewindToMoveIndex = null,
   onRewindToMove,
   onFlipBoard,
   onRewindToPrevMove,
@@ -38,6 +41,18 @@ export const GameControlPanel: FC<GameControlPanelProps> = ({
     return null;
   }
 
+  const chess = makeChessInstance(game);
+
+  const movesHistory = chess.history();
+
+  const isFirstMove = movesHistory.length === 0 || rewindToMoveIndex === 0;
+
+  const isLastMove = rewindToMoveIndex === null;
+
+  const hasPrevMove = movesHistory.length > 0 && rewindToMoveIndex !== 0;
+
+  const hasNextMove = movesHistory.length > 0 && rewindToMoveIndex !== null;
+
   return (
     <div>
       <GameClock time={orientation === "white" ? game.btime : game.wtime} />
@@ -46,13 +61,21 @@ export const GameControlPanel: FC<GameControlPanelProps> = ({
         color={orientation === "white" ? "black" : "white"}
       />
       <GameControlPanelTopToolbar
+        isFirstMove={isFirstMove}
+        isLastMove={isLastMove}
+        hasPrevMove={hasPrevMove}
+        hasNextMove={hasNextMove}
         onFlipBoard={onFlipBoard}
         onRewindToPrevMove={onRewindToPrevMove}
         onRewindToNextMove={onRewindToNextMove}
         onRewindToFirstMove={onRewindToFirstMove}
         onRewindToLastMove={onRewindToLastMove}
       />
-      <GameMoves game={game} onRewindToMove={onRewindToMove} />
+      <GameMoves
+        game={game}
+        rewindToMoveIndex={rewindToMoveIndex}
+        onRewindToMove={onRewindToMove}
+      />
       <GameControlPanelBottomToolbar
         onAbortGame={onAbortGame}
         onOfferDraw={onOfferDraw}

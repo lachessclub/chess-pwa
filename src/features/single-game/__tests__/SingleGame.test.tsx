@@ -14,6 +14,8 @@ import {
   gameSample3,
   gameWithSmallAmountOfPiecesSample,
   gameWithSmallAmountOfPiecesSampleValidMoves,
+  gameWithMovesAndUserSample,
+  gameWithMovesRewoundToIndex2SampleFen,
 } from "../../../test-utils/data-sample/game";
 import userSample from "../../../test-utils/data-sample/user";
 import { GameMeta } from "../GameMeta";
@@ -70,6 +72,14 @@ describe("SingleGame", () => {
         testRenderer.update(<SingleGame game={gameWithMovesSample} />);
 
         expect(board.props.position).toBe(gameWithMovesSampleFen);
+
+        testRenderer.update(
+          <SingleGame game={gameWithMovesSample} rewindToMoveIndex={2} />
+        );
+
+        expect(board.props.position).toBe(
+          gameWithMovesRewoundToIndex2SampleFen
+        );
       });
 
       it("allowMarkers", () => {
@@ -177,6 +187,16 @@ describe("SingleGame", () => {
         expect(board.props.viewOnly).toBeTruthy();
 
         testRenderer.update(
+          <SingleGame
+            currentUser={userSample}
+            game={gameWithMovesAndUserSample}
+            rewindToMoveIndex={2}
+          />
+        );
+        // false because currentUser is a gamer of this game and game is not over
+        expect(board.props.viewOnly).toBeTruthy();
+
+        testRenderer.update(
           <SingleGame currentUser={userSample} game={gameSample2} />
         );
         // false because currentUser is a gamer of this game and game is not over
@@ -249,7 +269,12 @@ describe("SingleGame", () => {
         expect(board.props.lastMoveSquares).toBeUndefined();
 
         testRenderer.update(<SingleGame game={gameWithMovesSample} />);
-        expect(board.props.lastMoveSquares).toEqual(["e7", "e5"]);
+        expect(board.props.lastMoveSquares).toEqual(["g8", "f6"]);
+
+        testRenderer.update(
+          <SingleGame game={gameWithMovesSample} rewindToMoveIndex={2} />
+        );
+        expect(board.props.lastMoveSquares).toEqual(["g1", "f3"]);
       });
 
       it("onMove", () => {
@@ -298,21 +323,44 @@ describe("SingleGame", () => {
         );
         const testInstance = testRenderer.root;
 
-        const gameMeta = testInstance.findByType(GameControlPanel);
+        const gameControlPanel = testInstance.findByType(GameControlPanel);
 
-        expect(gameMeta.props.orientation).toBe("white");
+        expect(gameControlPanel.props.orientation).toBe("white");
 
         testRenderer.update(
           <SingleGame game={gameSample2} currentUser={userSample} />
         );
 
-        expect(gameMeta.props.orientation).toBe("black");
+        expect(gameControlPanel.props.orientation).toBe("black");
 
         testRenderer.update(
           <SingleGame game={gameSample2} currentUser={userSample} isFlipped />
         );
 
-        expect(gameMeta.props.orientation).toBe("white");
+        expect(gameControlPanel.props.orientation).toBe("white");
+      });
+
+      it("rewindToMoveIndex", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGame game={gameWithMovesSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameControlPanel = testInstance.findByType(GameControlPanel);
+
+        expect(gameControlPanel.props.rewindToMoveIndex).toBeNull();
+
+        testRenderer.update(
+          <SingleGame game={gameWithMovesSample} rewindToMoveIndex={2} />
+        );
+
+        expect(gameControlPanel.props.rewindToMoveIndex).toBe(2);
+
+        testRenderer.update(
+          <SingleGame game={gameWithMovesSample} rewindToMoveIndex={0} />
+        );
+
+        expect(gameControlPanel.props.rewindToMoveIndex).toBe(0);
       });
 
       it("onFlipBoard", () => {
@@ -327,6 +375,144 @@ describe("SingleGame", () => {
         );
 
         expect(gameControlPanel.props.onFlipBoard).toBe(onFlipBoard);
+      });
+    });
+  });
+
+  describe("Events", () => {
+    describe("onRewindToMove", () => {
+      it("from onRewindToMove", () => {
+        const onRewindToMove = jest.fn();
+
+        const testInstance = TestRenderer.create(
+          <SingleGame
+            game={gameWithMovesSample}
+            onRewindToMove={onRewindToMove}
+          />
+        ).root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        gameControlPanel.props.onRewindToMove(2);
+
+        expect(onRewindToMove).toBeCalledTimes(1);
+        expect(onRewindToMove).toBeCalledWith(2);
+
+        gameControlPanel.props.onRewindToMove(3);
+
+        expect(onRewindToMove).toBeCalledTimes(2);
+        expect(onRewindToMove).toHaveBeenNthCalledWith(2, null);
+      });
+
+      it("from onRewindToFirstMove", () => {
+        const onRewindToMove = jest.fn();
+
+        const testInstance = TestRenderer.create(
+          <SingleGame
+            game={gameWithMovesSample}
+            onRewindToMove={onRewindToMove}
+          />
+        ).root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        gameControlPanel.props.onRewindToFirstMove();
+
+        expect(onRewindToMove).toBeCalledTimes(1);
+        expect(onRewindToMove).toBeCalledWith(0);
+      });
+
+      it("from onRewindToLastMove", () => {
+        const onRewindToMove = jest.fn();
+
+        const testInstance = TestRenderer.create(
+          <SingleGame
+            game={gameWithMovesSample}
+            onRewindToMove={onRewindToMove}
+          />
+        ).root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        gameControlPanel.props.onRewindToLastMove();
+
+        expect(onRewindToMove).toBeCalledTimes(1);
+        expect(onRewindToMove).toBeCalledWith(null);
+      });
+
+      it("from onRewindToPrevMove", () => {
+        const onRewindToMove = jest.fn();
+
+        const testRenderer = TestRenderer.create(
+          <SingleGame
+            game={gameWithMovesSample}
+            onRewindToMove={onRewindToMove}
+          />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        gameControlPanel.props.onRewindToPrevMove();
+
+        expect(onRewindToMove).toBeCalledTimes(1);
+        expect(onRewindToMove).toBeCalledWith(2);
+
+        testRenderer.update(
+          <SingleGame
+            game={gameWithMovesSample}
+            rewindToMoveIndex={2}
+            onRewindToMove={onRewindToMove}
+          />
+        );
+
+        gameControlPanel.props.onRewindToPrevMove();
+
+        expect(onRewindToMove).toBeCalledTimes(2);
+        expect(onRewindToMove).toHaveBeenNthCalledWith(2, 1);
+      });
+
+      it("from onRewindToNextMove", () => {
+        const onRewindToMove = jest.fn();
+
+        const testRenderer = TestRenderer.create(
+          <SingleGame
+            game={gameWithMovesSample}
+            rewindToMoveIndex={0}
+            onRewindToMove={onRewindToMove}
+          />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        gameControlPanel.props.onRewindToNextMove();
+
+        expect(onRewindToMove).toBeCalledTimes(1);
+        expect(onRewindToMove).toBeCalledWith(1);
+
+        testRenderer.update(
+          <SingleGame
+            game={gameWithMovesSample}
+            rewindToMoveIndex={2}
+            onRewindToMove={onRewindToMove}
+          />
+        );
+
+        gameControlPanel.props.onRewindToNextMove();
+
+        expect(onRewindToMove).toBeCalledTimes(2);
+        expect(onRewindToMove).toHaveBeenNthCalledWith(2, null);
       });
     });
   });
