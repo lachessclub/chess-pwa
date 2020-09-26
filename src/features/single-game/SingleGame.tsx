@@ -102,7 +102,7 @@ export const SingleGame: FC<SingleGameProps> = ({
     currentUser &&
     (currentUser.id === game.white?.id || currentUser.id === game.black?.id) &&
     game.status === "started" &&
-    movesHistory.length < 3
+    movesHistory.length < 2
   ) {
     canAbortGame = true;
   }
@@ -112,7 +112,7 @@ export const SingleGame: FC<SingleGameProps> = ({
     currentUser &&
     (currentUser.id === game.white?.id || currentUser.id === game.black?.id) &&
     game.status === "started" &&
-    movesHistory.length > 2
+    movesHistory.length > 1
   ) {
     canResignGame = true;
   }
