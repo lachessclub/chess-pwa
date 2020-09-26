@@ -49,13 +49,13 @@ export const GameControlPanel: FC<GameControlPanelProps> = ({
 
   const movesHistory = chess.history();
 
-  const isFirstMove = movesHistory.length === 0 || rewindToMoveIndex === 0;
+  const isFirstMove = movesHistory.length <= 1 || rewindToMoveIndex === 0;
 
   const isLastMove = rewindToMoveIndex === null;
 
-  const hasPrevMove = movesHistory.length > 0 && rewindToMoveIndex !== 0;
+  const hasPrevMove = movesHistory.length > 1 && rewindToMoveIndex !== 0;
 
-  const hasNextMove = movesHistory.length > 0 && rewindToMoveIndex !== null;
+  const hasNextMove = rewindToMoveIndex !== null;
 
   return (
     <div>
