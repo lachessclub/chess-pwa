@@ -11,6 +11,7 @@ import { GameMoves } from "../GameMoves";
 import { GameControlPanelUserName } from "../GameControlPanelUserName";
 import { GameControlPanelBottomToolbar } from "../GameControlPanelBottomToolbar";
 import { GameControlPanelTopToolbar } from "../GameControlPanelTopToolbar";
+import { DrawOfferDialog } from "../DrawOfferDialog";
 
 describe("GameControlPanel", () => {
   describe("children components", () => {
@@ -30,6 +31,21 @@ describe("GameControlPanel", () => {
       const testInstance = testRenderer.root;
 
       expect(testInstance.findAllByType(GameMoves).length).toBe(1);
+    });
+
+    it("contains DrawOfferDialog", () => {
+      const testRenderer = TestRenderer.create(
+        <GameControlPanel game={gameSample} />
+      );
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(DrawOfferDialog).length).toBe(0);
+
+      testRenderer.update(
+        <GameControlPanel game={gameSample} drawOfferSentByOpponent />
+      );
+
+      expect(testInstance.findAllByType(DrawOfferDialog).length).toBe(1);
     });
 
     it("contains GameControlPanelUserName", () => {
@@ -122,6 +138,54 @@ describe("GameControlPanel", () => {
 
         expect(gameControlPanelUserNames[0].props.color).toBe("white");
         expect(gameControlPanelUserNames[1].props.color).toBe("black");
+      });
+    });
+
+    describe("DrawOfferDialog", () => {
+      it("onAccept", () => {
+        const testRenderer = TestRenderer.create(
+          <GameControlPanel game={gameSample} drawOfferSentByOpponent />
+        );
+        const testInstance = testRenderer.root;
+
+        const drawOfferDialog = testInstance.findByType(DrawOfferDialog);
+
+        expect(drawOfferDialog.props.onAccept).toBeUndefined();
+
+        const onAcceptDrawOffer = jest.fn();
+
+        testRenderer.update(
+          <GameControlPanel
+            game={gameSample}
+            drawOfferSentByOpponent
+            onAcceptDrawOffer={onAcceptDrawOffer}
+          />
+        );
+
+        expect(drawOfferDialog.props.onAccept).toBe(onAcceptDrawOffer);
+      });
+
+      it("onDecline", () => {
+        const testRenderer = TestRenderer.create(
+          <GameControlPanel game={gameSample} drawOfferSentByOpponent />
+        );
+        const testInstance = testRenderer.root;
+
+        const drawOfferDialog = testInstance.findByType(DrawOfferDialog);
+
+        expect(drawOfferDialog.props.onAccept).toBeUndefined();
+
+        const onDeclineDrawOffer = jest.fn();
+
+        testRenderer.update(
+          <GameControlPanel
+            game={gameSample}
+            drawOfferSentByOpponent
+            onDeclineDrawOffer={onDeclineDrawOffer}
+          />
+        );
+
+        expect(drawOfferDialog.props.onDecline).toBe(onDeclineDrawOffer);
       });
     });
 
@@ -410,7 +474,26 @@ describe("GameControlPanel", () => {
         expect(topToolbar.props.canResignGame).toBeTruthy();
       });
 
-      it("onFlipBoard", () => {
+      it("canOfferDraw", () => {
+        const testRenderer = TestRenderer.create(
+          <GameControlPanel game={gameWithMovesSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const topToolbar = testInstance.findByType(
+          GameControlPanelBottomToolbar
+        );
+
+        expect(topToolbar.props.canOfferDraw).toBeFalsy();
+
+        testRenderer.update(
+          <GameControlPanel game={gameWithMovesSample} canOfferDraw />
+        );
+
+        expect(topToolbar.props.canOfferDraw).toBeTruthy();
+      });
+
+      it("onAbortGame", () => {
         const testRenderer = TestRenderer.create(
           <GameControlPanel game={gameSample} />
         );
@@ -479,6 +562,20 @@ describe("GameControlPanel", () => {
     it("should contain nothing if no game", () => {
       const { container } = render(<GameControlPanel />);
       expect(container).toBeEmptyDOMElement();
+    });
+
+    it("should contain draw offer sent message", () => {
+      const { queryByTestId, rerender } = render(
+        <GameControlPanel game={gameSample} />
+      );
+
+      expect(queryByTestId("draw-offer-sent-message")).not.toBeInTheDocument();
+
+      rerender(
+        <GameControlPanel game={gameSample} drawOfferSentByCurrentUser />
+      );
+
+      expect(queryByTestId("draw-offer-sent-message")).toBeInTheDocument();
     });
   });
 });

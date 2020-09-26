@@ -6,6 +6,9 @@ import {
   abortGameSuccess,
   getSingleGameSuccess,
   resignGameSuccess,
+  offerDrawSuccess,
+  acceptDrawOfferSuccess,
+  declineDrawOfferSuccess,
 } from "../../single-game/singleGameSlice";
 import { challengeAiSuccess } from "../../challenge/challengeSlice";
 import { oneSecondPassed } from "../../game-clock/gameClockSlice";
@@ -209,6 +212,42 @@ describe("entitiesSlice reducer", () => {
     expect(
       entitiesReducer(entitiesSample, {
         type: resignGameSuccess.type,
+        payload: {
+          result: 2,
+          entities: addGamePayloadSample,
+        },
+      })
+    ).toEqual(entitiesAfterAddingGameSample);
+  });
+
+  it("should handle offerDrawSuccess", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: offerDrawSuccess.type,
+        payload: {
+          result: 2,
+          entities: addGamePayloadSample,
+        },
+      })
+    ).toEqual(entitiesAfterAddingGameSample);
+  });
+
+  it("should handle acceptDrawOfferSuccess", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: acceptDrawOfferSuccess.type,
+        payload: {
+          result: 2,
+          entities: addGamePayloadSample,
+        },
+      })
+    ).toEqual(entitiesAfterAddingGameSample);
+  });
+
+  it("should handle declineDrawOfferSuccess", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: declineDrawOfferSuccess.type,
         payload: {
           result: 2,
           entities: addGamePayloadSample,

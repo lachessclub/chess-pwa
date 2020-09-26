@@ -14,6 +14,18 @@ import singleGameReducer, {
   resignGameRequest,
   resignGameSuccess,
   resignGameError,
+  offerDraw,
+  offerDrawRequest,
+  offerDrawSuccess,
+  offerDrawError,
+  acceptDrawOffer,
+  acceptDrawOfferRequest,
+  acceptDrawOfferSuccess,
+  acceptDrawOfferError,
+  declineDrawOffer,
+  declineDrawOfferRequest,
+  declineDrawOfferSuccess,
+  declineDrawOfferError,
 } from "../singleGameSlice";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
@@ -581,6 +593,468 @@ describe("singleGameSlice reducer", () => {
       });
     });
   });
+
+  /* Offer draw (begin) */
+  it("should handle offerDrawRequest", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: offerDrawRequest.type,
+          payload: 1,
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  it("should handle offerDrawSuccess", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: offerDrawSuccess.type,
+          payload: {
+            result: 1,
+            entities: {},
+          },
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  it("should handle offerDrawError", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: offerDrawError.type,
+          payload: {
+            itemId: 1,
+            error: "error text",
+          },
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  describe("should handle offerDraw", () => {
+    it("success", async () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.post as jest.Mock).mockImplementationOnce(
+        (url: string, cb: RequestCallback) => {
+          cb(gameSample, {
+            statusCode: 200,
+          } as JWR);
+        }
+      );
+
+      const result = offerDraw(1)(dispatch, () => defaultState, null);
+
+      await expect(result).resolves.toEqual(gameSample);
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: offerDrawRequest.type,
+        payload: 1,
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: offerDrawSuccess.type,
+        payload: {
+          result: 1,
+          entities: {
+            games: {
+              "1": gameSample,
+            },
+          },
+        },
+      });
+    });
+
+    it("fail", async () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.post as jest.Mock).mockImplementationOnce(
+        (url: string, cb: RequestCallback) => {
+          cb("game not found", {
+            body: "game not found",
+            statusCode: 404,
+          } as JWR);
+        }
+      );
+
+      const result = offerDraw(1)(dispatch, () => defaultState, null);
+
+      await expect(result).rejects.toEqual({
+        body: "game not found",
+        statusCode: 404,
+      });
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: offerDrawRequest.type,
+        payload: 1,
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: offerDrawError.type,
+        payload: {
+          itemId: 1,
+          error: "game not found",
+        },
+      });
+    });
+  });
+  /* Offer draw (end) */
+
+  /* Accept draw offer (begin) */
+  it("should handle acceptDrawOfferRequest", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: acceptDrawOfferRequest.type,
+          payload: 1,
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  it("should handle acceptDrawOfferSuccess", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: acceptDrawOfferSuccess.type,
+          payload: {
+            result: 1,
+            entities: {},
+          },
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  it("should handle acceptDrawOfferError", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: acceptDrawOfferError.type,
+          payload: {
+            itemId: 1,
+            error: "error text",
+          },
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  describe("should handle acceptDrawOffer", () => {
+    it("success", async () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.post as jest.Mock).mockImplementationOnce(
+        (url: string, cb: RequestCallback) => {
+          cb(gameSample, {
+            statusCode: 200,
+          } as JWR);
+        }
+      );
+
+      const result = acceptDrawOffer(1)(dispatch, () => defaultState, null);
+
+      await expect(result).resolves.toEqual(gameSample);
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: acceptDrawOfferRequest.type,
+        payload: 1,
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: acceptDrawOfferSuccess.type,
+        payload: {
+          result: 1,
+          entities: {
+            games: {
+              "1": gameSample,
+            },
+          },
+        },
+      });
+    });
+
+    it("fail", async () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.post as jest.Mock).mockImplementationOnce(
+        (url: string, cb: RequestCallback) => {
+          cb("game not found", {
+            body: "game not found",
+            statusCode: 404,
+          } as JWR);
+        }
+      );
+
+      const result = acceptDrawOffer(1)(dispatch, () => defaultState, null);
+
+      await expect(result).rejects.toEqual({
+        body: "game not found",
+        statusCode: 404,
+      });
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: acceptDrawOfferRequest.type,
+        payload: 1,
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: acceptDrawOfferError.type,
+        payload: {
+          itemId: 1,
+          error: "game not found",
+        },
+      });
+    });
+  });
+  /* Accept draw offer (end) */
+
+  /* Decline draw offer (begin) */
+  it("should handle declineDrawOfferRequest", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: declineDrawOfferRequest.type,
+          payload: 1,
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  it("should handle declineDrawOfferSuccess", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: declineDrawOfferSuccess.type,
+          payload: {
+            result: 1,
+            entities: {},
+          },
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  it("should handle declineDrawOfferError", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: declineDrawOfferError.type,
+          payload: {
+            itemId: 1,
+            error: "error text",
+          },
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  describe("should handle declineDrawOffer", () => {
+    it("success", async () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.post as jest.Mock).mockImplementationOnce(
+        (url: string, cb: RequestCallback) => {
+          cb(gameSample, {
+            statusCode: 200,
+          } as JWR);
+        }
+      );
+
+      const result = declineDrawOffer(1)(dispatch, () => defaultState, null);
+
+      await expect(result).resolves.toEqual(gameSample);
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: declineDrawOfferRequest.type,
+        payload: 1,
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: declineDrawOfferSuccess.type,
+        payload: {
+          result: 1,
+          entities: {
+            games: {
+              "1": gameSample,
+            },
+          },
+        },
+      });
+    });
+
+    it("fail", async () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.post as jest.Mock).mockImplementationOnce(
+        (url: string, cb: RequestCallback) => {
+          cb("game not found", {
+            body: "game not found",
+            statusCode: 404,
+          } as JWR);
+        }
+      );
+
+      const result = declineDrawOffer(1)(dispatch, () => defaultState, null);
+
+      await expect(result).rejects.toEqual({
+        body: "game not found",
+        statusCode: 404,
+      });
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: declineDrawOfferRequest.type,
+        payload: 1,
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: declineDrawOfferError.type,
+        payload: {
+          itemId: 1,
+          error: "game not found",
+        },
+      });
+    });
+  });
+  /* Decline draw offer (end) */
 
   it("should handle flipBoard", () => {
     expect(

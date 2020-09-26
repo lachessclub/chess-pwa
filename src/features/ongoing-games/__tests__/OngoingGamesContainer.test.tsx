@@ -54,6 +54,7 @@ describe("OngoingGamesContainer", () => {
             aiLevel: 3,
             clockLimit: 300,
             clockIncrement: 3,
+            drawOffer: null,
             initialFen: "startpos",
             turn: "white",
             wtime: 300000,

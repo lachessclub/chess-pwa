@@ -7,13 +7,20 @@ import { GameControlPanelUserName } from "./GameControlPanelUserName";
 import { GameControlPanelTopToolbar } from "./GameControlPanelTopToolbar";
 import { GameControlPanelBottomToolbar } from "./GameControlPanelBottomToolbar";
 import makeChessInstance from "../../utils/makeChessInstance";
+import { DrawOfferDialog } from "./DrawOfferDialog";
 
 export interface GameControlPanelProps {
   game?: Game;
   orientation?: PieceColor;
   rewindToMoveIndex?: number | null;
   canAbortGame?: boolean;
+  canDrawOffer?: boolean;
+  canOfferDraw?: boolean;
   canResignGame?: boolean;
+  drawOfferSentByCurrentUser?: boolean;
+  drawOfferSentByOpponent?: boolean;
+  onAcceptDrawOffer?(): void;
+  onDeclineDrawOffer?(): void;
   onRewindToMove?(moveIndex: number): void;
   onFlipBoard?(): void;
   onRewindToPrevMove?(): void;
@@ -30,7 +37,12 @@ export const GameControlPanel: FC<GameControlPanelProps> = ({
   orientation = "white",
   rewindToMoveIndex = null,
   canAbortGame = false,
+  canOfferDraw = false,
   canResignGame = false,
+  drawOfferSentByCurrentUser = false,
+  drawOfferSentByOpponent = false,
+  onAcceptDrawOffer,
+  onDeclineDrawOffer,
   onRewindToMove,
   onFlipBoard,
   onRewindToPrevMove,
@@ -80,8 +92,18 @@ export const GameControlPanel: FC<GameControlPanelProps> = ({
         rewindToMoveIndex={rewindToMoveIndex}
         onRewindToMove={onRewindToMove}
       />
+      {drawOfferSentByOpponent && (
+        <DrawOfferDialog
+          onAccept={onAcceptDrawOffer}
+          onDecline={onDeclineDrawOffer}
+        />
+      )}
+      {drawOfferSentByCurrentUser && (
+        <div data-testid="draw-offer-sent-message">Draw offer sent</div>
+      )}
       <GameControlPanelBottomToolbar
         canAbortGame={canAbortGame}
+        canOfferDraw={canOfferDraw}
         canResignGame={canResignGame}
         onAbortGame={onAbortGame}
         onOfferDraw={onOfferDraw}

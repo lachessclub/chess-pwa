@@ -19,8 +19,11 @@ export interface SingleGameProps {
   currentUser?: User;
   isFlipped?: boolean;
   rewindToMoveIndex?: number | null;
+  onAcceptDrawOffer?(): void;
+  onDeclineDrawOffer?(): void;
   onMove?(move: Move): void;
   onAbortGame?(): void;
+  onOfferDraw?(): void;
   onResignGame?(): void;
   onFlipBoard?(): void;
   onRewindToMove?(moveIndex: number | null): void;
@@ -31,7 +34,10 @@ export const SingleGame: FC<SingleGameProps> = ({
   currentUser,
   isFlipped = false,
   rewindToMoveIndex = null,
+  onAcceptDrawOffer,
+  onDeclineDrawOffer,
   onAbortGame,
+  onOfferDraw,
   onResignGame,
   onMove,
   onFlipBoard,
@@ -117,6 +123,48 @@ export const SingleGame: FC<SingleGameProps> = ({
     canResignGame = true;
   }
 
+  let canOfferDraw = false;
+  if (
+    currentUser &&
+    (currentUser.id === game.white?.id || currentUser.id === game.black?.id) &&
+    game.drawOffer === null &&
+    game.aiLevel === 0 &&
+    game.status === "started" &&
+    movesHistory.length > 1
+  ) {
+    canOfferDraw = true;
+  }
+
+  let playerPiecesColor: AppPieceColor | null = null;
+  if (currentUser) {
+    if (currentUser.id === game.white?.id) {
+      playerPiecesColor = "white";
+    } else if (currentUser.id === game.black?.id) {
+      playerPiecesColor = "black";
+    }
+  }
+
+  let drawOfferSentByCurrentUser = false;
+  if (
+    currentUser &&
+    (currentUser.id === game.white?.id || currentUser.id === game.black?.id) &&
+    game.status === "started" &&
+    game.drawOffer === playerPiecesColor
+  ) {
+    drawOfferSentByCurrentUser = true;
+  }
+
+  let drawOfferSentByOpponent = false;
+  if (
+    currentUser &&
+    (currentUser.id === game.white?.id || currentUser.id === game.black?.id) &&
+    game.status === "started" &&
+    game.drawOffer !== null &&
+    game.drawOffer !== playerPiecesColor
+  ) {
+    drawOfferSentByOpponent = true;
+  }
+
   // @todo. use useCallback hook
   const handleRewindToMove = (moveIndex: number) => {
     if (onRewindToMove) {
@@ -173,8 +221,14 @@ export const SingleGame: FC<SingleGameProps> = ({
         rewindToMoveIndex={rewindToMoveIndex}
         canAbortGame={canAbortGame}
         canResignGame={canResignGame}
+        canOfferDraw={canOfferDraw}
+        drawOfferSentByCurrentUser={drawOfferSentByCurrentUser}
+        drawOfferSentByOpponent={drawOfferSentByOpponent}
+        onAcceptDrawOffer={onAcceptDrawOffer}
+        onDeclineDrawOffer={onDeclineDrawOffer}
         onFlipBoard={onFlipBoard}
         onAbortGame={onAbortGame}
+        onOfferDraw={onOfferDraw}
         onResignGame={onResignGame}
         onRewindToMove={handleRewindToMove}
         onRewindToFirstMove={handleRewindToFirstMove}

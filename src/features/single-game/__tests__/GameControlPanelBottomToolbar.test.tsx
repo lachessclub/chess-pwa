@@ -21,7 +21,7 @@ describe("GameControlPanelBottomToolbar", () => {
       const onOfferDraw = jest.fn();
 
       const { getByTestId } = render(
-        <GameControlPanelBottomToolbar onOfferDraw={onOfferDraw} />
+        <GameControlPanelBottomToolbar onOfferDraw={onOfferDraw} canOfferDraw />
       );
 
       fireEvent.click(getByTestId("offer-draw-btn"));
@@ -58,6 +58,20 @@ describe("GameControlPanelBottomToolbar", () => {
       expect(btn).toBeDisabled();
 
       rerender(<GameControlPanelBottomToolbar canAbortGame />);
+
+      expect(btn).not.toBeDisabled();
+    });
+
+    it("offer-draw-btn", () => {
+      const { getByTestId, rerender } = render(
+        <GameControlPanelBottomToolbar />
+      );
+
+      const btn = getByTestId("offer-draw-btn");
+
+      expect(btn).toBeDisabled();
+
+      rerender(<GameControlPanelBottomToolbar canOfferDraw />);
 
       expect(btn).not.toBeDisabled();
     });

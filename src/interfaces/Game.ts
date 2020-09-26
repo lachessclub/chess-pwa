@@ -7,6 +7,7 @@ export default interface Game {
   aiLevel: number;
   clockLimit: number;
   clockIncrement: number;
+  drawOffer: PieceColor | null;
   initialFen: string;
   turn: PieceColor;
   wtime: number;

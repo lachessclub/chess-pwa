@@ -18,6 +18,7 @@ import {
   gameWithMovesRewoundToIndex2SampleFen,
   gameThatCanBeAbortedSample,
   makeGameSample,
+  gameWithMovesAndUserVsUserSample,
 } from "../../../test-utils/data-sample/game";
 import userSample from "../../../test-utils/data-sample/user";
 import { GameMeta } from "../GameMeta";
@@ -365,6 +366,60 @@ describe("SingleGame", () => {
         expect(gameControlPanel.props.rewindToMoveIndex).toBe(0);
       });
 
+      it("drawOfferSentByCurrentUser", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGame game={gameSample3} />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameControlPanel = testInstance.findByType(GameControlPanel);
+
+        expect(gameControlPanel.props.drawOfferSentByCurrentUser).toBeFalsy();
+
+        const gameWithdrawOfferSentByCurrentUser = makeGameSample(
+          {
+            drawOffer: "white",
+          },
+          gameSample3
+        );
+
+        testRenderer.update(
+          <SingleGame
+            game={gameWithdrawOfferSentByCurrentUser}
+            currentUser={userSample}
+          />
+        );
+
+        expect(gameControlPanel.props.drawOfferSentByCurrentUser).toBeTruthy();
+      });
+
+      it("drawOfferSentByOpponent", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGame game={gameSample3} />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameControlPanel = testInstance.findByType(GameControlPanel);
+
+        expect(gameControlPanel.props.drawOfferSentByOpponent).toBeFalsy();
+
+        const gameWithdrawOfferSentByOpponent = makeGameSample(
+          {
+            drawOffer: "black",
+          },
+          gameSample3
+        );
+
+        testRenderer.update(
+          <SingleGame
+            game={gameWithdrawOfferSentByOpponent}
+            currentUser={userSample}
+          />
+        );
+
+        expect(gameControlPanel.props.drawOfferSentByOpponent).toBeTruthy();
+      });
+
       it("canAbortGame", () => {
         const testRenderer = TestRenderer.create(
           <SingleGame game={gameWithMovesSample} />
@@ -439,6 +494,71 @@ describe("SingleGame", () => {
         expect(gameControlPanel.props.canResignGame).toBeFalsy();
       });
 
+      it("canOfferDraw", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGame game={gameWithMovesAndUserVsUserSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameControlPanel = testInstance.findByType(GameControlPanel);
+
+        // not authenticated
+        expect(gameControlPanel.props.canOfferDraw).toBeFalsy();
+
+        testRenderer.update(
+          <SingleGame
+            game={gameWithMovesAndUserVsUserSample}
+            currentUser={userSample}
+          />
+        );
+
+        expect(gameControlPanel.props.canOfferDraw).toBeTruthy();
+
+        const gameWithOutOfTimeStatus = makeGameSample(
+          {
+            status: "outoftime",
+            winner: "white",
+          },
+          gameWithMovesAndUserVsUserSample
+        );
+
+        testRenderer.update(
+          <SingleGame game={gameWithOutOfTimeStatus} currentUser={userSample} />
+        );
+
+        // out of time
+        expect(gameControlPanel.props.canOfferDraw).toBeFalsy();
+
+        const gameWithDrawOffer = makeGameSample(
+          {
+            drawOffer: "white",
+          },
+          gameWithMovesAndUserVsUserSample
+        );
+
+        testRenderer.update(
+          <SingleGame game={gameWithDrawOffer} currentUser={userSample} />
+        );
+
+        // draw is already offered
+        expect(gameControlPanel.props.canOfferDraw).toBeFalsy();
+
+        const gameVsAI = makeGameSample(
+          {
+            aiLevel: 2,
+            black: null,
+          },
+          gameWithMovesAndUserVsUserSample
+        );
+
+        testRenderer.update(
+          <SingleGame game={gameVsAI} currentUser={userSample} />
+        );
+
+        // game VS AI
+        expect(gameControlPanel.props.canOfferDraw).toBeFalsy();
+      });
+
       it("onFlipBoard", () => {
         const onFlipBoard = jest.fn();
 
@@ -453,6 +573,41 @@ describe("SingleGame", () => {
         expect(gameControlPanel.props.onFlipBoard).toBe(onFlipBoard);
       });
 
+      it("onAcceptDrawOffer", () => {
+        const onAcceptDrawOffer = jest.fn();
+
+        const testInstance = TestRenderer.create(
+          <SingleGame game={gameSample} onAcceptDrawOffer={onAcceptDrawOffer} />
+        ).root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        expect(gameControlPanel.props.onAcceptDrawOffer).toBe(
+          onAcceptDrawOffer
+        );
+      });
+
+      it("onDeclineDrawOffer", () => {
+        const onDeclineDrawOffer = jest.fn();
+
+        const testInstance = TestRenderer.create(
+          <SingleGame
+            game={gameSample}
+            onDeclineDrawOffer={onDeclineDrawOffer}
+          />
+        ).root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        expect(gameControlPanel.props.onDeclineDrawOffer).toBe(
+          onDeclineDrawOffer
+        );
+      });
+
       it("onAbortGame", () => {
         const onAbortGame = jest.fn();
 
@@ -465,6 +620,20 @@ describe("SingleGame", () => {
         );
 
         expect(gameControlPanel.props.onAbortGame).toBe(onAbortGame);
+      });
+
+      it("onOfferDraw", () => {
+        const onOfferDraw = jest.fn();
+
+        const testInstance = TestRenderer.create(
+          <SingleGame game={gameSample} onOfferDraw={onOfferDraw} />
+        ).root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        expect(gameControlPanel.props.onOfferDraw).toBe(onOfferDraw);
       });
 
       it("onResignGame", () => {

@@ -9,8 +9,11 @@ import {
   fetchGame,
   flipBoard,
   rewindToMove,
+  offerDraw,
   abortGame,
   resignGame,
+  acceptDrawOffer,
+  declineDrawOffer,
 } from "../singleGameSlice";
 import {
   stateWithDataSample,
@@ -62,6 +65,7 @@ describe("SingleGameContainer", () => {
           aiLevel: 3,
           clockLimit: 300,
           clockIncrement: 3,
+          drawOffer: null,
           initialFen: "startpos",
           turn: "white",
           wtime: 300000,
@@ -242,6 +246,75 @@ describe("SingleGameContainer", () => {
       expect(resignGameFn).toBeCalledWith(1);
 
       expect(dispatch).toBeCalledWith(resignGameReturnedValue);
+    });
+
+    it("should call dispatch(acceptDrawOffer())", () => {
+      const dispatch = useDispatch<jest.Mock>();
+      const acceptDrawOfferReturnedValue = Symbol("acceptDrawOffer");
+
+      const testRenderer = TestRenderer.create(<SingleGameContainer id={1} />);
+      const testInstance = testRenderer.root;
+
+      const singleGame = testInstance.findByType(SingleGame);
+
+      const acceptDrawOfferFn = (acceptDrawOffer as unknown) as jest.Mock;
+      acceptDrawOfferFn.mockClear();
+      acceptDrawOfferFn.mockReturnValue(acceptDrawOfferReturnedValue);
+
+      TestRenderer.act(() => {
+        singleGame.props.onAcceptDrawOffer();
+      });
+
+      expect(acceptDrawOfferFn).toBeCalledTimes(1);
+      expect(acceptDrawOfferFn).toBeCalledWith(1);
+
+      expect(dispatch).toBeCalledWith(acceptDrawOfferReturnedValue);
+    });
+
+    it("should call dispatch(declineDrawOffer())", () => {
+      const dispatch = useDispatch<jest.Mock>();
+      const declineDrawOfferReturnedValue = Symbol("declineDrawOffer");
+
+      const testRenderer = TestRenderer.create(<SingleGameContainer id={1} />);
+      const testInstance = testRenderer.root;
+
+      const singleGame = testInstance.findByType(SingleGame);
+
+      const declineDrawOfferFn = (declineDrawOffer as unknown) as jest.Mock;
+      declineDrawOfferFn.mockClear();
+      declineDrawOfferFn.mockReturnValue(declineDrawOfferReturnedValue);
+
+      TestRenderer.act(() => {
+        singleGame.props.onDeclineDrawOffer();
+      });
+
+      expect(declineDrawOfferFn).toBeCalledTimes(1);
+      expect(declineDrawOfferFn).toBeCalledWith(1);
+
+      expect(dispatch).toBeCalledWith(declineDrawOfferReturnedValue);
+    });
+
+    it("should call dispatch(offerDraw())", () => {
+      const dispatch = useDispatch<jest.Mock>();
+      const offerDrawReturnedValue = Symbol("offerDraw");
+
+      const testRenderer = TestRenderer.create(<SingleGameContainer id={1} />);
+      const testInstance = testRenderer.root;
+
+      const singleGame = testInstance.findByType(SingleGame);
+
+      const offerDrawFn = (offerDraw as unknown) as jest.Mock;
+      offerDrawFn.mockClear();
+      offerDrawFn.mockReturnValue(offerDrawReturnedValue);
+
+      TestRenderer.act(() => {
+        singleGame.props.onOfferDraw();
+      });
+
+      expect(offerDrawFn).toBeCalledTimes(1);
+      expect(offerDrawFn).toBeCalledWith(1);
+
+      expect(dispatch).toBeCalledWith(offerDrawReturnedValue);
     });
 
     it("should call dispatch(fetchGame())", () => {
