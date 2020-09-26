@@ -6,6 +6,10 @@ import singleGameReducer, {
   fetchGame,
   flipBoard,
   rewindToMove,
+  abortGame,
+  abortGameRequest,
+  abortGameSuccess,
+  abortGameError,
 } from "../singleGameSlice";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
@@ -262,6 +266,152 @@ describe("singleGameSlice reducer", () => {
       });
       expect(dispatch).toHaveBeenNthCalledWith(2, {
         type: getSingleGameError.type,
+        payload: {
+          itemId: 1,
+          error: "game not found",
+        },
+      });
+    });
+  });
+
+  it("should handle abortGameRequest", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: abortGameRequest.type,
+          payload: 1,
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  it("should handle abortGameSuccess", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: abortGameSuccess.type,
+          payload: 1,
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  it("should handle abortGameError", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: abortGameError.type,
+          payload: 1,
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  describe("should handle abortGame", () => {
+    it("success", async () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.post as jest.Mock).mockImplementationOnce(
+        (url: string, cb: RequestCallback) => {
+          cb(gameSample, {
+            statusCode: 200,
+          } as JWR);
+        }
+      );
+
+      const result = abortGame(1)(dispatch, () => defaultState, null);
+
+      await expect(result).resolves.toEqual(gameSample);
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: abortGameRequest.type,
+        payload: 1,
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: abortGameSuccess.type,
+        payload: {
+          result: 1,
+          entities: {
+            games: {
+              "1": gameSample,
+            },
+          },
+        },
+      });
+    });
+
+    it("fail", async () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.post as jest.Mock).mockImplementationOnce(
+        (url: string, cb: RequestCallback) => {
+          cb("game not found", {
+            body: "game not found",
+            statusCode: 404,
+          } as JWR);
+        }
+      );
+
+      const result = abortGame(1)(dispatch, () => defaultState, null);
+
+      await expect(result).rejects.toEqual({
+        body: "game not found",
+        statusCode: 404,
+      });
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: abortGameRequest.type,
+        payload: 1,
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: abortGameError.type,
         payload: {
           itemId: 1,
           error: "game not found",

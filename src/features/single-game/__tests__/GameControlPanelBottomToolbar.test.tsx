@@ -8,7 +8,7 @@ describe("GameControlPanelBottomToolbar", () => {
       const onAbortGame = jest.fn();
 
       const { getByTestId } = render(
-        <GameControlPanelBottomToolbar onAbortGame={onAbortGame} />
+        <GameControlPanelBottomToolbar onAbortGame={onAbortGame} canAbortGame />
       );
 
       fireEvent.click(getByTestId("abort-game-btn"));
@@ -41,6 +41,22 @@ describe("GameControlPanelBottomToolbar", () => {
 
       expect(onResignGame).toBeCalledTimes(1);
       expect(onResignGame).toBeCalledWith();
+    });
+  });
+
+  describe("DOM structure", () => {
+    it("abort-game-btn", () => {
+      const { getByTestId, rerender } = render(
+        <GameControlPanelBottomToolbar />
+      );
+
+      const btn = getByTestId("abort-game-btn");
+
+      expect(btn).toBeDisabled();
+
+      rerender(<GameControlPanelBottomToolbar canAbortGame />);
+
+      expect(btn).not.toBeDisabled();
     });
   });
 });

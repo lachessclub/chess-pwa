@@ -20,8 +20,11 @@ export const gameSampleFen =
   "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
 
 // @todo. use this function to create samples.
-export const makeGameSample = (data: Partial<Game>): Game => ({
-  ...gameSample,
+export const makeGameSample = (
+  data: Partial<Game>,
+  originalGameSample = gameSample
+): Game => ({
+  ...originalGameSample,
   ...data,
 });
 
@@ -169,6 +172,25 @@ export const gameWithMovesAndUserSample: Game = {
     fullName: "Thomas Miller",
   },
   black: null,
+  winner: null,
+};
+
+export const gameThatCanBeAbortedSample: Game = {
+  id: 2,
+  aiLevel: 3,
+  clockLimit: 300,
+  clockIncrement: 3,
+  initialFen: "startpos",
+  turn: "white",
+  wtime: 300000,
+  btime: 300000,
+  moves: "e2e4 e7e5",
+  status: "started",
+  white: null,
+  black: {
+    id: 1,
+    fullName: "Thomas Miller",
+  },
   winner: null,
 };
 

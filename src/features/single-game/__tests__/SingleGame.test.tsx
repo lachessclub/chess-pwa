@@ -16,6 +16,8 @@ import {
   gameWithSmallAmountOfPiecesSampleValidMoves,
   gameWithMovesAndUserSample,
   gameWithMovesRewoundToIndex2SampleFen,
+  gameThatCanBeAbortedSample,
+  makeGameSample,
 } from "../../../test-utils/data-sample/game";
 import userSample from "../../../test-utils/data-sample/user";
 import { GameMeta } from "../GameMeta";
@@ -363,6 +365,42 @@ describe("SingleGame", () => {
         expect(gameControlPanel.props.rewindToMoveIndex).toBe(0);
       });
 
+      it("canAbortGame", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGame game={gameWithMovesSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameControlPanel = testInstance.findByType(GameControlPanel);
+
+        expect(gameControlPanel.props.canAbortGame).toBeFalsy();
+
+        testRenderer.update(
+          <SingleGame
+            game={gameThatCanBeAbortedSample}
+            currentUser={userSample}
+          />
+        );
+
+        expect(gameControlPanel.props.canAbortGame).toBeTruthy();
+
+        const gameSampleWithOutOfTimeStatus = makeGameSample(
+          {
+            status: "outoftime",
+          },
+          gameThatCanBeAbortedSample
+        );
+
+        testRenderer.update(
+          <SingleGame
+            game={gameSampleWithOutOfTimeStatus}
+            currentUser={userSample}
+          />
+        );
+
+        expect(gameControlPanel.props.canAbortGame).toBeFalsy();
+      });
+
       it("onFlipBoard", () => {
         const onFlipBoard = jest.fn();
 
@@ -375,6 +413,20 @@ describe("SingleGame", () => {
         );
 
         expect(gameControlPanel.props.onFlipBoard).toBe(onFlipBoard);
+      });
+
+      it("onAbortGame", () => {
+        const onAbortGame = jest.fn();
+
+        const testInstance = TestRenderer.create(
+          <SingleGame game={gameSample} onAbortGame={onAbortGame} />
+        ).root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        expect(gameControlPanel.props.onAbortGame).toBe(onAbortGame);
       });
     });
   });

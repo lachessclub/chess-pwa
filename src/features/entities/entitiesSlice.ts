@@ -9,7 +9,10 @@ import {
   registerSuccess,
 } from "../current-user/currentUserSlice";
 import { getOngoingGamesSuccess } from "../ongoing-games/ongoingGamesSlice";
-import { getSingleGameSuccess } from "../single-game/singleGameSlice";
+import {
+  getSingleGameSuccess,
+  abortGameSuccess,
+} from "../single-game/singleGameSlice";
 import { challengeAiSuccess } from "../challenge/challengeSlice";
 import { oneSecondPassed } from "../game-clock/gameClockSlice";
 import {
@@ -67,6 +70,7 @@ const entitiesSlice = createSlice({
     [registerSuccess.type]: getNormalizedDataReducer,
     [getOngoingGamesSuccess.type]: getNormalizedDataReducer,
     [getSingleGameSuccess.type]: getNormalizedDataReducer,
+    [abortGameSuccess.type]: getNormalizedDataReducer,
     [challengeAiSuccess.type]: getNormalizedDataReducer,
     [updateGameBySubscription.type]: getNormalizedDataReducer,
     [createGameBySubscription.type]: getNormalizedDataReducer,

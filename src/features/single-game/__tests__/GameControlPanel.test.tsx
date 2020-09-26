@@ -372,6 +372,25 @@ describe("GameControlPanel", () => {
     });
 
     describe("GameControlPanelBottomToolbar", () => {
+      it("canAbortGame", () => {
+        const testRenderer = TestRenderer.create(
+          <GameControlPanel game={gameWithMovesSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const topToolbar = testInstance.findByType(
+          GameControlPanelBottomToolbar
+        );
+
+        expect(topToolbar.props.canAbortGame).toBeFalsy();
+
+        testRenderer.update(
+          <GameControlPanel game={gameWithMovesSample} canAbortGame />
+        );
+
+        expect(topToolbar.props.canAbortGame).toBeTruthy();
+      });
+
       it("onFlipBoard", () => {
         const testRenderer = TestRenderer.create(
           <GameControlPanel game={gameSample} />

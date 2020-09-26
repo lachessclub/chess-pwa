@@ -12,6 +12,7 @@ export interface GameControlPanelProps {
   game?: Game;
   orientation?: PieceColor;
   rewindToMoveIndex?: number | null;
+  canAbortGame?: boolean;
   onRewindToMove?(moveIndex: number): void;
   onFlipBoard?(): void;
   onRewindToPrevMove?(): void;
@@ -27,6 +28,7 @@ export const GameControlPanel: FC<GameControlPanelProps> = ({
   game,
   orientation = "white",
   rewindToMoveIndex = null,
+  canAbortGame = false,
   onRewindToMove,
   onFlipBoard,
   onRewindToPrevMove,
@@ -77,6 +79,7 @@ export const GameControlPanel: FC<GameControlPanelProps> = ({
         onRewindToMove={onRewindToMove}
       />
       <GameControlPanelBottomToolbar
+        canAbortGame={canAbortGame}
         onAbortGame={onAbortGame}
         onOfferDraw={onOfferDraw}
         onResignGame={onResignGame}

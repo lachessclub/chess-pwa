@@ -2,7 +2,10 @@
 
 import entitiesReducer from "../entitiesSlice";
 import { getOngoingGamesSuccess } from "../../ongoing-games/ongoingGamesSlice";
-import { getSingleGameSuccess } from "../../single-game/singleGameSlice";
+import {
+  abortGameSuccess,
+  getSingleGameSuccess,
+} from "../../single-game/singleGameSlice";
 import { challengeAiSuccess } from "../../challenge/challengeSlice";
 import { oneSecondPassed } from "../../game-clock/gameClockSlice";
 import { makeMoveRequest, makeMoveSuccess } from "../../move/moveSlice";
@@ -181,6 +184,18 @@ describe("entitiesSlice reducer", () => {
     expect(
       entitiesReducer(entitiesSample, {
         type: getSingleGameSuccess.type,
+        payload: {
+          result: 2,
+          entities: addGamePayloadSample,
+        },
+      })
+    ).toEqual(entitiesAfterAddingGameSample);
+  });
+
+  it("should handle abortGameSuccess", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: abortGameSuccess.type,
         payload: {
           result: 2,
           entities: addGamePayloadSample,

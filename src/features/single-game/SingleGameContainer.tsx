@@ -7,6 +7,7 @@ import { AppDispatch } from "../../app/store";
 import { RootState } from "../../app/rootReducer";
 import gameSchema from "../../normalizr/schemas/gameSchema";
 import {
+  abortGame,
   defaultSingleGameItemState,
   fetchGame,
   flipBoard,
@@ -42,6 +43,10 @@ export const SingleGameContainer: FC<SingleGameContainerProps> = ({ id }) => {
     dispatch(fetchGame(id));
   }, [dispatch, id]);
 
+  const handleAbortGame = useCallback(() => {
+    dispatch(abortGame(id));
+  }, [dispatch, id]);
+
   const handleMove = useCallback(
     (move: Move) => {
       dispatch(makeMove(id, `${move.from}${move.to}`));
@@ -70,6 +75,7 @@ export const SingleGameContainer: FC<SingleGameContainerProps> = ({ id }) => {
         game={game}
         currentUser={currentUser}
         rewindToMoveIndex={singleGameItemState.rewindToMoveIndex}
+        onAbortGame={handleAbortGame}
         onMove={handleMove}
         onFlipBoard={handleFlipBoard}
         onRewindToMove={handleRewindToMove}

@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/no-cycle */
 /* eslint-disable prefer-object-spread */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { JWR } from "sails.io.js";
@@ -74,6 +75,9 @@ const singleGameSlice = createSlice({
         }
       );
     },
+    abortGameRequest(_state, _action: PayloadAction<number>) {},
+    abortGameSuccess(_state, _action: PayloadAction<NormalizedData<number>>) {},
+    abortGameError(_state, _action: PayloadAction<ItemErrorPayload>) {},
     flipBoard(state, action: PayloadAction<number>) {
       state[action.payload].isFlipped = !state[action.payload].isFlipped;
     },
@@ -90,6 +94,9 @@ export const {
   getSingleGameError,
   flipBoard,
   rewindToMove,
+  abortGameRequest,
+  abortGameSuccess,
+  abortGameError,
 } = singleGameSlice.actions;
 
 export default singleGameSlice.reducer;
@@ -115,5 +122,32 @@ export const fetchGame = (id: number): AppThunk<Promise<Game>> => (
         reject(jwr);
       }
     });
+  });
+};
+
+export const abortGame = (id: number): AppThunk<Promise<Game>> => (
+  dispatch
+) => {
+  dispatch(abortGameRequest(id));
+
+  return new Promise((resolve, reject) => {
+    ioClient.socket.post(
+      `/api/v1/board/game/${id}/abort`,
+      (body: unknown, jwr: JWR) => {
+        if (jwr.statusCode === 200) {
+          const normalizedGame = normalize(body as Game, gameSchema);
+          dispatch(abortGameSuccess(normalizedGame));
+          resolve(body as Game);
+        } else {
+          dispatch(
+            abortGameError({
+              itemId: id,
+              error: body as string,
+            })
+          );
+          reject(jwr);
+        }
+      }
+    );
   });
 };
