@@ -8,6 +8,7 @@ import { RootState } from "../../app/rootReducer";
 import gameSchema from "../../normalizr/schemas/gameSchema";
 import {
   abortGame,
+  resignGame,
   defaultSingleGameItemState,
   fetchGame,
   flipBoard,
@@ -47,6 +48,10 @@ export const SingleGameContainer: FC<SingleGameContainerProps> = ({ id }) => {
     dispatch(abortGame(id));
   }, [dispatch, id]);
 
+  const handleResignGame = useCallback(() => {
+    dispatch(resignGame(id));
+  }, [dispatch, id]);
+
   const handleMove = useCallback(
     (move: Move) => {
       dispatch(makeMove(id, `${move.from}${move.to}`));
@@ -76,6 +81,7 @@ export const SingleGameContainer: FC<SingleGameContainerProps> = ({ id }) => {
         currentUser={currentUser}
         rewindToMoveIndex={singleGameItemState.rewindToMoveIndex}
         onAbortGame={handleAbortGame}
+        onResignGame={handleResignGame}
         onMove={handleMove}
         onFlipBoard={handleFlipBoard}
         onRewindToMove={handleRewindToMove}

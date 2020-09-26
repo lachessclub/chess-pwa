@@ -2,6 +2,7 @@ import React, { FC, useCallback } from "react";
 
 export interface GameControlPanelBottomToolbarProps {
   canAbortGame?: boolean;
+  canResignGame?: boolean;
   onAbortGame?(): void;
   onOfferDraw?(): void;
   onResignGame?(): void;
@@ -9,6 +10,7 @@ export interface GameControlPanelBottomToolbarProps {
 
 export const GameControlPanelBottomToolbar: FC<GameControlPanelBottomToolbarProps> = ({
   canAbortGame = false,
+  canResignGame = false,
   onAbortGame,
   onOfferDraw,
   onResignGame,
@@ -50,6 +52,7 @@ export const GameControlPanelBottomToolbar: FC<GameControlPanelBottomToolbarProp
         type="button"
         data-testid="resign-game-btn"
         onClick={handleResignGame}
+        disabled={!canResignGame}
       >
         Resign
       </button>

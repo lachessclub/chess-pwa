@@ -391,6 +391,25 @@ describe("GameControlPanel", () => {
         expect(topToolbar.props.canAbortGame).toBeTruthy();
       });
 
+      it("canResignGame", () => {
+        const testRenderer = TestRenderer.create(
+          <GameControlPanel game={gameWithMovesSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const topToolbar = testInstance.findByType(
+          GameControlPanelBottomToolbar
+        );
+
+        expect(topToolbar.props.canResignGame).toBeFalsy();
+
+        testRenderer.update(
+          <GameControlPanel game={gameWithMovesSample} canResignGame />
+        );
+
+        expect(topToolbar.props.canResignGame).toBeTruthy();
+      });
+
       it("onFlipBoard", () => {
         const testRenderer = TestRenderer.create(
           <GameControlPanel game={gameSample} />

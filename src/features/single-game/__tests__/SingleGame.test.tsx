@@ -387,6 +387,7 @@ describe("SingleGame", () => {
         const gameSampleWithOutOfTimeStatus = makeGameSample(
           {
             status: "outoftime",
+            winner: "white",
           },
           gameThatCanBeAbortedSample
         );
@@ -399,6 +400,43 @@ describe("SingleGame", () => {
         );
 
         expect(gameControlPanel.props.canAbortGame).toBeFalsy();
+      });
+
+      it("canResignGame", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGame game={gameThatCanBeAbortedSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameControlPanel = testInstance.findByType(GameControlPanel);
+
+        expect(gameControlPanel.props.canResignGame).toBeFalsy();
+
+        testRenderer.update(
+          <SingleGame
+            game={gameWithMovesAndUserSample}
+            currentUser={userSample}
+          />
+        );
+
+        expect(gameControlPanel.props.canResignGame).toBeTruthy();
+
+        const gameSampleWithOutOfTimeStatus = makeGameSample(
+          {
+            status: "outoftime",
+            winner: "white",
+          },
+          gameWithMovesAndUserSample
+        );
+
+        testRenderer.update(
+          <SingleGame
+            game={gameSampleWithOutOfTimeStatus}
+            currentUser={userSample}
+          />
+        );
+
+        expect(gameControlPanel.props.canResignGame).toBeFalsy();
       });
 
       it("onFlipBoard", () => {
@@ -427,6 +465,20 @@ describe("SingleGame", () => {
         );
 
         expect(gameControlPanel.props.onAbortGame).toBe(onAbortGame);
+      });
+
+      it("onResignGame", () => {
+        const onResignGame = jest.fn();
+
+        const testInstance = TestRenderer.create(
+          <SingleGame game={gameSample} onResignGame={onResignGame} />
+        ).root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        expect(gameControlPanel.props.onResignGame).toBe(onResignGame);
       });
     });
   });

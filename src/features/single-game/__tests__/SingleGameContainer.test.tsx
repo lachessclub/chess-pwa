@@ -10,6 +10,7 @@ import {
   flipBoard,
   rewindToMove,
   abortGame,
+  resignGame,
 } from "../singleGameSlice";
 import {
   stateWithDataSample,
@@ -218,6 +219,29 @@ describe("SingleGameContainer", () => {
       expect(abortGameFn).toBeCalledWith(1);
 
       expect(dispatch).toBeCalledWith(abortGameReturnedValue);
+    });
+
+    it("should call dispatch(resignGame())", () => {
+      const dispatch = useDispatch<jest.Mock>();
+      const resignGameReturnedValue = Symbol("resignGame");
+
+      const testRenderer = TestRenderer.create(<SingleGameContainer id={1} />);
+      const testInstance = testRenderer.root;
+
+      const singleGame = testInstance.findByType(SingleGame);
+
+      const resignGameFn = (resignGame as unknown) as jest.Mock;
+      resignGameFn.mockClear();
+      resignGameFn.mockReturnValue(resignGameReturnedValue);
+
+      TestRenderer.act(() => {
+        singleGame.props.onResignGame();
+      });
+
+      expect(resignGameFn).toBeCalledTimes(1);
+      expect(resignGameFn).toBeCalledWith(1);
+
+      expect(dispatch).toBeCalledWith(resignGameReturnedValue);
     });
 
     it("should call dispatch(fetchGame())", () => {

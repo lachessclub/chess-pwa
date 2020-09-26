@@ -34,7 +34,10 @@ describe("GameControlPanelBottomToolbar", () => {
       const onResignGame = jest.fn();
 
       const { getByTestId } = render(
-        <GameControlPanelBottomToolbar onResignGame={onResignGame} />
+        <GameControlPanelBottomToolbar
+          onResignGame={onResignGame}
+          canResignGame
+        />
       );
 
       fireEvent.click(getByTestId("resign-game-btn"));
@@ -55,6 +58,20 @@ describe("GameControlPanelBottomToolbar", () => {
       expect(btn).toBeDisabled();
 
       rerender(<GameControlPanelBottomToolbar canAbortGame />);
+
+      expect(btn).not.toBeDisabled();
+    });
+
+    it("resign-game-btn", () => {
+      const { getByTestId, rerender } = render(
+        <GameControlPanelBottomToolbar />
+      );
+
+      const btn = getByTestId("resign-game-btn");
+
+      expect(btn).toBeDisabled();
+
+      rerender(<GameControlPanelBottomToolbar canResignGame />);
 
       expect(btn).not.toBeDisabled();
     });

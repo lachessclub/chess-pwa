@@ -10,6 +10,10 @@ import singleGameReducer, {
   abortGameRequest,
   abortGameSuccess,
   abortGameError,
+  resignGame,
+  resignGameRequest,
+  resignGameSuccess,
+  resignGameError,
 } from "../singleGameSlice";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
@@ -313,7 +317,10 @@ describe("singleGameSlice reducer", () => {
         },
         {
           type: abortGameSuccess.type,
-          payload: 1,
+          payload: {
+            result: 1,
+            entities: {},
+          },
         }
       )
     ).toEqual({
@@ -339,7 +346,10 @@ describe("singleGameSlice reducer", () => {
         },
         {
           type: abortGameError.type,
-          payload: 1,
+          payload: {
+            itemId: 1,
+            error: "error text",
+          },
         }
       )
     ).toEqual({
@@ -412,6 +422,158 @@ describe("singleGameSlice reducer", () => {
       });
       expect(dispatch).toHaveBeenNthCalledWith(2, {
         type: abortGameError.type,
+        payload: {
+          itemId: 1,
+          error: "game not found",
+        },
+      });
+    });
+  });
+
+  it("should handle resignGameRequest", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: resignGameRequest.type,
+          payload: 1,
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  it("should handle resignGameSuccess", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: resignGameSuccess.type,
+          payload: {
+            result: 1,
+            entities: {},
+          },
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  it("should handle resignGameError", () => {
+    expect(
+      singleGameReducer(
+        {
+          "1": {
+            isLoading: true,
+            error: null,
+            isFlipped: true,
+            rewindToMoveIndex: 2,
+          },
+        },
+        {
+          type: resignGameError.type,
+          payload: {
+            itemId: 1,
+            error: "error text",
+          },
+        }
+      )
+    ).toEqual({
+      "1": {
+        isLoading: true,
+        error: null,
+        isFlipped: true,
+        rewindToMoveIndex: 2,
+      },
+    });
+  });
+
+  describe("should handle resignGame", () => {
+    it("success", async () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.post as jest.Mock).mockImplementationOnce(
+        (url: string, cb: RequestCallback) => {
+          cb(gameSample, {
+            statusCode: 200,
+          } as JWR);
+        }
+      );
+
+      const result = resignGame(1)(dispatch, () => defaultState, null);
+
+      await expect(result).resolves.toEqual(gameSample);
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: resignGameRequest.type,
+        payload: 1,
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: resignGameSuccess.type,
+        payload: {
+          result: 1,
+          entities: {
+            games: {
+              "1": gameSample,
+            },
+          },
+        },
+      });
+    });
+
+    it("fail", async () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.post as jest.Mock).mockImplementationOnce(
+        (url: string, cb: RequestCallback) => {
+          cb("game not found", {
+            body: "game not found",
+            statusCode: 404,
+          } as JWR);
+        }
+      );
+
+      const result = resignGame(1)(dispatch, () => defaultState, null);
+
+      await expect(result).rejects.toEqual({
+        body: "game not found",
+        statusCode: 404,
+      });
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: resignGameRequest.type,
+        payload: 1,
+      });
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: resignGameError.type,
         payload: {
           itemId: 1,
           error: "game not found",

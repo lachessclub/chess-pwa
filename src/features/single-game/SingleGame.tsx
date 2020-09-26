@@ -21,6 +21,7 @@ export interface SingleGameProps {
   rewindToMoveIndex?: number | null;
   onMove?(move: Move): void;
   onAbortGame?(): void;
+  onResignGame?(): void;
   onFlipBoard?(): void;
   onRewindToMove?(moveIndex: number | null): void;
 }
@@ -31,6 +32,7 @@ export const SingleGame: FC<SingleGameProps> = ({
   isFlipped = false,
   rewindToMoveIndex = null,
   onAbortGame,
+  onResignGame,
   onMove,
   onFlipBoard,
   onRewindToMove,
@@ -105,6 +107,16 @@ export const SingleGame: FC<SingleGameProps> = ({
     canAbortGame = true;
   }
 
+  let canResignGame = false;
+  if (
+    currentUser &&
+    (currentUser.id === game.white?.id || currentUser.id === game.black?.id) &&
+    game.status === "started" &&
+    movesHistory.length > 2
+  ) {
+    canResignGame = true;
+  }
+
   // @todo. use useCallback hook
   const handleRewindToMove = (moveIndex: number) => {
     if (onRewindToMove) {
@@ -160,8 +172,10 @@ export const SingleGame: FC<SingleGameProps> = ({
         orientation={orientation as AppPieceColor}
         rewindToMoveIndex={rewindToMoveIndex}
         canAbortGame={canAbortGame}
+        canResignGame={canResignGame}
         onFlipBoard={onFlipBoard}
         onAbortGame={onAbortGame}
+        onResignGame={onResignGame}
         onRewindToMove={handleRewindToMove}
         onRewindToFirstMove={handleRewindToFirstMove}
         onRewindToLastMove={handleRewindToLastMove}
