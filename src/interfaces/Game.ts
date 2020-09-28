@@ -6,6 +6,7 @@ export default interface Game {
   id: number;
   aiLevel: number;
   clockLimit: number;
+  createdAt: number;
   clockIncrement: number;
   drawOffer: PieceColor | null;
   initialFen: string;

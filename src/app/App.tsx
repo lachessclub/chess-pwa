@@ -9,6 +9,7 @@ import { watchGames } from "../features/data-subscription/dataSubscriptionSlice"
 import { startGameClock } from "../features/game-clock/gameClockSlice";
 import HeaderContainer from "../features/header/HeaderContainer";
 import AuthModalContainer from "../features/auth-modal/AuthModalContainer";
+import { fetchGames } from "../features/games-list/gamesListSlice";
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const App: FC = () => {
     dispatch(fetchCurrentUser());
     dispatch(watchGames());
     dispatch(startGameClock());
+    dispatch(fetchGames());
   }, [dispatch]);
 
   return (

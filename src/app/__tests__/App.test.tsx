@@ -10,12 +10,14 @@ import { defaultState } from "../../test-utils/data-sample/state";
 import { startGameClock } from "../../features/game-clock/gameClockSlice";
 import HeaderContainer from "../../features/header/HeaderContainer";
 import AuthModalContainer from "../../features/auth-modal/AuthModalContainer";
+import { fetchGames } from "../../features/games-list/gamesListSlice";
 
 jest.useFakeTimers();
 
 jest.mock("../../features/current-user/currentUserSlice");
 jest.mock("../../features/game-clock/gameClockSlice");
 jest.mock("../../features/data-subscription/dataSubscriptionSlice");
+jest.mock("../../features/games-list/gamesListSlice");
 
 describe("App", () => {
   beforeAll(() => {
@@ -97,7 +99,7 @@ describe("App", () => {
       expect(dispatch).toBeCalledWith(fetchCurrentUserReturnedValue);
     });
 
-    it("watchGames()", () => {
+    it("should call dispatch(watchGames())", () => {
       const dispatch = useDispatch<jest.Mock>();
 
       (useEffect as jest.Mock).mockImplementationOnce((cb) => cb());
@@ -114,6 +116,25 @@ describe("App", () => {
       expect(watchGamesFn).toBeCalledWith();
 
       expect(dispatch).toBeCalledWith(watchGamesReturnedValue);
+    });
+
+    it("should call dispatch(fetchGames())", () => {
+      const dispatch = useDispatch<jest.Mock>();
+
+      (useEffect as jest.Mock).mockImplementationOnce((cb) => cb());
+
+      const fetchGamesReturnedValue = Symbol("fetchGames");
+
+      const fetchGamesFn = fetchGames as jest.Mock;
+      fetchGamesFn.mockClear();
+      fetchGamesFn.mockReturnValue(fetchGamesReturnedValue);
+
+      TestRenderer.create(<App />);
+
+      expect(fetchGamesFn).toBeCalledTimes(1);
+      expect(fetchGamesFn).toBeCalledWith();
+
+      expect(dispatch).toBeCalledWith(fetchGamesReturnedValue);
     });
   });
 });

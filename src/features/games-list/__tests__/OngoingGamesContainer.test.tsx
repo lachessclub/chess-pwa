@@ -4,15 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import OngoingGamesContainer from "../OngoingGamesContainer";
 import { GamePreviewsList } from "../GamePreviewsList";
 import mountTest from "../../../test-utils/mountTest";
-import { fetchOngoingGames } from "../ongoingGamesSlice";
 import {
   defaultState,
-  stateWithDataSample,
+  stateWithDataSample4,
 } from "../../../test-utils/data-sample/state";
-
-jest.useFakeTimers();
-
-jest.mock("../../ongoing-games/ongoingGamesSlice");
 
 describe("OngoingGamesContainer", () => {
   beforeEach(() => {
@@ -43,17 +38,35 @@ describe("OngoingGamesContainer", () => {
         expect(gamePreviewsComponent.props.games).toEqual([]);
 
         (useSelector as jest.Mock).mockImplementation((cb) =>
-          cb(stateWithDataSample)
+          cb(stateWithDataSample4)
         );
 
         testRenderer.update(<OngoingGamesContainer />);
 
         expect(gamePreviewsComponent.props.games).toEqual([
           {
+            id: 4,
+            aiLevel: 3,
+            clockLimit: 300,
+            clockIncrement: 3,
+            createdAt: 1,
+            drawOffer: null,
+            initialFen: "startpos",
+            turn: "white",
+            wtime: 300000,
+            btime: 300000,
+            moves: "e2e4 e7e5 g1f3 g8f6",
+            status: "started",
+            white: null,
+            black: null,
+            winner: null,
+          },
+          {
             id: 1,
             aiLevel: 3,
             clockLimit: 300,
             clockIncrement: 3,
+            createdAt: 0,
             drawOffer: null,
             initialFen: "startpos",
             turn: "white",
@@ -67,27 +80,6 @@ describe("OngoingGamesContainer", () => {
           },
         ]);
       });
-    });
-  });
-
-  describe("dispatch() calls", () => {
-    it("should call dispatch(fetchOngoingGames())", () => {
-      const dispatch = useDispatch<jest.Mock>();
-
-      (useEffect as jest.Mock).mockImplementationOnce((cb) => cb());
-
-      const fetchOngoingGamesReturnedValue = Symbol("fetchOngoingGames");
-
-      const fetchOngoingGamesFn = fetchOngoingGames as jest.Mock;
-      fetchOngoingGamesFn.mockClear();
-      fetchOngoingGamesFn.mockReturnValue(fetchOngoingGamesReturnedValue);
-
-      TestRenderer.create(<OngoingGamesContainer />);
-
-      expect(fetchOngoingGamesFn).toBeCalledTimes(1);
-      expect(fetchOngoingGamesFn).toBeCalledWith();
-
-      expect(dispatch).toBeCalledWith(fetchOngoingGamesReturnedValue);
     });
   });
 });

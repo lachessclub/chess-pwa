@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import entitiesReducer from "../entitiesSlice";
-import { getOngoingGamesSuccess } from "../../ongoing-games/ongoingGamesSlice";
+import { getGamesListSuccess } from "../../games-list/gamesListSlice";
 import {
   abortGameSuccess,
   getSingleGameSuccess,
@@ -143,10 +143,10 @@ describe("entitiesSlice reducer", () => {
     ).toEqual(entitiesAfterMoveSample);
   });
 
-  it("should handle getOngoingGamesSuccess", () => {
+  it("should handle getGamesListSuccess", () => {
     expect(
       entitiesReducer(entitiesSample, {
-        type: getOngoingGamesSuccess.type,
+        type: getGamesListSuccess.type,
         payload: {
           result: [2],
           entities: addGamePayloadSample,

@@ -65,6 +65,7 @@ describe("SingleGameContainer", () => {
           aiLevel: 3,
           clockLimit: 300,
           clockIncrement: 3,
+          createdAt: 0,
           drawOffer: null,
           initialFen: "startpos",
           turn: "white",

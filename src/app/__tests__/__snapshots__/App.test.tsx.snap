@@ -56,5 +56,11 @@ exports[`App Snapshot 1`] = `
   <div
     className="grid"
   />
+  <h3>
+    Completed Games
+  </h3>
+  <div
+    className="grid"
+  />
 </div>
 `;

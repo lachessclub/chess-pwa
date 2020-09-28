@@ -1,7 +1,8 @@
 import React, { FC } from "react";
-import OngoingGamesContainer from "../ongoing-games/OngoingGamesContainer";
+import OngoingGamesContainer from "../games-list/OngoingGamesContainer";
 import ChallengeButtonsContainer from "./ChallengeButtonsContainer";
 import ChallengeAiModalContainer from "./ChallengeAiModalContainer";
+import CompletedGamesContainer from "../games-list/CompletedGamesContainer";
 
 const HomePage: FC<unknown> = () => {
   return (
@@ -13,6 +14,9 @@ const HomePage: FC<unknown> = () => {
 
       <h3>Ongoing Games</h3>
       <OngoingGamesContainer />
+
+      <h3>Completed Games</h3>
+      <CompletedGamesContainer />
     </>
   );
 };

@@ -1,5 +1,5 @@
 import React from "react";
-import { GamePreviewsList } from "../features/ongoing-games/GamePreviewsList";
+import { GamePreviewsList } from "../features/games-list/GamePreviewsList";
 import Game from "../interfaces/Game";
 
 export default {
@@ -12,6 +12,7 @@ const games: Game[] = [
     aiLevel: 3,
     clockLimit: 300,
     clockIncrement: 3,
+    createdAt: 0,
     drawOffer: null,
     initialFen: "startpos",
     turn: "white",
@@ -28,6 +29,7 @@ const games: Game[] = [
     aiLevel: 3,
     clockLimit: 300,
     clockIncrement: 3,
+    createdAt: 0,
     drawOffer: null,
     initialFen: "rnbqkbnr/8/8/8/8/8/8/RNBQKBNR w KQkq - 0 1",
     turn: "white",
