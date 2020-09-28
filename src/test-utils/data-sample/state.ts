@@ -24,6 +24,15 @@ export const defaultState: RootState = {
   },
 };
 
+// @todo. use this function to create samples.
+export const makeStateSample = (
+  data: Partial<RootState>,
+  originalStateSample = defaultState
+): RootState => ({
+  ...originalStateSample,
+  ...data,
+});
+
 // authenticated user
 export const stateWithDataSample: RootState = {
   currentUser: {

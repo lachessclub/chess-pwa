@@ -1,38 +1,17 @@
 import React, { FC, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { denormalize } from "normalizr";
-import { Button, Modal } from "react-bootstrap";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
-import HomePage from "../pages/HomePage";
+import HomePage from "../features/home-page/HomePage";
 import GamePage from "../pages/GamePage";
-import LoginTabsContainer from "../features/auth-modal/LoginTabsContainer";
-import { RootState } from "./rootReducer";
-import {
-  fetchCurrentUser,
-  logout,
-} from "../features/current-user/currentUserSlice";
-import {
-  showAuthModal,
-  hideAuthModal,
-} from "../features/auth-modal/authModalSlice";
-import User from "../interfaces/User";
-import userSchema from "../normalizr/schemas/userSchema";
+import { fetchCurrentUser } from "../features/current-user/currentUserSlice";
 import { watchGames } from "../features/data-subscription/dataSubscriptionSlice";
 import { startGameClock } from "../features/game-clock/gameClockSlice";
+import HeaderContainer from "../features/header/HeaderContainer";
+import AuthModalContainer from "../features/auth-modal/AuthModalContainer";
 
 const App: FC = () => {
   const dispatch = useDispatch();
-
-  const currentUser: User | null = useSelector((state: RootState) => {
-    if (state.currentUser.userId) {
-      return denormalize(state.currentUser.userId, userSchema, state.entities);
-    }
-    return null;
-  });
-  const { isAuthModalVisible } = useSelector(
-    (state: RootState) => state.authModal
-  );
 
   useEffect(() => {
     dispatch(fetchCurrentUser());
@@ -41,41 +20,10 @@ const App: FC = () => {
   }, [dispatch]);
 
   return (
-    <Router>
-      {currentUser ? (
-        <>
-          <div>Hi, {currentUser.fullName}</div>
-          <Button variant="primary" onClick={() => dispatch(logout())}>
-            Logout
-          </Button>
-        </>
-      ) : (
-        <Button variant="primary" onClick={() => dispatch(showAuthModal())}>
-          Login / Register
-        </Button>
-      )}
-
-      <Modal
-        show={isAuthModalVisible}
-        onHide={() => dispatch(hideAuthModal())}
-        animation={false}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>Login</Modal.Title>
-        </Modal.Header>
-
-        <Modal.Body>
-          <LoginTabsContainer />
-        </Modal.Body>
-      </Modal>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-          </ul>
-        </nav>
+    <div className="container">
+      <Router>
+        <HeaderContainer />
+        <AuthModalContainer />
 
         <Switch>
           <Route path="/game/:id">
@@ -85,8 +33,8 @@ const App: FC = () => {
             <HomePage />
           </Route>
         </Switch>
-      </div>
-    </Router>
+      </Router>
+    </div>
   );
 };
 

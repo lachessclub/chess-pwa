@@ -1,14 +1,15 @@
 import React, { useEffect } from "react";
 import TestRenderer from "react-test-renderer";
 import { useDispatch, useSelector } from "react-redux";
-import { render } from "@testing-library/react";
 import App from "../App";
 import mountTest from "../../test-utils/mountTest";
-import HomePage from "../../pages/HomePage";
+import HomePage from "../../features/home-page/HomePage";
 import { fetchCurrentUser } from "../../features/current-user/currentUserSlice";
 import { watchGames } from "../../features/data-subscription/dataSubscriptionSlice";
 import { defaultState } from "../../test-utils/data-sample/state";
 import { startGameClock } from "../../features/game-clock/gameClockSlice";
+import HeaderContainer from "../../features/header/HeaderContainer";
+import AuthModalContainer from "../../features/auth-modal/AuthModalContainer";
 
 jest.useFakeTimers();
 
@@ -33,26 +34,29 @@ describe("App", () => {
   });
 
   describe("children components", () => {
+    it("contains HeaderContainer", () => {
+      const testRenderer = TestRenderer.create(<App />);
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(HeaderContainer).length).toBe(1);
+    });
+
     it("contains HomePage", () => {
       const testRenderer = TestRenderer.create(<App />);
       const testInstance = testRenderer.root;
 
       expect(testInstance.findAllByType(HomePage).length).toBe(1);
     });
-  });
 
-  // @todo. add tests for App contains HomePage and GamePage
-  // @todo. add tests for other content
-  // @todo. add tests for auth modal
-  // @todo. add tests for AppContext
+    it("contains AuthModalContainer", () => {
+      const testRenderer = TestRenderer.create(<App />);
+      const testInstance = testRenderer.root;
 
-  describe("DOM structure", () => {
-    it("renders learn react link", () => {
-      const { getByText } = render(<App />);
-      const linkElement = getByText(/Home/i);
-      expect(linkElement).toBeInTheDocument();
+      expect(testInstance.findAllByType(AuthModalContainer).length).toBe(1);
     });
   });
+
+  // @todo. add tests for other content
 
   describe("dispatch() calls", () => {
     it("should call dispatch(startGameClock())", () => {
