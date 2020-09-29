@@ -10,8 +10,6 @@ import { ChallengeAiForm } from "../ChallengeAiForm";
 import { challengeAi } from "../../challenge/challengeSlice";
 import { defaultGameSample } from "../../../test-utils/data-sample/game";
 
-jest.useFakeTimers();
-
 jest.mock("../../challenge/challengeSlice");
 
 describe("ChallengeAiFormContainer", () => {

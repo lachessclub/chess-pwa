@@ -21,8 +21,6 @@ import {
   stateWithDataSample3,
 } from "../../../test-utils/data-sample/state";
 
-jest.useFakeTimers();
-
 jest.mock("../../move/moveSlice");
 jest.mock("../../single-game/singleGameSlice");
 

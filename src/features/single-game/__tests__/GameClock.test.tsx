@@ -3,8 +3,6 @@ import React, { useEffect } from "react";
 import { GameClock } from "../GameClock";
 import { defaultGameSample } from "../../../test-utils/data-sample/game";
 
-jest.useFakeTimers();
-
 describe("GameClock", () => {
   beforeEach(() => {
     (useEffect as jest.Mock).mockReset();

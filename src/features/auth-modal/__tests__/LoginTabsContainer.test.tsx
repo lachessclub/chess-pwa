@@ -9,8 +9,6 @@ import { LoginForm } from "../LoginForm";
 import { RegistrationForm } from "../RegistrationForm";
 import { login, register } from "../../current-user/currentUserSlice";
 
-jest.useFakeTimers();
-
 jest.mock("../../current-user/currentUserSlice");
 
 describe("LoginTabsContainer", () => {

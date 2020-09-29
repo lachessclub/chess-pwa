@@ -12,8 +12,6 @@ import HeaderContainer from "../../features/header/HeaderContainer";
 import AuthModalContainer from "../../features/auth-modal/AuthModalContainer";
 import { fetchGames } from "../../features/games-list/gamesListSlice";
 
-jest.useFakeTimers();
-
 jest.mock("../../features/current-user/currentUserSlice");
 jest.mock("../../features/game-clock/gameClockSlice");
 jest.mock("../../features/data-subscription/dataSubscriptionSlice");
