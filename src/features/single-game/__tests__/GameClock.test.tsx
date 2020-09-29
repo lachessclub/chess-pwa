@@ -1,13 +1,9 @@
 import { render } from "@testing-library/react";
-import React, { useEffect } from "react";
+import React from "react";
 import { GameClock } from "../GameClock";
 import { defaultGameSample } from "../../../test-utils/data-sample/game";
 
 describe("GameClock", () => {
-  beforeEach(() => {
-    (useEffect as jest.Mock).mockReset();
-  });
-
   describe("DOM structure", () => {
     it("should display time", () => {
       const { rerender, getByTestId } = render(
