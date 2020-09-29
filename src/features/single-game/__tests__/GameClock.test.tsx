@@ -16,10 +16,10 @@ describe("GameClock", () => {
         <GameClock time={defaultGameSample.wtime} />
       );
 
-      expect(getByTestId("time").innerHTML).toBe("05 : 10");
+      expect(getByTestId("time")).toHaveTextContent("05 : 10");
 
       rerender(<GameClock time={defaultGameSample.btime} />);
-      expect(getByTestId("time").innerHTML).toBe("06 : 05");
+      expect(getByTestId("time")).toHaveTextContent("06 : 05");
     });
   });
 });

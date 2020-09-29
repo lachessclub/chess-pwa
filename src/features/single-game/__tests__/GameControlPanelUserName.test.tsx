@@ -15,11 +15,11 @@ describe("GameControlPanelUserName", () => {
         <GameControlPanelUserName game={gameSample2} />
       );
 
-      expect(container.innerHTML).toContain("AI level 3");
+      expect(container).toHaveTextContent("AI level 3");
 
       rerender(<GameControlPanelUserName game={gameSample2} color="black" />);
 
-      expect(container.innerHTML).toContain("Thomas Miller");
+      expect(container).toHaveTextContent("Thomas Miller");
     });
   });
 });

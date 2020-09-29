@@ -29,13 +29,13 @@ describe("GameMeta", () => {
     it("should contain players names", () => {
       const { getByTestId, rerender } = render(<GameMeta game={gameSample2} />);
 
-      expect(getByTestId("white-user").innerHTML).toContain("AI level 3");
-      expect(getByTestId("black-user").innerHTML).toContain("Thomas Miller");
+      expect(getByTestId("white-user")).toHaveTextContent("AI level 3");
+      expect(getByTestId("black-user")).toHaveTextContent("Thomas Miller");
 
       rerender(<GameMeta game={gameSample3} />);
 
-      expect(getByTestId("white-user").innerHTML).toContain("Thomas Miller");
-      expect(getByTestId("black-user").innerHTML).toContain("AI level 3");
+      expect(getByTestId("white-user")).toHaveTextContent("Thomas Miller");
+      expect(getByTestId("black-user")).toHaveTextContent("AI level 3");
     });
 
     it("should contain time control", () => {
