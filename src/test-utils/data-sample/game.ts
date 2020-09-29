@@ -1,7 +1,7 @@
 import { ValidMoves } from "ii-react-chessboard";
 import Game from "../../interfaces/Game";
 
-export const gameSample: Game = {
+export const defaultGameSample: Game = {
   id: 1,
   aiLevel: 3,
   clockLimit: 300,
@@ -24,7 +24,7 @@ export const gameSampleFen =
 // @todo. use this function to create samples.
 export const makeGameSample = (
   data: Partial<Game>,
-  originalGameSample = gameSample
+  originalGameSample = defaultGameSample
 ): Game => ({
   ...originalGameSample,
   ...data,

@@ -2,7 +2,7 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { GameMeta } from "../GameMeta";
 import {
-  gameSample,
+  defaultGameSample,
   gameSample2,
   gameSample3,
   gameWith10Plus5MinControlSample,
@@ -21,7 +21,7 @@ describe("GameMeta", () => {
     it("should contain status", () => {
       (getGameStatusText as jest.Mock).mockReturnValue("some status text");
 
-      const { queryByText } = render(<GameMeta game={gameSample} />);
+      const { queryByText } = render(<GameMeta game={defaultGameSample} />);
 
       expect(queryByText("some status text")).not.toBeNull();
     });
@@ -39,7 +39,9 @@ describe("GameMeta", () => {
     });
 
     it("should contain time control", () => {
-      const { queryByText, rerender } = render(<GameMeta game={gameSample} />);
+      const { queryByText, rerender } = render(
+        <GameMeta game={defaultGameSample} />
+      );
 
       expect(queryByText("5 + 3")).not.toBeNull();
 

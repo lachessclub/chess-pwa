@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { Card } from "react-bootstrap";
 import OngoingGamesContainer from "../games-list/OngoingGamesContainer";
 import ChallengeButtonsContainer from "./ChallengeButtonsContainer";
 import ChallengeAiModalContainer from "./ChallengeAiModalContainer";
@@ -11,12 +12,19 @@ const HomePage: FC<unknown> = () => {
       <div className="d-flex justify-content-center">
         <ChallengeButtonsContainer />
       </div>
+      <Card className="mb-3">
+        <Card.Body>
+          <Card.Title>Playing right now</Card.Title>
+          <OngoingGamesContainer />
+        </Card.Body>
+      </Card>
 
-      <h3>Ongoing Games</h3>
-      <OngoingGamesContainer />
-
-      <h3>Completed Games</h3>
-      <CompletedGamesContainer />
+      <Card>
+        <Card.Body>
+          <Card.Title>Finished</Card.Title>
+          <CompletedGamesContainer />
+        </Card.Body>
+      </Card>
     </>
   );
 };

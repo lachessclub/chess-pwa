@@ -1,23 +1,23 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { gameSample2 } from "../../../test-utils/data-sample/game";
-import { GameControlPanelUserName } from "../GameControlPanelUserName";
+import { GamePreviewUserName } from "../GamePreviewUserName";
 
-describe("GameControlPanelUserName", () => {
+describe("GamePreviewUserName", () => {
   describe("DOM structure", () => {
     it("should contain nothing if no game", () => {
-      const { container } = render(<GameControlPanelUserName />);
+      const { container } = render(<GamePreviewUserName />);
       expect(container).toBeEmptyDOMElement();
     });
 
     it("should contain player name", () => {
       const { container, rerender } = render(
-        <GameControlPanelUserName game={gameSample2} />
+        <GamePreviewUserName game={gameSample2} />
       );
 
       expect(container.innerHTML).toContain("AI level 3");
 
-      rerender(<GameControlPanelUserName game={gameSample2} color="black" />);
+      rerender(<GamePreviewUserName game={gameSample2} color="black" />);
 
       expect(container.innerHTML).toContain("Thomas Miller");
     });

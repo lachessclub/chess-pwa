@@ -3,7 +3,7 @@ import {
   abortedGameSample,
   blackOutOfTimeGameSample,
   blackResignedGameSample,
-  gameSample,
+  defaultGameSample,
   gameWithCheckmateByBlackSample,
   gameWithCheckmateByWhiteSample,
   gameWithDrawSample,
@@ -13,7 +13,7 @@ import {
 } from "../../test-utils/data-sample/game";
 
 it("getGameStatusText", () => {
-  expect(getGameStatusText(gameSample)).toBe("Playing right now");
+  expect(getGameStatusText(defaultGameSample)).toBe("Playing right now");
   expect(getGameStatusText(whiteOutOfTimeGameSample)).toBe(
     "Time out • Black is victorious"
   );
