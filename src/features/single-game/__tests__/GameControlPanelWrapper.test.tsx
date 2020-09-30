@@ -1,317 +1,38 @@
 import TestRenderer from "react-test-renderer";
 import React from "react";
-import { Board, PieceColor } from "ii-react-chessboard";
-import { SingleGame } from "../SingleGame";
 import {
-  gameWithMovesSample,
   defaultGameSample,
-  gameWithCheckmateByWhiteSample,
-  blackTurnGameSample,
-  whiteTurnGameSample,
-  gameSampleFen,
-  gameWithMovesSampleFen,
   gameSample2,
   gameSample3,
-  gameWithSmallAmountOfPiecesSample,
-  gameWithSmallAmountOfPiecesSampleValidMoves,
-  gameWithMovesAndUserSample,
-  gameWithMovesRewoundToIndex2SampleFen,
   gameThatCanBeAbortedSample,
-  makeGameSample,
+  gameWithMovesAndUserSample,
   gameWithMovesAndUserVsUserSample,
+  gameWithMovesSample,
+  makeGameSample,
 } from "../../../test-utils/data-sample/game";
-import userSample from "../../../test-utils/data-sample/user";
-import { GameMeta } from "../GameMeta";
 import { GameControlPanel } from "../GameControlPanel";
+import { GameControlPanelWrapper } from "../GameControlPanelWrapper";
+import userSample from "../../../test-utils/data-sample/user";
 
-describe("SingleGame", () => {
+describe("GameControlPanelWrapper", () => {
   describe("children components", () => {
-    it("contains Board", () => {
-      const testRenderer = TestRenderer.create(<SingleGame />);
-      const testInstance = testRenderer.root;
-
-      expect(testInstance.findAllByType(Board).length).toBe(0);
-
-      testRenderer.update(<SingleGame game={defaultGameSample} />);
-
-      expect(testInstance.findAllByType(Board).length).toBe(1);
-    });
-
-    it("contains GameMeta", () => {
-      const testRenderer = TestRenderer.create(<SingleGame />);
-      const testInstance = testRenderer.root;
-
-      expect(testInstance.findAllByType(GameMeta).length).toBe(0);
-
-      testRenderer.update(<SingleGame game={defaultGameSample} />);
-
-      expect(testInstance.findAllByType(GameMeta).length).toBe(1);
-    });
-
     it("contains GameControlPanel", () => {
-      const testRenderer = TestRenderer.create(<SingleGame />);
+      const testRenderer = TestRenderer.create(<GameControlPanelWrapper />);
       const testInstance = testRenderer.root;
 
       expect(testInstance.findAllByType(GameControlPanel).length).toBe(0);
 
-      testRenderer.update(<SingleGame game={defaultGameSample} />);
+      testRenderer.update(<GameControlPanelWrapper game={defaultGameSample} />);
 
       expect(testInstance.findAllByType(GameControlPanel).length).toBe(1);
     });
   });
 
   describe("children components props", () => {
-    describe("Board", () => {
-      it("position", () => {
-        const testRenderer = TestRenderer.create(
-          <SingleGame game={defaultGameSample} />
-        );
-        const testInstance = testRenderer.root;
-
-        const board = testInstance.findByType(Board);
-
-        expect(board.props.position).toBe(gameSampleFen);
-
-        testRenderer.update(<SingleGame game={gameWithMovesSample} />);
-
-        expect(board.props.position).toBe(gameWithMovesSampleFen);
-
-        testRenderer.update(
-          <SingleGame game={gameWithMovesSample} rewindToMoveIndex={2} />
-        );
-
-        expect(board.props.position).toBe(
-          gameWithMovesRewoundToIndex2SampleFen
-        );
-      });
-
-      it("allowMarkers", () => {
-        const testRenderer = TestRenderer.create(
-          <SingleGame game={defaultGameSample} />
-        );
-        const testInstance = testRenderer.root;
-
-        const board = testInstance.findByType(Board);
-
-        expect(board.props.allowMarkers).toBeTruthy();
-      });
-
-      it("check", () => {
-        const testRenderer = TestRenderer.create(
-          <SingleGame game={defaultGameSample} />
-        );
-        const testInstance = testRenderer.root;
-
-        const board = testInstance.findByType(Board);
-
-        expect(board.props.check).toBeFalsy();
-
-        testRenderer.update(
-          <SingleGame game={gameWithCheckmateByWhiteSample} />
-        );
-
-        expect(board.props.check).toBeTruthy();
-      });
-
-      it("clickable", () => {
-        const testRenderer = TestRenderer.create(
-          <SingleGame game={defaultGameSample} />
-        );
-        const testInstance = testRenderer.root;
-
-        const board = testInstance.findByType(Board);
-
-        expect(board.props.clickable).toBeTruthy();
-      });
-
-      it("draggable", () => {
-        const testRenderer = TestRenderer.create(
-          <SingleGame game={defaultGameSample} />
-        );
-        const testInstance = testRenderer.root;
-
-        const board = testInstance.findByType(Board);
-
-        expect(board.props.draggable).toBeTruthy();
-      });
-
-      it("turnColor", () => {
-        const testRenderer = TestRenderer.create(
-          <SingleGame game={blackTurnGameSample} />
-        );
-        const testInstance = testRenderer.root;
-
-        const board = testInstance.findByType(Board);
-
-        expect(board.props.turnColor).toBe(PieceColor.BLACK);
-
-        testRenderer.update(<SingleGame game={whiteTurnGameSample} />);
-
-        expect(board.props.turnColor).toBe(PieceColor.WHITE);
-      });
-
-      it("validMoves", async () => {
-        const testRenderer = TestRenderer.create(
-          <SingleGame game={gameWithSmallAmountOfPiecesSample} />
-        );
-        const testInstance = testRenderer.root;
-
-        const board = testInstance.findByType(Board);
-
-        expect(board.props.validMoves).toEqual(
-          gameWithSmallAmountOfPiecesSampleValidMoves
-        );
-      });
-
-      it("viewOnly", () => {
-        const testRenderer = TestRenderer.create(
-          <SingleGame game={defaultGameSample} />
-        );
-        const testInstance = testRenderer.root;
-
-        const board = testInstance.findByType(Board);
-
-        // true because currentUser is null
-        expect(board.props.viewOnly).toBeTruthy();
-
-        testRenderer.update(
-          <SingleGame
-            currentUser={userSample}
-            game={gameWithCheckmateByWhiteSample}
-          />
-        );
-        // true because game is over
-        expect(board.props.viewOnly).toBeTruthy();
-
-        testRenderer.update(
-          <SingleGame currentUser={userSample} game={defaultGameSample} />
-        );
-        // true because currentUser is not a gamer of this game
-        expect(board.props.viewOnly).toBeTruthy();
-
-        testRenderer.update(
-          <SingleGame
-            currentUser={userSample}
-            game={gameWithMovesAndUserSample}
-            rewindToMoveIndex={2}
-          />
-        );
-        // false because currentUser is a gamer of this game and game is not over
-        expect(board.props.viewOnly).toBeTruthy();
-
-        testRenderer.update(
-          <SingleGame currentUser={userSample} game={gameSample2} />
-        );
-        // false because currentUser is a gamer of this game and game is not over
-        expect(board.props.viewOnly).toBeFalsy();
-      });
-
-      it("movableColor", () => {
-        const testRenderer = TestRenderer.create(
-          <SingleGame game={defaultGameSample} />
-        );
-        const testInstance = testRenderer.root;
-
-        const board = testInstance.findByType(Board);
-
-        // undefined because currentUser is null
-        expect(board.props.movableColor).toBeUndefined();
-
-        testRenderer.update(
-          <SingleGame currentUser={userSample} game={defaultGameSample} />
-        );
-        // undefined because currentUser is not a gamer of this game
-        expect(board.props.viewOnly).toBeTruthy();
-
-        testRenderer.update(
-          <SingleGame currentUser={userSample} game={gameSample2} />
-        );
-        // PieceColor.BLACK because currentUser plays with black
-        expect(board.props.movableColor).toBe(PieceColor.BLACK);
-
-        testRenderer.update(
-          <SingleGame currentUser={userSample} game={gameSample3} />
-        );
-        // PieceColor.BLACK because currentUser plays with white
-        expect(board.props.movableColor).toBe(PieceColor.WHITE);
-      });
-
-      it("orientation", () => {
-        const testRenderer = TestRenderer.create(
-          <SingleGame game={defaultGameSample} />
-        );
-        const testInstance = testRenderer.root;
-
-        const board = testInstance.findByType(Board);
-
-        // white by default
-        expect(board.props.orientation).toBe(PieceColor.WHITE);
-
-        testRenderer.update(
-          <SingleGame currentUser={userSample} game={gameSample2} />
-        );
-        // black because current user plays black
-        expect(board.props.orientation).toBe(PieceColor.BLACK);
-
-        testRenderer.update(
-          <SingleGame currentUser={userSample} game={gameSample2} isFlipped />
-        );
-        // white because flipped is true
-        expect(board.props.orientation).toBe(PieceColor.WHITE);
-      });
-
-      it("lastMoveSquares", () => {
-        const testRenderer = TestRenderer.create(
-          <SingleGame game={defaultGameSample} />
-        );
-        const testInstance = testRenderer.root;
-
-        const board = testInstance.findByType(Board);
-
-        // no moves
-        expect(board.props.lastMoveSquares).toBeUndefined();
-
-        testRenderer.update(<SingleGame game={gameWithMovesSample} />);
-        expect(board.props.lastMoveSquares).toEqual(["g8", "f6"]);
-
-        testRenderer.update(
-          <SingleGame game={gameWithMovesSample} rewindToMoveIndex={2} />
-        );
-        expect(board.props.lastMoveSquares).toEqual(["g1", "f3"]);
-      });
-
-      it("onMove", () => {
-        const onMove = jest.fn();
-
-        const testInstance = TestRenderer.create(
-          <SingleGame game={defaultGameSample} onMove={onMove} />
-        ).root;
-
-        const board: TestRenderer.ReactTestInstance = testInstance.findByType(
-          Board
-        );
-
-        expect(board.props.onMove).toBe(onMove);
-      });
-    });
-
-    describe("GameMeta", () => {
-      it("game", () => {
-        const testRenderer = TestRenderer.create(
-          <SingleGame game={defaultGameSample} />
-        );
-        const testInstance = testRenderer.root;
-
-        const gameMeta = testInstance.findByType(GameMeta);
-
-        expect(gameMeta.props.game).toBe(defaultGameSample);
-      });
-    });
-
     describe("GameControlPanel", () => {
       it("game", () => {
         const testRenderer = TestRenderer.create(
-          <SingleGame game={defaultGameSample} />
+          <GameControlPanelWrapper game={defaultGameSample} />
         );
         const testInstance = testRenderer.root;
 
@@ -322,7 +43,7 @@ describe("SingleGame", () => {
 
       it("orientation", () => {
         const testRenderer = TestRenderer.create(
-          <SingleGame game={defaultGameSample} />
+          <GameControlPanelWrapper game={defaultGameSample} />
         );
         const testInstance = testRenderer.root;
 
@@ -331,13 +52,20 @@ describe("SingleGame", () => {
         expect(gameControlPanel.props.orientation).toBe("white");
 
         testRenderer.update(
-          <SingleGame game={gameSample2} currentUser={userSample} />
+          <GameControlPanelWrapper
+            game={gameSample2}
+            currentUser={userSample}
+          />
         );
 
         expect(gameControlPanel.props.orientation).toBe("black");
 
         testRenderer.update(
-          <SingleGame game={gameSample2} currentUser={userSample} isFlipped />
+          <GameControlPanelWrapper
+            game={gameSample2}
+            currentUser={userSample}
+            isFlipped
+          />
         );
 
         expect(gameControlPanel.props.orientation).toBe("white");
@@ -345,7 +73,7 @@ describe("SingleGame", () => {
 
       it("rewindToMoveIndex", () => {
         const testRenderer = TestRenderer.create(
-          <SingleGame game={gameWithMovesSample} />
+          <GameControlPanelWrapper game={gameWithMovesSample} />
         );
         const testInstance = testRenderer.root;
 
@@ -354,13 +82,19 @@ describe("SingleGame", () => {
         expect(gameControlPanel.props.rewindToMoveIndex).toBeNull();
 
         testRenderer.update(
-          <SingleGame game={gameWithMovesSample} rewindToMoveIndex={2} />
+          <GameControlPanelWrapper
+            game={gameWithMovesSample}
+            rewindToMoveIndex={2}
+          />
         );
 
         expect(gameControlPanel.props.rewindToMoveIndex).toBe(2);
 
         testRenderer.update(
-          <SingleGame game={gameWithMovesSample} rewindToMoveIndex={0} />
+          <GameControlPanelWrapper
+            game={gameWithMovesSample}
+            rewindToMoveIndex={0}
+          />
         );
 
         expect(gameControlPanel.props.rewindToMoveIndex).toBe(0);
@@ -368,7 +102,7 @@ describe("SingleGame", () => {
 
       it("drawOfferSentByCurrentUser", () => {
         const testRenderer = TestRenderer.create(
-          <SingleGame game={gameSample3} />
+          <GameControlPanelWrapper game={gameSample3} />
         );
         const testInstance = testRenderer.root;
 
@@ -384,7 +118,7 @@ describe("SingleGame", () => {
         );
 
         testRenderer.update(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameWithdrawOfferSentByCurrentUser}
             currentUser={userSample}
           />
@@ -395,7 +129,7 @@ describe("SingleGame", () => {
 
       it("drawOfferSentByOpponent", () => {
         const testRenderer = TestRenderer.create(
-          <SingleGame game={gameSample3} />
+          <GameControlPanelWrapper game={gameSample3} />
         );
         const testInstance = testRenderer.root;
 
@@ -411,7 +145,7 @@ describe("SingleGame", () => {
         );
 
         testRenderer.update(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameWithdrawOfferSentByOpponent}
             currentUser={userSample}
           />
@@ -422,7 +156,7 @@ describe("SingleGame", () => {
 
       it("canAbortGame", () => {
         const testRenderer = TestRenderer.create(
-          <SingleGame game={gameWithMovesSample} />
+          <GameControlPanelWrapper game={gameWithMovesSample} />
         );
         const testInstance = testRenderer.root;
 
@@ -431,7 +165,7 @@ describe("SingleGame", () => {
         expect(gameControlPanel.props.canAbortGame).toBeFalsy();
 
         testRenderer.update(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameThatCanBeAbortedSample}
             currentUser={userSample}
           />
@@ -448,7 +182,7 @@ describe("SingleGame", () => {
         );
 
         testRenderer.update(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameSampleWithOutOfTimeStatus}
             currentUser={userSample}
           />
@@ -459,7 +193,7 @@ describe("SingleGame", () => {
 
       it("canResignGame", () => {
         const testRenderer = TestRenderer.create(
-          <SingleGame game={gameThatCanBeAbortedSample} />
+          <GameControlPanelWrapper game={gameThatCanBeAbortedSample} />
         );
         const testInstance = testRenderer.root;
 
@@ -468,7 +202,7 @@ describe("SingleGame", () => {
         expect(gameControlPanel.props.canResignGame).toBeFalsy();
 
         testRenderer.update(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameWithMovesAndUserSample}
             currentUser={userSample}
           />
@@ -485,7 +219,7 @@ describe("SingleGame", () => {
         );
 
         testRenderer.update(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameSampleWithOutOfTimeStatus}
             currentUser={userSample}
           />
@@ -496,7 +230,7 @@ describe("SingleGame", () => {
 
       it("canOfferDraw", () => {
         const testRenderer = TestRenderer.create(
-          <SingleGame game={gameWithMovesAndUserVsUserSample} />
+          <GameControlPanelWrapper game={gameWithMovesAndUserVsUserSample} />
         );
         const testInstance = testRenderer.root;
 
@@ -506,7 +240,7 @@ describe("SingleGame", () => {
         expect(gameControlPanel.props.canOfferDraw).toBeFalsy();
 
         testRenderer.update(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameWithMovesAndUserVsUserSample}
             currentUser={userSample}
           />
@@ -523,7 +257,10 @@ describe("SingleGame", () => {
         );
 
         testRenderer.update(
-          <SingleGame game={gameWithOutOfTimeStatus} currentUser={userSample} />
+          <GameControlPanelWrapper
+            game={gameWithOutOfTimeStatus}
+            currentUser={userSample}
+          />
         );
 
         // out of time
@@ -537,7 +274,10 @@ describe("SingleGame", () => {
         );
 
         testRenderer.update(
-          <SingleGame game={gameWithDrawOffer} currentUser={userSample} />
+          <GameControlPanelWrapper
+            game={gameWithDrawOffer}
+            currentUser={userSample}
+          />
         );
 
         // draw is already offered
@@ -552,7 +292,7 @@ describe("SingleGame", () => {
         );
 
         testRenderer.update(
-          <SingleGame game={gameVsAI} currentUser={userSample} />
+          <GameControlPanelWrapper game={gameVsAI} currentUser={userSample} />
         );
 
         // game VS AI
@@ -563,7 +303,10 @@ describe("SingleGame", () => {
         const onFlipBoard = jest.fn();
 
         const testInstance = TestRenderer.create(
-          <SingleGame game={defaultGameSample} onFlipBoard={onFlipBoard} />
+          <GameControlPanelWrapper
+            game={defaultGameSample}
+            onFlipBoard={onFlipBoard}
+          />
         ).root;
 
         const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
@@ -577,7 +320,7 @@ describe("SingleGame", () => {
         const onAcceptDrawOffer = jest.fn();
 
         const testInstance = TestRenderer.create(
-          <SingleGame
+          <GameControlPanelWrapper
             game={defaultGameSample}
             onAcceptDrawOffer={onAcceptDrawOffer}
           />
@@ -596,7 +339,7 @@ describe("SingleGame", () => {
         const onDeclineDrawOffer = jest.fn();
 
         const testInstance = TestRenderer.create(
-          <SingleGame
+          <GameControlPanelWrapper
             game={defaultGameSample}
             onDeclineDrawOffer={onDeclineDrawOffer}
           />
@@ -615,7 +358,10 @@ describe("SingleGame", () => {
         const onAbortGame = jest.fn();
 
         const testInstance = TestRenderer.create(
-          <SingleGame game={defaultGameSample} onAbortGame={onAbortGame} />
+          <GameControlPanelWrapper
+            game={defaultGameSample}
+            onAbortGame={onAbortGame}
+          />
         ).root;
 
         const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
@@ -629,7 +375,10 @@ describe("SingleGame", () => {
         const onOfferDraw = jest.fn();
 
         const testInstance = TestRenderer.create(
-          <SingleGame game={defaultGameSample} onOfferDraw={onOfferDraw} />
+          <GameControlPanelWrapper
+            game={defaultGameSample}
+            onOfferDraw={onOfferDraw}
+          />
         ).root;
 
         const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
@@ -643,7 +392,10 @@ describe("SingleGame", () => {
         const onResignGame = jest.fn();
 
         const testInstance = TestRenderer.create(
-          <SingleGame game={defaultGameSample} onResignGame={onResignGame} />
+          <GameControlPanelWrapper
+            game={defaultGameSample}
+            onResignGame={onResignGame}
+          />
         ).root;
 
         const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
@@ -661,7 +413,7 @@ describe("SingleGame", () => {
         const onRewindToMove = jest.fn();
 
         const testInstance = TestRenderer.create(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameWithMovesSample}
             onRewindToMove={onRewindToMove}
           />
@@ -686,7 +438,7 @@ describe("SingleGame", () => {
         const onRewindToMove = jest.fn();
 
         const testInstance = TestRenderer.create(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameWithMovesSample}
             onRewindToMove={onRewindToMove}
           />
@@ -706,7 +458,7 @@ describe("SingleGame", () => {
         const onRewindToMove = jest.fn();
 
         const testInstance = TestRenderer.create(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameWithMovesSample}
             onRewindToMove={onRewindToMove}
           />
@@ -726,7 +478,7 @@ describe("SingleGame", () => {
         const onRewindToMove = jest.fn();
 
         const testRenderer = TestRenderer.create(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameWithMovesSample}
             onRewindToMove={onRewindToMove}
           />
@@ -743,7 +495,7 @@ describe("SingleGame", () => {
         expect(onRewindToMove).toBeCalledWith(2);
 
         testRenderer.update(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameWithMovesSample}
             rewindToMoveIndex={2}
             onRewindToMove={onRewindToMove}
@@ -760,7 +512,7 @@ describe("SingleGame", () => {
         const onRewindToMove = jest.fn();
 
         const testRenderer = TestRenderer.create(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameWithMovesSample}
             rewindToMoveIndex={0}
             onRewindToMove={onRewindToMove}
@@ -778,7 +530,7 @@ describe("SingleGame", () => {
         expect(onRewindToMove).toBeCalledWith(1);
 
         testRenderer.update(
-          <SingleGame
+          <GameControlPanelWrapper
             game={gameWithMovesSample}
             rewindToMoveIndex={2}
             onRewindToMove={onRewindToMove}

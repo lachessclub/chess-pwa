@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import HomePage from "../features/home-page/HomePage";
-import GamePage from "../pages/GamePage";
+import GamePage from "../features/single-game/GamePage";
 import { fetchCurrentUser } from "../features/current-user/currentUserSlice";
 import { watchGames } from "../features/data-subscription/dataSubscriptionSlice";
 import { startGameClock } from "../features/game-clock/gameClockSlice";

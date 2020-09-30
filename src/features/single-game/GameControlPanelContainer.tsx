@@ -1,36 +1,39 @@
-import React, { FC, useCallback, useEffect } from "react";
-import { denormalize } from "normalizr";
+import React, { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Move } from "ii-react-chessboard";
-import { SingleGame } from "./SingleGame";
-import { AppDispatch } from "../../app/store";
+import { denormalize } from "normalizr";
 import { RootState } from "../../app/rootReducer";
 import gameSchema from "../../normalizr/schemas/gameSchema";
-import {
-  abortGame,
-  resignGame,
-  defaultSingleGameItemState,
-  fetchGame,
-  flipBoard,
-  rewindToMove,
-  offerDraw,
-  acceptDrawOffer,
-  declineDrawOffer,
-} from "./singleGameSlice";
-import { makeMove } from "../move/moveSlice";
+import { GameControlPanelWrapper } from "./GameControlPanelWrapper";
 import User from "../../interfaces/User";
 import userSchema from "../../normalizr/schemas/userSchema";
+import {
+  abortGame,
+  acceptDrawOffer,
+  declineDrawOffer,
+  defaultSingleGameItemState,
+  flipBoard,
+  offerDraw,
+  resignGame,
+  rewindToMove,
+} from "./singleGameSlice";
+import { AppDispatch } from "../../app/store";
 
-export interface SingleGameContainerProps {
+export interface SingleGameControlPanelContainerProps {
   id: number;
 }
 
-export const SingleGameContainer: FC<SingleGameContainerProps> = ({ id }) => {
+export const GameControlPanelContainer: FC<SingleGameControlPanelContainerProps> = ({
+  id,
+}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const game = useSelector((state: RootState) =>
     denormalize(id, gameSchema, state.entities)
   );
+
+  const singleGameItemState =
+    useSelector((state: RootState) => state.singleGame[id]) ||
+    defaultSingleGameItemState;
 
   const currentUser: User | undefined = useSelector((state: RootState) => {
     if (state.currentUser.userId) {
@@ -39,12 +42,12 @@ export const SingleGameContainer: FC<SingleGameContainerProps> = ({ id }) => {
     return undefined;
   });
 
-  const singleGameItemState =
-    useSelector((state: RootState) => state.singleGame[id]) ||
-    defaultSingleGameItemState;
+  const handleFlipBoard = useCallback(() => {
+    dispatch(flipBoard(id));
+  }, [dispatch, id]);
 
-  useEffect(() => {
-    dispatch(fetchGame(id));
+  const handleAbortGame = useCallback(() => {
+    dispatch(abortGame(id));
   }, [dispatch, id]);
 
   const handleAcceptDrawOffer = useCallback(() => {
@@ -55,26 +58,12 @@ export const SingleGameContainer: FC<SingleGameContainerProps> = ({ id }) => {
     dispatch(declineDrawOffer(id));
   }, [dispatch, id]);
 
-  const handleAbortGame = useCallback(() => {
-    dispatch(abortGame(id));
-  }, [dispatch, id]);
-
   const handleResignGame = useCallback(() => {
     dispatch(resignGame(id));
   }, [dispatch, id]);
 
   const handleOfferDraw = useCallback(() => {
     dispatch(offerDraw(id));
-  }, [dispatch, id]);
-
-  const handleMove = useCallback(
-    (move: Move) => {
-      dispatch(makeMove(id, `${move.from}${move.to}`));
-    },
-    [dispatch, id]
-  );
-  const handleFlipBoard = useCallback(() => {
-    dispatch(flipBoard(id));
   }, [dispatch, id]);
 
   const handleRewindToMove = useCallback(
@@ -91,19 +80,18 @@ export const SingleGameContainer: FC<SingleGameContainerProps> = ({ id }) => {
 
   if (game) {
     return (
-      <SingleGame
+      <GameControlPanelWrapper
         game={game}
         currentUser={currentUser}
+        isFlipped={singleGameItemState.isFlipped}
         rewindToMoveIndex={singleGameItemState.rewindToMoveIndex}
+        onFlipBoard={handleFlipBoard}
+        onAbortGame={handleAbortGame}
         onAcceptDrawOffer={handleAcceptDrawOffer}
         onDeclineDrawOffer={handleDeclineDrawOffer}
-        onAbortGame={handleAbortGame}
         onOfferDraw={handleOfferDraw}
         onResignGame={handleResignGame}
-        onMove={handleMove}
-        onFlipBoard={handleFlipBoard}
         onRewindToMove={handleRewindToMove}
-        isFlipped={singleGameItemState.isFlipped}
       />
     );
   }
