@@ -23,11 +23,17 @@ const GamePage: FC<unknown> = () => {
   }, [dispatch, idAsNumber]);
 
   return (
-    <>
-      <GameMetaContainer id={idAsNumber} />
-      <GameControlPanelContainer id={idAsNumber} />
-      <SingleGameBoardContainer id={idAsNumber} />
-    </>
+    <div className="row">
+      <div className="col-3">
+        <GameMetaContainer id={idAsNumber} />
+      </div>
+      <div className="col-6">
+        <SingleGameBoardContainer id={idAsNumber} />
+      </div>
+      <div className="col-3">
+        <GameControlPanelContainer id={idAsNumber} />
+      </div>
+    </div>
   );
 };
 

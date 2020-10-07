@@ -2,6 +2,7 @@ import React, { FC, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.scss";
 import HomePage from "../features/home-page/HomePage";
 import GamePage from "../features/single-game/GamePage";
 import { fetchCurrentUser } from "../features/current-user/currentUserSlice";
@@ -22,7 +23,7 @@ const App: FC = () => {
   }, [dispatch]);
 
   return (
-    <div className="container">
+    <div className="container-fluid">
       <Router>
         <HeaderContainer />
         <AuthModalContainer />

@@ -5,6 +5,7 @@ import { GameControlPanel } from "../GameControlPanel";
 import {
   defaultGameSample,
   gameWithMovesSample,
+  makeGameSample,
 } from "../../../test-utils/data-sample/game";
 import { GameClock } from "../GameClock";
 import { GameMoves } from "../GameMoves";
@@ -101,6 +102,34 @@ describe("GameControlPanel", () => {
 
         expect(gameClocks[0].props.time).toBe(310000);
         expect(gameClocks[1].props.time).toBe(365000);
+      });
+
+      it("isRunning", () => {
+        const testRenderer = TestRenderer.create(
+          <GameControlPanel game={defaultGameSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        let gameClocks = testInstance.findAllByType(GameClock);
+
+        expect(gameClocks[0].props.isRunning).toBeFalsy();
+        expect(gameClocks[1].props.isRunning).toBeTruthy();
+
+        const gameSampleWithBlackTurn = makeGameSample(
+          {
+            turn: "black",
+          },
+          defaultGameSample
+        );
+
+        testRenderer.update(
+          <GameControlPanel game={gameSampleWithBlackTurn} />
+        );
+
+        gameClocks = testInstance.findAllByType(GameClock);
+
+        expect(gameClocks[0].props.isRunning).toBeTruthy();
+        expect(gameClocks[1].props.isRunning).toBeFalsy();
       });
     });
 

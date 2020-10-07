@@ -1,9 +1,62 @@
 import { fireEvent, render } from "@testing-library/react";
 import React from "react";
+import TestRenderer from "react-test-renderer";
 import { GameMoves } from "../GameMoves";
-import { gameWithMovesSample } from "../../../test-utils/data-sample/game";
+import {
+  gameWithMovesSample,
+  makeGameSample,
+} from "../../../test-utils/data-sample/game";
+import { GameControlPanelStatus } from "../GameControlPanelStatus";
 
 describe("GameMoves", () => {
+  describe("children components", () => {
+    it("contains GameControlPanelStatus", () => {
+      const testRenderer = TestRenderer.create(<GameMoves />);
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(GameControlPanelStatus).length).toBe(0);
+
+      const startedGameSample = makeGameSample({
+        status: "started",
+      });
+
+      testRenderer.update(<GameMoves game={startedGameSample} />);
+
+      expect(testInstance.findAllByType(GameControlPanelStatus).length).toBe(0);
+
+      const finishedGameSample = makeGameSample({
+        status: "mate",
+        winner: "white",
+      });
+
+      testRenderer.update(<GameMoves game={finishedGameSample} />);
+
+      expect(testInstance.findAllByType(GameControlPanelStatus).length).toBe(1);
+    });
+  });
+
+  describe("children components props", () => {
+    describe("GameControlPanelStatus", () => {
+      it("game", () => {
+        const finishedGameSample = makeGameSample({
+          status: "mate",
+          winner: "white",
+        });
+
+        const testRenderer = TestRenderer.create(
+          <GameMoves game={finishedGameSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameControlPanelStatus = testInstance.findByType(
+          GameControlPanelStatus
+        );
+
+        expect(gameControlPanelStatus.props.game).toBe(finishedGameSample);
+      });
+    });
+  });
+
   describe("DOM structure", () => {
     it("should contain nothing if no game", () => {
       const { container } = render(<GameMoves />);

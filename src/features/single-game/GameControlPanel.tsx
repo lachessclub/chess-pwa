@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import css from "./GameControlPanel.module.scss";
 import Game from "../../interfaces/Game";
 import { PieceColor } from "../../types/PieceColor";
 import { GameClock } from "./GameClock";
@@ -70,50 +71,58 @@ export const GameControlPanel: FC<GameControlPanelProps> = ({
   const hasNextMove = rewindToMoveIndex !== null;
 
   return (
-    <div>
-      <GameClock time={orientation === "white" ? game.btime : game.wtime} />
-      <GameControlPanelUserName
-        game={game}
-        color={orientation === "white" ? "black" : "white"}
+    <div className={css.controlPanel}>
+      <GameClock
+        time={orientation === "white" ? game.btime : game.wtime}
+        isRunning={game.turn !== orientation}
       />
-      <GameControlPanelTopToolbar
-        isFirstMove={isFirstMove}
-        isLastMove={isLastMove}
-        hasPrevMove={hasPrevMove}
-        hasNextMove={hasNextMove}
-        onFlipBoard={onFlipBoard}
-        onRewindToPrevMove={onRewindToPrevMove}
-        onRewindToNextMove={onRewindToNextMove}
-        onRewindToFirstMove={onRewindToFirstMove}
-        onRewindToLastMove={onRewindToLastMove}
-      />
-      <GameMoves
-        game={game}
-        rewindToMoveIndex={rewindToMoveIndex}
-        onRewindToMove={onRewindToMove}
-      />
-      {drawOfferSentByOpponent && (
-        <DrawOfferDialog
-          onAccept={onAcceptDrawOffer}
-          onDecline={onDeclineDrawOffer}
+      <div className={css.controlPanelInner}>
+        <GameControlPanelUserName
+          game={game}
+          color={orientation === "white" ? "black" : "white"}
         />
-      )}
-      {drawOfferSentByCurrentUser && (
-        <div data-testid="draw-offer-sent-message">Draw offer sent</div>
-      )}
-      <GameControlPanelBottomToolbar
-        canAbortGame={canAbortGame}
-        canOfferDraw={canOfferDraw}
-        canResignGame={canResignGame}
-        onAbortGame={onAbortGame}
-        onOfferDraw={onOfferDraw}
-        onResignGame={onResignGame}
+        <GameControlPanelTopToolbar
+          isFirstMove={isFirstMove}
+          isLastMove={isLastMove}
+          hasPrevMove={hasPrevMove}
+          hasNextMove={hasNextMove}
+          onFlipBoard={onFlipBoard}
+          onRewindToPrevMove={onRewindToPrevMove}
+          onRewindToNextMove={onRewindToNextMove}
+          onRewindToFirstMove={onRewindToFirstMove}
+          onRewindToLastMove={onRewindToLastMove}
+        />
+        <GameMoves
+          game={game}
+          rewindToMoveIndex={rewindToMoveIndex}
+          onRewindToMove={onRewindToMove}
+        />
+        {drawOfferSentByOpponent && (
+          <DrawOfferDialog
+            onAccept={onAcceptDrawOffer}
+            onDecline={onDeclineDrawOffer}
+          />
+        )}
+        {drawOfferSentByCurrentUser && (
+          <div data-testid="draw-offer-sent-message">Draw offer sent</div>
+        )}
+        <GameControlPanelBottomToolbar
+          canAbortGame={canAbortGame}
+          canOfferDraw={canOfferDraw}
+          canResignGame={canResignGame}
+          onAbortGame={onAbortGame}
+          onOfferDraw={onOfferDraw}
+          onResignGame={onResignGame}
+        />
+        <GameControlPanelUserName
+          game={game}
+          color={orientation === "white" ? "white" : "black"}
+        />
+      </div>
+      <GameClock
+        time={orientation === "white" ? game.wtime : game.btime}
+        isRunning={game.turn === orientation}
       />
-      <GameControlPanelUserName
-        game={game}
-        color={orientation === "white" ? "white" : "black"}
-      />
-      <GameClock time={orientation === "white" ? game.wtime : game.btime} />
     </div>
   );
 };

@@ -10,6 +10,7 @@ import { ChessInstance } from "chess.js";
 import Game from "../../interfaces/Game";
 import makeChessInstance from "../../utils/makeChessInstance";
 import User from "../../interfaces/User";
+import css from "./SingleGameBoard.module.scss";
 
 export interface SingleGameBoardProps {
   currentUser?: User;
@@ -87,19 +88,21 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
   }
 
   return (
-    <Board
-      allowMarkers
-      check={check}
-      clickable
-      draggable
-      lastMoveSquares={lastMoveSquares}
-      movableColor={movableColor}
-      onMove={onMove}
-      orientation={orientation}
-      position={fen}
-      turnColor={turnColor}
-      validMoves={validMoves}
-      viewOnly={viewOnly}
-    />
+    <div className={css.singleGameBoard}>
+      <Board
+        allowMarkers
+        check={check}
+        clickable
+        draggable
+        lastMoveSquares={lastMoveSquares}
+        movableColor={movableColor}
+        onMove={onMove}
+        orientation={orientation}
+        position={fen}
+        turnColor={turnColor}
+        validMoves={validMoves}
+        viewOnly={viewOnly}
+      />
+    </div>
   );
 };

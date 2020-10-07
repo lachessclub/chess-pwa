@@ -3,6 +3,7 @@
 import React, { FC } from "react";
 import Game from "../../interfaces/Game";
 import { PieceColor } from "../../types/PieceColor";
+import css from "./GameControlPanelUserName.module.scss";
 
 export interface GameControlPanelUserNameProps {
   game?: Game;
@@ -18,7 +19,7 @@ export const GameControlPanelUserName: FC<GameControlPanelUserNameProps> = ({
   }
 
   return (
-    <div>
+    <div className={css.userName}>
       {game[color] ? game[color]!.fullName : `AI level ${game.aiLevel}`}
     </div>
   );

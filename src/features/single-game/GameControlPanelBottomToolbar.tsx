@@ -1,4 +1,12 @@
 import React, { FC, useCallback } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFlag,
+  faHandshake,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
+import { Button } from "react-bootstrap";
+import css from "./GameControlPanelBottomToolbar.module.scss";
 
 export interface GameControlPanelBottomToolbarProps {
   canAbortGame?: boolean;
@@ -34,31 +42,37 @@ export const GameControlPanelBottomToolbar: FC<GameControlPanelBottomToolbarProp
   }, [onResignGame]);
 
   return (
-    <>
-      <button
+    <div className={css.buttonsWrapper}>
+      <Button
         type="button"
+        variant="link"
         data-testid="abort-game-btn"
         onClick={handleAbortGame}
         disabled={!canAbortGame}
       >
-        Abort
-      </button>
-      <button
+        <FontAwesomeIcon icon={faTimes} />
+        <span className="sr-only">Abort</span>
+      </Button>
+      <Button
         type="button"
+        variant="link"
         data-testid="offer-draw-btn"
         onClick={handleOfferDraw}
         disabled={!canOfferDraw}
       >
-        Offer a draw
-      </button>
-      <button
+        <FontAwesomeIcon icon={faHandshake} />
+        <span className="sr-only">Offer a draw</span>
+      </Button>
+      <Button
         type="button"
+        variant="link"
         data-testid="resign-game-btn"
         onClick={handleResignGame}
         disabled={!canResignGame}
       >
-        Resign
-      </button>
-    </>
+        <FontAwesomeIcon icon={faFlag} />
+        <span className="sr-only">Resign</span>
+      </Button>
+    </div>
   );
 };

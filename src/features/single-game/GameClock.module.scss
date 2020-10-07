@@ -1,0 +1,14 @@
+.clock {
+  display: inline-block;
+  font-size: 2em;
+  letter-spacing: .12em;
+  padding: 0 1vmin;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+}
+.clockRun {
+  background-color: #d0e0bd;
+}
+.clockEmerg {
+  background-color: #f2cccc;
+}

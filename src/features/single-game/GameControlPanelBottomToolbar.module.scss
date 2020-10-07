@@ -1,0 +1,16 @@
+.buttonsWrapper {
+  border-top: 1px solid #d9d9d9;
+  border-bottom: 1px solid #d9d9d9;
+  display: flex;
+  justify-content: center;
+
+  & button {
+    color: #4d4d4d;
+    font-size: 1.4em;
+
+    &:hover {
+      background: #89b25b;
+      color: #fff;
+    }
+  }
+}

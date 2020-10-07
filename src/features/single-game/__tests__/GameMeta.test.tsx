@@ -21,9 +21,11 @@ describe("GameMeta", () => {
     it("should contain status", () => {
       (getGameStatusText as jest.Mock).mockReturnValue("some status text");
 
-      const { queryByText } = render(<GameMeta game={defaultGameSample} />);
+      const { queryByTestId } = render(<GameMeta game={defaultGameSample} />);
 
-      expect(queryByText("some status text")).not.toBeNull();
+      const gameStatus = queryByTestId("game-status");
+
+      expect(gameStatus).toHaveTextContent("some status text");
     });
 
     it("should contain players names", () => {
@@ -39,15 +41,17 @@ describe("GameMeta", () => {
     });
 
     it("should contain time control", () => {
-      const { queryByText, rerender } = render(
+      const { queryByTestId, rerender } = render(
         <GameMeta game={defaultGameSample} />
       );
 
-      expect(queryByText("5 + 3")).not.toBeNull();
+      const timeControl = queryByTestId("time-control");
+
+      expect(timeControl).toHaveTextContent("5 + 3");
 
       rerender(<GameMeta game={gameWith10Plus5MinControlSample} />);
 
-      expect(queryByText("10 + 5")).not.toBeNull();
+      expect(timeControl).toHaveTextContent("10 + 5");
     });
   });
 });

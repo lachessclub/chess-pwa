@@ -1,0 +1,14 @@
+.controlPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  height: 480px;
+}
+
+.controlPanelInner {
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+  display: flex;
+  flex-flow: column;
+}

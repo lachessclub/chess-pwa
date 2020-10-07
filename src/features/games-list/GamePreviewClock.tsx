@@ -5,7 +5,7 @@ import css from "./GamePreviewClock.module.scss";
 
 export interface GamePreviewClockProps {
   time?: number; // in msec
-  isRunning?: boolean; // in msec
+  isRunning?: boolean;
 }
 
 export const GamePreviewClock: FC<GamePreviewClockProps> = ({

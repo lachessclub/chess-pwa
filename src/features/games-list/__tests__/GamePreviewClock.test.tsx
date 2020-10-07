@@ -4,7 +4,7 @@ import { GamePreviewClock } from "../GamePreviewClock";
 
 describe("GamePreviewClock", () => {
   describe("DOM structure", () => {
-    it("should contain clock", () => {
+    it("should display time", () => {
       const { getByTestId, rerender } = render(<GamePreviewClock />);
 
       expect(getByTestId("time")).toHaveTextContent("00:00");

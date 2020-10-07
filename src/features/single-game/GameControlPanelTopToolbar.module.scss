@@ -1,0 +1,17 @@
+.buttonsWrapper {
+  background: #f7f6f5;
+  flex: 0 0 auto;
+  display: flex;
+  justify-content: stretch;
+
+  & button {
+    color: #4d4d4d;
+    flex: 0 0 calc(100% / 5);
+    text-align: center;
+
+    &:hover {
+      background: #89b25b;
+      color: #fff;
+    }
+  }
+}

@@ -1,3 +1,35 @@
-.selected {
-  background-color: #0074D9;
+.movesWrapper {
+  display: flex;
+  flex-flow: row wrap;
+  flex: 0 0 7.4rem;
+  line-height: 1.7;
+  align-items: center;
+  overflow-y: auto;
+  align-content: flex-start;
 }
+
+.moveNumber {
+  flex: 0 0 16.666%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  background: #f7f6f5;
+}
+
+.move {
+  flex: 0 0 41.666%;
+  padding-left: .7em;
+
+  &.selected {
+    font-weight: bold;
+    background: #d1e4f6;
+    color: #1f1f1f;
+  }
+
+  &:hover {
+    background: #1b78d0;
+    color: #fff;
+  }
+}
+
+
