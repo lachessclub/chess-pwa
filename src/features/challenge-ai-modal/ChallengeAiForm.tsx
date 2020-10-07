@@ -18,7 +18,7 @@ export const ChallengeAiForm: FC<ChallengeAiFormProps> = ({ onSubmit }) => {
   return (
     <Formik
       initialValues={{
-        level: 3,
+        level: 2,
         color: "",
         clockLimit: 300,
         clockIncrement: 3,
