@@ -1,10 +1,9 @@
 import React, { FC } from "react";
 import { ChessInstance } from "chess.js";
-import { PieceColor } from "ii-react-chessboard";
 import Game from "../../interfaces/Game";
 import { GameControlPanel } from "./GameControlPanel";
 import User from "../../interfaces/User";
-import { PieceColor as AppPieceColor } from "../../types/PieceColor";
+import { PieceColor } from "../../types/PieceColor";
 import makeChessInstance from "../../utils/makeChessInstance";
 
 export interface SingleGameControlPanelWrapperProps {
@@ -42,16 +41,15 @@ export const GameControlPanelWrapper: FC<SingleGameControlPanelWrapperProps> = (
 
   const movesHistory = chessWithAllMoves.history({ verbose: true });
 
-  let orientation = PieceColor.WHITE;
+  let orientation: PieceColor = "white";
   if (currentUser && currentUser.id === game.black?.id) {
-    orientation = PieceColor.BLACK;
+    orientation = "black";
   }
   if (isFlipped) {
-    orientation =
-      orientation === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+    orientation = orientation === "white" ? "black" : "white";
   }
 
-  let playerPiecesColor: AppPieceColor | null = null;
+  let playerPiecesColor: PieceColor | null = null;
   if (currentUser) {
     if (currentUser.id === game.white?.id) {
       playerPiecesColor = "white";
@@ -163,7 +161,7 @@ export const GameControlPanelWrapper: FC<SingleGameControlPanelWrapperProps> = (
   return (
     <GameControlPanel
       game={game}
-      orientation={orientation as AppPieceColor}
+      orientation={orientation}
       rewindToMoveIndex={rewindToMoveIndex}
       canAbortGame={canAbortGame}
       canResignGame={canResignGame}
