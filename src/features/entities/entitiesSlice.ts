@@ -44,9 +44,12 @@ const initialState: EntitiesState = {
 
 const getNormalizedDataReducer = (
   state: EntitiesState,
-  action: PayloadAction<{
-    entities: Partial<EntitiesState>;
-  }>
+  action: Pick<
+    PayloadAction<{
+      entities: Partial<EntitiesState>;
+    }>,
+    "payload"
+  >
 ) => {
   Object.assign(state.users, action.payload.entities.users);
   Object.assign(state.games, action.payload.entities.games);
@@ -65,7 +68,6 @@ const entitiesSlice = createSlice({
     ) => {
       if (action.payload) {
         getNormalizedDataReducer(state, {
-          type: action.type,
           payload: action.payload,
         });
       }
