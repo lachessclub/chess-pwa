@@ -66,16 +66,33 @@ describe("GameMoves", () => {
     it("should contain moves", () => {
       const { getByTestId } = render(<GameMoves game={gameWithMovesSample} />);
 
-      expect(getByTestId("move-0")).toContainHTML("e2e4");
-      expect(getByTestId("move-1")).toContainHTML("e7e5");
+      expect(getByTestId("move-1")).toContainHTML("e2e4");
+      expect(getByTestId("move-2")).toContainHTML("e7e5");
     });
 
     it("should contain selected class", () => {
-      const { getByTestId } = render(
-        <GameMoves game={gameWithMovesSample} rewindToMoveIndex={0} />
+      const { getByTestId, rerender } = render(
+        <GameMoves game={gameWithMovesSample} />
       );
 
-      expect(getByTestId("move-0")).toHaveClass("selected");
+      expect(getByTestId("move-1")).not.toHaveClass("selected");
+      expect(getByTestId("move-2")).not.toHaveClass("selected");
+      expect(getByTestId("move-3")).not.toHaveClass("selected");
+      expect(getByTestId("move-4")).toHaveClass("selected");
+
+      rerender(<GameMoves game={gameWithMovesSample} rewindToMoveIndex={1} />);
+
+      expect(getByTestId("move-1")).toHaveClass("selected");
+      expect(getByTestId("move-2")).not.toHaveClass("selected");
+      expect(getByTestId("move-3")).not.toHaveClass("selected");
+      expect(getByTestId("move-4")).not.toHaveClass("selected");
+
+      rerender(<GameMoves game={gameWithMovesSample} rewindToMoveIndex={0} />);
+
+      expect(getByTestId("move-1")).not.toHaveClass("selected");
+      expect(getByTestId("move-2")).not.toHaveClass("selected");
+      expect(getByTestId("move-3")).not.toHaveClass("selected");
+      expect(getByTestId("move-4")).not.toHaveClass("selected");
     });
   });
 
@@ -87,10 +104,10 @@ describe("GameMoves", () => {
         <GameMoves game={gameWithMovesSample} onRewindToMove={onRewindToMove} />
       );
 
-      fireEvent.click(getByTestId("move-0"));
+      fireEvent.click(getByTestId("move-1"));
 
       expect(onRewindToMove).toBeCalledTimes(1);
-      expect(onRewindToMove).toBeCalledWith(0);
+      expect(onRewindToMove).toBeCalledWith(1);
     });
   });
 });

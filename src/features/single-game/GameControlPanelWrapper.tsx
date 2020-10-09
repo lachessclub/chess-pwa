@@ -114,7 +114,7 @@ export const GameControlPanelWrapper: FC<SingleGameControlPanelWrapperProps> = (
   // @todo. use useCallback hook
   const handleRewindToMove = (moveIndex: number) => {
     if (onRewindToMove) {
-      if (moveIndex === movesHistory.length - 1) {
+      if (moveIndex === movesHistory.length) {
         onRewindToMove(null);
       } else {
         onRewindToMove(moveIndex);
@@ -140,7 +140,7 @@ export const GameControlPanelWrapper: FC<SingleGameControlPanelWrapperProps> = (
   const handleRewindToPrevMove = () => {
     if (onRewindToMove) {
       if (rewindToMoveIndex === null) {
-        onRewindToMove(movesHistory.length - 2);
+        onRewindToMove(movesHistory.length - 1);
       } else {
         onRewindToMove(rewindToMoveIndex - 1);
       }
@@ -150,7 +150,7 @@ export const GameControlPanelWrapper: FC<SingleGameControlPanelWrapperProps> = (
   // @todo. use useCallback hook
   const handleRewindToNextMove = () => {
     if (onRewindToMove) {
-      if (rewindToMoveIndex === movesHistory.length - 2) {
+      if (rewindToMoveIndex === movesHistory.length - 1) {
         onRewindToMove(null);
       } else {
         onRewindToMove((rewindToMoveIndex as number) + 1);

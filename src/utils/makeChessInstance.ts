@@ -17,7 +17,7 @@ export default (
 
   if (game.moves) {
     game.moves.split(" ").forEach((move, index) => {
-      if (rewindToMoveIndex !== null && index > rewindToMoveIndex) {
+      if (rewindToMoveIndex !== null && index >= rewindToMoveIndex) {
         return;
       }
 

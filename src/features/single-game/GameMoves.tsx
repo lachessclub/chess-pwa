@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */ // @todo
 /* eslint-disable jsx-a11y/interactive-supports-focus */ // @todo
 
-import React, { FC } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import { chunk as _chunk } from "lodash";
 import { Move } from "chess.js";
 import cx from "classnames";
@@ -10,6 +10,7 @@ import Game from "../../interfaces/Game";
 import makeChessInstance from "../../utils/makeChessInstance";
 import css from "./GameMoves.module.scss";
 import { GameControlPanelStatus } from "./GameControlPanelStatus";
+import GameStatus from "../../types/GameStatus";
 
 export interface GameMovesProps {
   game?: Game;
@@ -26,13 +27,48 @@ export const GameMoves: FC<GameMovesProps> = ({
   rewindToMoveIndex = null,
   onRewindToMove,
 }) => {
+  let movesHistory: Move[] = [];
+
+  const scrollToElementRef = useRef<HTMLDivElement>(null);
+  const lastMovesQnt = useRef<number>(-1);
+  const lastGameStatus = useRef<GameStatus>();
+
+  // @todo. add unit test
+  useEffect(() => {
+    if (!game) {
+      return;
+    }
+
+    if (
+      (lastMovesQnt.current !== movesHistory.length ||
+        lastGameStatus.current !== game.status) &&
+      rewindToMoveIndex === null
+    ) {
+      if (scrollToElementRef.current) {
+        scrollToElementRef.current.scrollTop =
+          scrollToElementRef.current.scrollHeight;
+      }
+    }
+    lastMovesQnt.current = movesHistory.length;
+    lastGameStatus.current = game.status;
+  }, [
+    game,
+    lastMovesQnt,
+    lastGameStatus,
+    movesHistory.length,
+    rewindToMoveIndex,
+    scrollToElementRef,
+  ]);
+
   if (!game) {
     return null;
   }
 
   const chess = makeChessInstance(game);
 
-  const movesHistory = chess.history({ verbose: true });
+  movesHistory = chess.history({ verbose: true });
+
+  const movesQnt = movesHistory.length;
 
   const movesPairs = _chunk(movesHistory, 2);
 
@@ -45,34 +81,43 @@ export const GameMoves: FC<GameMovesProps> = ({
   };
 
   return (
-    <div className={css.movesWrapper}>
-      {movesPairs.map((pair, index) => (
-        <React.Fragment key={`move-${index}`}>
-          <div className={css.moveNumber}>{index + 1}</div>
-          <div
-            data-testid={`move-${index * 2}`}
-            onClick={makeRewindToMoveHandler(index * 2)}
-            role="button"
-            className={cx(css.move, {
-              [css.selected]: rewindToMoveIndex === index * 2,
-            })}
-          >
-            {formatMove(pair[0])}
-          </div>
-          {pair[1] && (
+    <div className={css.movesWrapper} ref={scrollToElementRef}>
+      {movesPairs.map((pair, index) => {
+        const whiteMoveIndex = index * 2 + 1;
+        const blackMoveIndex = index * 2 + 2;
+
+        return (
+          <React.Fragment key={`move-${index}`}>
+            <div className={css.moveNumber}>{index + 1}</div>
             <div
-              data-testid={`move-${index * 2 + 1}`}
-              onClick={makeRewindToMoveHandler(index * 2 + 1)}
+              data-testid={`move-${whiteMoveIndex}`}
+              onClick={makeRewindToMoveHandler(whiteMoveIndex)}
               role="button"
               className={cx(css.move, {
-                [css.selected]: rewindToMoveIndex === index * 2 + 1,
+                [css.selected]:
+                  rewindToMoveIndex === whiteMoveIndex ||
+                  (rewindToMoveIndex === null && movesQnt === whiteMoveIndex),
               })}
             >
-              {formatMove(pair[1])}
+              {formatMove(pair[0])}
             </div>
-          )}
-        </React.Fragment>
-      ))}
+            {pair[1] && (
+              <div
+                data-testid={`move-${blackMoveIndex}`}
+                onClick={makeRewindToMoveHandler(blackMoveIndex)}
+                role="button"
+                className={cx(css.move, {
+                  [css.selected]:
+                    rewindToMoveIndex === blackMoveIndex ||
+                    (rewindToMoveIndex === null && movesQnt === blackMoveIndex),
+                })}
+              >
+                {formatMove(pair[1])}
+              </div>
+            )}
+          </React.Fragment>
+        );
+      })}
 
       {game.status !== "started" && <GameControlPanelStatus game={game} />}
     </div>

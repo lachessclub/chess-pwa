@@ -14,6 +14,13 @@ import { GameControlPanelBottomToolbar } from "../GameControlPanelBottomToolbar"
 import { GameControlPanelTopToolbar } from "../GameControlPanelTopToolbar";
 import { DrawOfferDialog } from "../DrawOfferDialog";
 
+const gameWithOneMoveSample = makeGameSample(
+  {
+    moves: "e2e4",
+  },
+  defaultGameSample
+);
+
 describe("GameControlPanel", () => {
   describe("children components", () => {
     it("contains GameClock", () => {
@@ -281,6 +288,10 @@ describe("GameControlPanel", () => {
 
         expect(topToolbar.props.isFirstMove).toBeFalsy();
 
+        testRenderer.update(<GameControlPanel game={gameWithOneMoveSample} />);
+
+        expect(topToolbar.props.isFirstMove).toBeFalsy();
+
         testRenderer.update(
           <GameControlPanel game={gameWithMovesSample} rewindToMoveIndex={0} />
         );
@@ -328,6 +339,9 @@ describe("GameControlPanel", () => {
 
         // hasPrevMove false because gameWithMovesSample.moves is empty
         expect(topToolbar.props.hasPrevMove).toBeFalsy();
+
+        testRenderer.update(<GameControlPanel game={gameWithOneMoveSample} />);
+        expect(topToolbar.props.hasPrevMove).toBeTruthy();
 
         testRenderer.update(
           <GameControlPanel game={gameWithMovesSample} rewindToMoveIndex={0} />

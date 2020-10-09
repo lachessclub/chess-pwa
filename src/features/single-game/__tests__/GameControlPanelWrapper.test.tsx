@@ -428,7 +428,7 @@ describe("GameControlPanelWrapper", () => {
         expect(onRewindToMove).toBeCalledTimes(1);
         expect(onRewindToMove).toBeCalledWith(2);
 
-        gameControlPanel.props.onRewindToMove(3);
+        gameControlPanel.props.onRewindToMove(4);
 
         expect(onRewindToMove).toBeCalledTimes(2);
         expect(onRewindToMove).toHaveBeenNthCalledWith(2, null);
@@ -492,7 +492,7 @@ describe("GameControlPanelWrapper", () => {
         gameControlPanel.props.onRewindToPrevMove();
 
         expect(onRewindToMove).toBeCalledTimes(1);
-        expect(onRewindToMove).toBeCalledWith(2);
+        expect(onRewindToMove).toBeCalledWith(3);
 
         testRenderer.update(
           <GameControlPanelWrapper
@@ -532,7 +532,7 @@ describe("GameControlPanelWrapper", () => {
         testRenderer.update(
           <GameControlPanelWrapper
             game={gameWithMovesSample}
-            rewindToMoveIndex={2}
+            rewindToMoveIndex={3}
             onRewindToMove={onRewindToMove}
           />
         );

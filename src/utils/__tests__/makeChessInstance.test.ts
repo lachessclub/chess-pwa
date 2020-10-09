@@ -3,7 +3,7 @@ import {
   defaultGameSample,
   gameSampleFen,
   gameWithIncorrectMoveSample,
-  gameWithMovesRewoundToIndex2SampleFen,
+  gameWithMovesRewoundToIndex3SampleFen,
   gameWithMovesSample,
   gameWithMovesSampleFen,
 } from "../../test-utils/data-sample/game";
@@ -20,8 +20,8 @@ describe("makeChessInstance", () => {
   });
 
   it("not empty moves and rewindToMoveIndex", () => {
-    expect(makeChessInstance(gameWithMovesSample, 2).fen()).toBe(
-      gameWithMovesRewoundToIndex2SampleFen
+    expect(makeChessInstance(gameWithMovesSample, 3).fen()).toBe(
+      gameWithMovesRewoundToIndex3SampleFen
     );
   });
 

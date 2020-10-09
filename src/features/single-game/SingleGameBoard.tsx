@@ -82,8 +82,8 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
       const lastMove = movesHistory[movesHistory.length - 1];
       lastMoveSquares = [lastMove.from, lastMove.to];
     }
-  } else {
-    const lastMove = movesHistory[rewindToMoveIndex];
+  } else if (rewindToMoveIndex > 0) {
+    const lastMove = movesHistory[rewindToMoveIndex - 1];
     lastMoveSquares = [lastMove.from, lastMove.to];
   }
 

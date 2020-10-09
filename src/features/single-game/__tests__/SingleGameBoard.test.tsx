@@ -9,7 +9,7 @@ import {
   gameSampleFen,
   gameWithCheckmateByWhiteSample,
   gameWithMovesAndUserSample,
-  gameWithMovesRewoundToIndex2SampleFen,
+  gameWithMovesRewoundToIndex3SampleFen,
   gameWithMovesSample,
   gameWithMovesSampleFen,
   gameWithSmallAmountOfPiecesSample,
@@ -50,11 +50,11 @@ describe("SingleGameBoard", () => {
         expect(board.props.position).toBe(gameWithMovesSampleFen);
 
         testRenderer.update(
-          <SingleGameBoard game={gameWithMovesSample} rewindToMoveIndex={2} />
+          <SingleGameBoard game={gameWithMovesSample} rewindToMoveIndex={3} />
         );
 
         expect(board.props.position).toBe(
-          gameWithMovesRewoundToIndex2SampleFen
+          gameWithMovesRewoundToIndex3SampleFen
         );
       });
 
@@ -248,11 +248,16 @@ describe("SingleGameBoard", () => {
         // no moves
         expect(board.props.lastMoveSquares).toBeUndefined();
 
+        testRenderer.update(
+          <SingleGameBoard game={gameWithMovesSample} rewindToMoveIndex={0} />
+        );
+        expect(board.props.lastMoveSquares).toBeUndefined();
+
         testRenderer.update(<SingleGameBoard game={gameWithMovesSample} />);
         expect(board.props.lastMoveSquares).toEqual(["g8", "f6"]);
 
         testRenderer.update(
-          <SingleGameBoard game={gameWithMovesSample} rewindToMoveIndex={2} />
+          <SingleGameBoard game={gameWithMovesSample} rewindToMoveIndex={3} />
         );
         expect(board.props.lastMoveSquares).toEqual(["g1", "f3"]);
       });

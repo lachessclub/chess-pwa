@@ -170,7 +170,7 @@ export const gameWithMovesSample: Game = {
 };
 export const gameWithMovesSampleFen =
   "rnbqkb1r/pppp1ppp/5n2/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3";
-export const gameWithMovesRewoundToIndex2SampleFen =
+export const gameWithMovesRewoundToIndex3SampleFen =
   "rnbqkbnr/pppp1ppp/8/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R b KQkq - 1 2";
 export const gameWithMovesAndUserSample: Game = {
   id: 2,
