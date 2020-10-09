@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "604af3127bd9cc6d483970c8babca800",
+    "revision": "f92cd11afce5b7ab099a32edab82be28",
     "url": "/chess-pwa/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/chess-pwa/static/css/2.11829350.chunk.css"
   },
   {
-    "revision": "13237850378b46afb706",
+    "revision": "28b19ce288982ed988c5",
     "url": "/chess-pwa/static/css/main.08d552bd.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/chess-pwa/static/js/2.aaff7f28.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "13237850378b46afb706",
-    "url": "/chess-pwa/static/js/main.15b3cf63.chunk.js"
+    "revision": "28b19ce288982ed988c5",
+    "url": "/chess-pwa/static/js/main.ebe9ace9.chunk.js"
   },
   {
     "revision": "d0774963cc441ee5a4c2",

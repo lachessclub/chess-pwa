@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/chess-pwa/static/css/main.08d552bd.chunk.css",
-    "main.js": "/chess-pwa/static/js/main.15b3cf63.chunk.js",
-    "main.js.map": "/chess-pwa/static/js/main.15b3cf63.chunk.js.map",
+    "main.js": "/chess-pwa/static/js/main.ebe9ace9.chunk.js",
+    "main.js.map": "/chess-pwa/static/js/main.ebe9ace9.chunk.js.map",
     "runtime-main.js": "/chess-pwa/static/js/runtime-main.cbb0f1fa.js",
     "runtime-main.js.map": "/chess-pwa/static/js/runtime-main.cbb0f1fa.js.map",
     "static/css/2.11829350.chunk.css": "/chess-pwa/static/css/2.11829350.chunk.css",
     "static/js/2.aaff7f28.chunk.js": "/chess-pwa/static/js/2.aaff7f28.chunk.js",
     "static/js/2.aaff7f28.chunk.js.map": "/chess-pwa/static/js/2.aaff7f28.chunk.js.map",
     "index.html": "/chess-pwa/index.html",
-    "precache-manifest.f5c71faa378cd11ccff898a35c69f1df.js": "/chess-pwa/precache-manifest.f5c71faa378cd11ccff898a35c69f1df.js",
+    "precache-manifest.eb760f7c8b9a92669ed2beaa5b888fb2.js": "/chess-pwa/precache-manifest.eb760f7c8b9a92669ed2beaa5b888fb2.js",
     "service-worker.js": "/chess-pwa/service-worker.js",
     "static/css/2.11829350.chunk.css.map": "/chess-pwa/static/css/2.11829350.chunk.css.map",
     "static/css/main.08d552bd.chunk.css.map": "/chess-pwa/static/css/main.08d552bd.chunk.css.map",
@@ -20,6 +20,6 @@
     "static/css/2.11829350.chunk.css",
     "static/js/2.aaff7f28.chunk.js",
     "static/css/main.08d552bd.chunk.css",
-    "static/js/main.15b3cf63.chunk.js"
+    "static/js/main.ebe9ace9.chunk.js"
   ]
 }
