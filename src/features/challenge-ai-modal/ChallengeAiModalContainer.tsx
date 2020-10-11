@@ -2,7 +2,7 @@ import React, { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChallengeAiModal } from "./ChallengeAiModal";
 import { RootState } from "../../app/rootReducer";
-import { hideChallengeAiModal } from "../challenge-ai-modal/challengeAiModalSlice";
+import { hideChallengeAiModal } from "./challengeAiModalSlice";
 
 const ChallengeAiModalContainer: FC<unknown> = () => {
   const { isChallengeAiModalVisible } = useSelector(

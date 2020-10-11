@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 import { Modal } from "react-bootstrap";
-import ChallengeAiFormContainer from "../challenge-ai-modal/ChallengeAiFormContainer";
+import ChallengeAiFormContainer from "./ChallengeAiFormContainer";
 
 export interface ChallengeAiModalProps {
   show?: boolean;

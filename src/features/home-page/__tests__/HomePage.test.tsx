@@ -6,7 +6,7 @@ import HomePage from "../HomePage";
 import OngoingGamesContainer from "../../games-list/OngoingGamesContainer";
 import { defaultState } from "../../../test-utils/data-sample/state";
 import ChallengeButtonsContainer from "../ChallengeButtonsContainer";
-import ChallengeAiModalContainer from "../ChallengeAiModalContainer";
+import ChallengeAiModalContainer from "../../challenge-ai-modal/ChallengeAiModalContainer";
 import CompletedGamesContainer from "../../games-list/CompletedGamesContainer";
 
 describe("HomePage", () => {

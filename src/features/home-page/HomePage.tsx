@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Card } from "react-bootstrap";
 import OngoingGamesContainer from "../games-list/OngoingGamesContainer";
 import ChallengeButtonsContainer from "./ChallengeButtonsContainer";
-import ChallengeAiModalContainer from "./ChallengeAiModalContainer";
+import ChallengeAiModalContainer from "../challenge-ai-modal/ChallengeAiModalContainer";
 import CompletedGamesContainer from "../games-list/CompletedGamesContainer";
 
 const HomePage: FC<unknown> = () => {

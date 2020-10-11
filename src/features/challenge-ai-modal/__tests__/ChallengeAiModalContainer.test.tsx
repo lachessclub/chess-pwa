@@ -8,9 +8,9 @@ import {
   defaultState,
   makeStateSample,
 } from "../../../test-utils/data-sample/state";
-import { hideChallengeAiModal } from "../../challenge-ai-modal/challengeAiModalSlice";
+import { hideChallengeAiModal } from "../challengeAiModalSlice";
 
-jest.mock("../../challenge-ai-modal/challengeAiModalSlice");
+jest.mock("../challengeAiModalSlice");
 
 describe("ChallengeAiModalContainer", () => {
   beforeEach(() => {
