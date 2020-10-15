@@ -19,5 +19,18 @@ describe("ChallengeButtons", () => {
       expect(onChallengeAi).toBeCalledTimes(1);
       expect(onChallengeAi).toBeCalledWith();
     });
+
+    it("onCreateGame", () => {
+      const onCreateGame = jest.fn();
+
+      const { getByTestId } = render(
+        <ChallengeButtons onCreateGame={onCreateGame} />
+      );
+
+      fireEvent.click(getByTestId("create-game-btn"));
+
+      expect(onCreateGame).toBeCalledTimes(1);
+      expect(onCreateGame).toBeCalledWith();
+    });
   });
 });

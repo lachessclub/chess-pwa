@@ -6,8 +6,10 @@ import ChallengeButtonsContainer from "../ChallengeButtonsContainer";
 import { ChallengeButtons } from "../ChallengeButtons";
 import { defaultState } from "../../../test-utils/data-sample/state";
 import { showChallengeAiModal } from "../../challenge-ai-modal/challengeAiModalSlice";
+import { showSeekModal } from "../../seek-modal/seekModalSlice";
 
 jest.mock("../../challenge-ai-modal/challengeAiModalSlice");
+jest.mock("../../seek-modal/seekModalSlice");
 
 describe("ChallengeButtonsContainer", () => {
   beforeEach(() => {
@@ -47,6 +49,29 @@ describe("ChallengeButtonsContainer", () => {
       expect(showChallengeAiModalFn).toBeCalledWith();
 
       expect(dispatch).toBeCalledWith(showChallengeAiModalReturnedValue);
+    });
+
+    it("should call dispatch(showSeekModal())", () => {
+      const dispatch = useDispatch<jest.Mock>();
+      const showSeekModalReturnedValue = Symbol("showSeekModal");
+
+      const testRenderer = TestRenderer.create(<ChallengeButtonsContainer />);
+      const testInstance = testRenderer.root;
+
+      const challengeButtons = testInstance.findByType(ChallengeButtons);
+
+      const showSeekModalFn = (showSeekModal as unknown) as jest.Mock;
+      showSeekModalFn.mockClear();
+      showSeekModalFn.mockReturnValue(showSeekModalReturnedValue);
+
+      TestRenderer.act(() => {
+        challengeButtons.props.onCreateGame();
+      });
+
+      expect(showSeekModalFn).toBeCalledTimes(1);
+      expect(showSeekModalFn).toBeCalledWith();
+
+      expect(dispatch).toBeCalledWith(showSeekModalReturnedValue);
     });
   });
 });

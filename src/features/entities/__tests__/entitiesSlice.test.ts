@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import entitiesReducer from "../entitiesSlice";
+import entitiesReducer, { EntitiesState } from "../entitiesSlice";
 import { getGamesListSuccess } from "../../games-list/gamesListSlice";
+import { getSeeksListSuccess } from "../../seeks-list/seeksListSlice";
 import {
   abortGameSuccess,
   getSingleGameSuccess,
@@ -10,7 +11,11 @@ import {
   acceptDrawOfferSuccess,
   declineDrawOfferSuccess,
 } from "../../single-game/singleGameSlice";
-import { challengeAiSuccess } from "../../challenge/challengeSlice";
+import {
+  challengeAiSuccess,
+  createSeekSuccess,
+  acceptSeekSuccess,
+} from "../../challenge/challengeSlice";
 import { oneSecondPassed } from "../../game-clock/gameClockSlice";
 import { makeMoveRequest, makeMoveSuccess } from "../../move/moveSlice";
 import {
@@ -21,6 +26,9 @@ import {
 import {
   createGameBySubscription,
   updateGameBySubscription,
+  createSeekBySubscription,
+  updateSeekBySubscription,
+  removeSeekBySubscription,
 } from "../../data-subscription/dataSubscriptionSlice";
 import {
   addGamePayloadSample,
@@ -34,6 +42,8 @@ import {
   entitiesBeforeTimeOutSample,
   entitiesAfterTwoMovesSample,
   entitiesAfterTwoMovesAndOneSecondSample,
+  entitiesAfterAddingSeekSample,
+  addSeekPayloadSample,
 } from "../../../test-utils/data-sample/entities";
 
 jest.mock("../../../services/ioClient");
@@ -47,6 +57,7 @@ describe("entitiesSlice reducer", () => {
     ).toEqual({
       users: {},
       games: {},
+      seeks: {},
     });
   });
 
@@ -266,5 +277,113 @@ describe("entitiesSlice reducer", () => {
         },
       })
     ).toEqual(entitiesAfterAddingGameSample);
+  });
+
+  it("createSeekSuccess", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: createSeekSuccess.type,
+        payload: {
+          result: 2,
+          entities: addGamePayloadSample,
+        },
+      })
+    ).toEqual(entitiesAfterAddingGameSample);
+  });
+
+  it("should handle getSeeksListSuccess", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: getSeeksListSuccess.type,
+        payload: {
+          result: [1],
+          entities: addSeekPayloadSample,
+        },
+      })
+    ).toEqual(entitiesAfterAddingSeekSample);
+  });
+
+  it("should handle acceptSeekSuccess", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: acceptSeekSuccess.type,
+        payload: {
+          result: 2,
+          entities: addSeekPayloadSample,
+        },
+      })
+    ).toEqual(entitiesAfterAddingSeekSample);
+  });
+
+  it("should handle createSeekBySubscription", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: createSeekBySubscription.type,
+        payload: {
+          result: 2,
+          entities: addSeekPayloadSample,
+        },
+      })
+    ).toEqual(entitiesAfterAddingSeekSample);
+  });
+
+  it("should handle updateSeekBySubscription", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: updateSeekBySubscription.type,
+        payload: {
+          result: 2,
+          entities: addSeekPayloadSample,
+        },
+      })
+    ).toEqual(entitiesAfterAddingSeekSample);
+  });
+
+  it("should handle removeSeekBySubscription", () => {
+    const entitiesWithSeeksSample: EntitiesState = {
+      users: {},
+      games: {},
+      seeks: {
+        "1": {
+          id: 1,
+          color: "white",
+          clockLimit: 300,
+          createdAt: 0,
+          clockIncrement: 5,
+          createdBy: 2,
+          game: 2,
+        },
+        "2": {
+          id: 2,
+          color: "white",
+          clockLimit: 400,
+          createdAt: 0,
+          clockIncrement: 5,
+          createdBy: 2,
+          game: 3,
+        },
+      },
+    };
+
+    expect(
+      entitiesReducer(entitiesWithSeeksSample, {
+        type: removeSeekBySubscription.type,
+        payload: 1,
+      })
+    ).toEqual({
+      users: {},
+      games: {},
+      seeks: {
+        "2": {
+          id: 2,
+          color: "white",
+          clockLimit: 400,
+          createdAt: 0,
+          clockIncrement: 5,
+          createdBy: 2,
+          game: 3,
+        },
+      },
+    });
   });
 });

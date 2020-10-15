@@ -8,6 +8,8 @@ import { defaultState } from "../../../test-utils/data-sample/state";
 import ChallengeButtonsContainer from "../ChallengeButtonsContainer";
 import ChallengeAiModalContainer from "../../challenge-ai-modal/ChallengeAiModalContainer";
 import CompletedGamesContainer from "../../games-list/CompletedGamesContainer";
+import SeekModalContainer from "../../seek-modal/SeekModalContainer";
+import SeeksListContainer from "../../seeks-list/SeeksListContainer";
 
 describe("HomePage", () => {
   beforeEach(() => {
@@ -24,6 +26,13 @@ describe("HomePage", () => {
       expect(testInstance.findAllByType(ChallengeButtonsContainer).length).toBe(
         1
       );
+    });
+
+    it("contains SeeksListContainer", () => {
+      const testRenderer = TestRenderer.create(<HomePage />);
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(SeeksListContainer).length).toBe(1);
     });
 
     it("contains OngoingGamesContainer", () => {
@@ -49,6 +58,13 @@ describe("HomePage", () => {
       expect(testInstance.findAllByType(ChallengeAiModalContainer).length).toBe(
         1
       );
+    });
+
+    it("contains SeekModalContainer", () => {
+      const testRenderer = TestRenderer.create(<HomePage />);
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(SeekModalContainer).length).toBe(1);
     });
   });
 });

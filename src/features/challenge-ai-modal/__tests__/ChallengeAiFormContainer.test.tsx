@@ -21,7 +21,7 @@ describe("ChallengeAiFormContainer", () => {
   mountTest(ChallengeAiFormContainer);
 
   describe("children components", () => {
-    it("contains ChallengeAiForm", async () => {
+    it("contains ChallengeAiForm", () => {
       const testRenderer = TestRenderer.create(<ChallengeAiFormContainer />);
       const testInstance = testRenderer.root;
 

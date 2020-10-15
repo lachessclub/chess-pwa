@@ -6,11 +6,16 @@ import "./App.scss";
 import HomePage from "../features/home-page/HomePage";
 import GamePage from "../features/single-game/GamePage";
 import { fetchCurrentUser } from "../features/current-user/currentUserSlice";
-import { watchGames } from "../features/data-subscription/dataSubscriptionSlice";
+import {
+  watchGames,
+  watchSeeks,
+} from "../features/data-subscription/dataSubscriptionSlice";
 import { startGameClock } from "../features/game-clock/gameClockSlice";
 import HeaderContainer from "../features/header/HeaderContainer";
 import AuthModalContainer from "../features/auth-modal/AuthModalContainer";
 import { fetchGames } from "../features/games-list/gamesListSlice";
+import { fetchSeeks } from "../features/seeks-list/seeksListSlice";
+import MessagesContainer from "../features/messages/MessagesContainer";
 
 const App: FC = () => {
   const dispatch = useDispatch();
@@ -18,8 +23,10 @@ const App: FC = () => {
   useEffect(() => {
     dispatch(fetchCurrentUser());
     dispatch(watchGames());
+    dispatch(watchSeeks());
     dispatch(startGameClock());
     dispatch(fetchGames());
+    dispatch(fetchSeeks());
   }, [dispatch]);
 
   return (
@@ -27,6 +34,7 @@ const App: FC = () => {
       <Router>
         <HeaderContainer />
         <AuthModalContainer />
+        <MessagesContainer />
 
         <Switch>
           <Route path="/game/:id">
