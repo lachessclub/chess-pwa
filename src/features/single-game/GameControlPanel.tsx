@@ -104,7 +104,13 @@ export const GameControlPanel: FC<GameControlPanelProps> = ({
           />
         )}
         {drawOfferSentByCurrentUser && (
-          <div data-testid="draw-offer-sent-message">Draw offer sent</div>
+          <div
+            className="alert alert-warning text-center"
+            role="alert"
+            data-testid="draw-offer-sent-message"
+          >
+            Draw offer sent
+          </div>
         )}
         <GameControlPanelBottomToolbar
           canAbortGame={canAbortGame}

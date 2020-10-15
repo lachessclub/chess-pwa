@@ -1,0 +1,31 @@
+.dialogWrapper {
+  background: #d64f00;
+  display: flex;
+  padding: 1px;
+
+  button {
+    background: #fff;
+    border-radius: unset;
+  }
+}
+.acceptBtn {
+  color: #629924;
+  margin-right: 1px;
+
+  &:hover {
+    color: #fff;
+    background: #629924;
+  }
+}
+.declineBtn {
+  color: #c33;
+
+  &:hover {
+    color: #fff;
+    background: #c33;
+  }
+}
+.dialogText {
+  color: #fff;
+  padding: .5rem;
+}
