@@ -40,16 +40,15 @@ export const SingleGameBoardContainer: FC<SingleGameBoardProps> = ({ id }) => {
     [dispatch, id]
   );
 
-  if (game) {
-    return (
-      <SingleGameBoard
-        game={game}
-        currentUser={currentUser}
-        isFlipped={singleGameItemState.isFlipped}
-        rewindToMoveIndex={singleGameItemState.rewindToMoveIndex}
-        onMove={handleMove}
-      />
-    );
-  }
-  return null;
+  return (
+    <SingleGameBoard
+      game={game}
+      currentUser={currentUser}
+      isFlipped={singleGameItemState.isFlipped}
+      rewindToMoveIndex={singleGameItemState.rewindToMoveIndex}
+      onMove={handleMove}
+      isLoading={singleGameItemState.isLoading}
+      error={singleGameItemState.error}
+    />
+  );
 };

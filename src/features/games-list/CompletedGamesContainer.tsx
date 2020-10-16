@@ -18,7 +18,19 @@ const CompletedGamesContainer: FC<unknown> = () => {
       .slice(0, limit)
   );
 
-  return <GamePreviewsList games={games} />;
+  const isLoading = useSelector(
+    (state: RootState) => state.gamesList.isLoading
+  );
+  const error = useSelector((state: RootState) => state.gamesList.error);
+
+  return (
+    <GamePreviewsList
+      games={games}
+      isLoading={isLoading}
+      error={error}
+      emptyContentMessage="There is no finished games yet"
+    />
+  );
 };
 
 export default CompletedGamesContainer;

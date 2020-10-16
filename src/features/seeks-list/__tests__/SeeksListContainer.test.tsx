@@ -23,6 +23,22 @@ const stateWithCurrentUser = makeStateSample({
   },
 });
 
+const stateWithLoadingSeeks = makeStateSample({
+  seeksList: {
+    isLoading: true,
+    error: null,
+    items: [],
+  },
+});
+
+const stateWithLoadingError = makeStateSample({
+  seeksList: {
+    isLoading: false,
+    error: "error text",
+    items: [],
+  },
+});
+
 describe("SeeksListContainer", () => {
   beforeEach(() => {
     (useSelector as jest.Mock).mockImplementation((cb) => cb(defaultState));
@@ -99,6 +115,40 @@ describe("SeeksListContainer", () => {
             game: null,
           },
         ]);
+      });
+
+      it("isLoading", () => {
+        const testRenderer = TestRenderer.create(<SeeksListContainer />);
+        const testInstance = testRenderer.root;
+
+        const seeksListComponent = testInstance.findByType(SeeksList);
+
+        expect(seeksListComponent.props.isLoading).toBeFalsy();
+
+        (useSelector as jest.Mock).mockImplementation((cb) =>
+          cb(stateWithLoadingSeeks)
+        );
+
+        testRenderer.update(<SeeksListContainer />);
+
+        expect(seeksListComponent.props.isLoading).toBeTruthy();
+      });
+
+      it("error", () => {
+        const testRenderer = TestRenderer.create(<SeeksListContainer />);
+        const testInstance = testRenderer.root;
+
+        const seeksListComponent = testInstance.findByType(SeeksList);
+
+        expect(seeksListComponent.props.error).toBeNull();
+
+        (useSelector as jest.Mock).mockImplementation((cb) =>
+          cb(stateWithLoadingError)
+        );
+
+        testRenderer.update(<SeeksListContainer />);
+
+        expect(seeksListComponent.props.error).toBe("error text");
       });
 
       it("acceptInProcess", () => {

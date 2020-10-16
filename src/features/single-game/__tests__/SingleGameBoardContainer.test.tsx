@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import TestRenderer from "react-test-renderer";
 import {
+  makeStateSample,
   stateWithDataSample,
   stateWithDataSample2,
   stateWithDataSample3,
@@ -12,6 +13,34 @@ import { SingleGameBoard } from "../SingleGameBoard";
 import { makeMove } from "../../move/moveSlice";
 
 jest.mock("../../move/moveSlice");
+
+const stateWithLoadedGame = makeStateSample(
+  {
+    singleGame: {
+      "1": {
+        isLoading: false,
+        error: null,
+        isFlipped: false,
+        rewindToMoveIndex: null,
+      },
+    },
+  },
+  stateWithDataSample
+);
+
+const stateWithLoadingError = makeStateSample(
+  {
+    singleGame: {
+      "1": {
+        isLoading: false,
+        error: "error text",
+        isFlipped: false,
+        rewindToMoveIndex: null,
+      },
+    },
+  },
+  stateWithDataSample
+);
 
 describe("SingleGameBoardContainer", () => {
   beforeEach(() => {
@@ -31,10 +60,10 @@ describe("SingleGameBoardContainer", () => {
       );
       const testInstance = testRenderer.root;
 
-      expect(testInstance.findAllByType(SingleGameBoard).length).toBe(0);
+      // render SingleGameBoard event if there is no game in state
+      expect(testInstance.findAllByType(SingleGameBoard).length).toBe(1);
 
       testRenderer.update(<SingleGameBoardContainer id={1} />);
-
       expect(testInstance.findAllByType(SingleGameBoard).length).toBe(1);
     });
   });
@@ -66,6 +95,44 @@ describe("SingleGameBoardContainer", () => {
           black: null,
           winner: null,
         });
+      });
+
+      it("isLoading", async () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGameBoardContainer id={1} />
+        );
+        const testInstance = testRenderer.root;
+
+        const singleGameBoard = testInstance.findByType(SingleGameBoard);
+
+        expect(singleGameBoard.props.isLoading).toBeTruthy();
+
+        (useSelector as jest.Mock).mockImplementation((cb) =>
+          cb(stateWithLoadedGame)
+        );
+
+        testRenderer.update(<SingleGameBoardContainer id={1} />);
+
+        expect(singleGameBoard.props.isLoading).toBeFalsy();
+      });
+
+      it("error", async () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGameBoardContainer id={1} />
+        );
+        const testInstance = testRenderer.root;
+
+        const singleGameBoard = testInstance.findByType(SingleGameBoard);
+
+        expect(singleGameBoard.props.error).toBeNull();
+
+        (useSelector as jest.Mock).mockImplementation((cb) =>
+          cb(stateWithLoadingError)
+        );
+
+        testRenderer.update(<SingleGameBoardContainer id={1} />);
+
+        expect(singleGameBoard.props.error).toBe("error text");
       });
 
       it("currentUser", async () => {

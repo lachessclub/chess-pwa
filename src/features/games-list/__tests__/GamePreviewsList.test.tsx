@@ -8,6 +8,7 @@ import {
 } from "../../../test-utils/data-sample/game";
 import Game from "../../../interfaces/Game";
 import { GamePreviewsListItem } from "../GamePreviewsListItem";
+import { ContentLoadingStatus } from "../../../components/ContentLoadingStatus";
 
 const gamesList: Game[] = [defaultGameSample, gameWithMovesSample];
 
@@ -24,9 +25,82 @@ describe("GamePreviewsList", () => {
       testRenderer.update(<GamePreviewsList games={gamesList} />);
       expect(testInstance.findAllByType(GamePreviewsListItem).length).toBe(2);
     });
+
+    it("contains ContentLoadingStatus", () => {
+      const testRenderer = TestRenderer.create(<GamePreviewsList />);
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(ContentLoadingStatus).length).toBe(1);
+    });
   });
 
   describe("children components props", () => {
+    describe("ContentLoadingStatus", () => {
+      it("isLoading", () => {
+        const testRenderer = TestRenderer.create(<GamePreviewsList />);
+        const testInstance = testRenderer.root;
+
+        const contentLoadingStatus = testInstance.findByType(
+          ContentLoadingStatus
+        );
+
+        expect(contentLoadingStatus.props.isLoading).toBeFalsy();
+
+        testRenderer.update(<GamePreviewsList isLoading />);
+
+        expect(contentLoadingStatus.props.isLoading).toBeTruthy();
+      });
+
+      it("error", () => {
+        const testRenderer = TestRenderer.create(<GamePreviewsList />);
+        const testInstance = testRenderer.root;
+
+        const contentLoadingStatus = testInstance.findByType(
+          ContentLoadingStatus
+        );
+
+        expect(contentLoadingStatus.props.error).toBeNull();
+
+        testRenderer.update(<GamePreviewsList isLoading error="error text" />);
+
+        expect(contentLoadingStatus.props.error).toBe("error text");
+      });
+
+      it("isEmpty", () => {
+        const testRenderer = TestRenderer.create(<GamePreviewsList />);
+        const testInstance = testRenderer.root;
+
+        const contentLoadingStatus = testInstance.findByType(
+          ContentLoadingStatus
+        );
+
+        expect(contentLoadingStatus.props.isEmpty).toBeTruthy();
+
+        testRenderer.update(<GamePreviewsList games={gamesList} />);
+
+        expect(contentLoadingStatus.props.isEmpty).toBeFalsy();
+      });
+
+      it("emptyContentMessage", () => {
+        const testRenderer = TestRenderer.create(<GamePreviewsList />);
+        const testInstance = testRenderer.root;
+
+        const contentLoadingStatus = testInstance.findByType(
+          ContentLoadingStatus
+        );
+
+        expect(contentLoadingStatus.props.emptyContentMessage).toBeUndefined();
+
+        testRenderer.update(
+          <GamePreviewsList emptyContentMessage="no previews" />
+        );
+
+        expect(contentLoadingStatus.props.emptyContentMessage).toBe(
+          "no previews"
+        );
+      });
+    });
+
     describe("GamePreviewsListItem", () => {
       it("game", () => {
         const testRenderer = TestRenderer.create(

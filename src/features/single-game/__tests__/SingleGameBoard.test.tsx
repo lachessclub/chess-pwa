@@ -18,6 +18,7 @@ import {
 } from "../../../test-utils/data-sample/game";
 import { SingleGameBoard } from "../SingleGameBoard";
 import userSample from "../../../test-utils/data-sample/user";
+import { ContentLoadingStatus } from "../../../components/ContentLoadingStatus";
 
 describe("SingleGameBoard", () => {
   describe("children components", () => {
@@ -31,9 +32,63 @@ describe("SingleGameBoard", () => {
 
       expect(testInstance.findAllByType(Board).length).toBe(1);
     });
+
+    it("contains ContentLoadingStatus", () => {
+      const testRenderer = TestRenderer.create(<SingleGameBoard />);
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(ContentLoadingStatus).length).toBe(1);
+    });
   });
 
   describe("children components props", () => {
+    describe("ContentLoadingStatus", () => {
+      it("isLoading", () => {
+        const testRenderer = TestRenderer.create(<SingleGameBoard />);
+        const testInstance = testRenderer.root;
+
+        const contentLoadingStatus = testInstance.findByType(
+          ContentLoadingStatus
+        );
+
+        expect(contentLoadingStatus.props.isLoading).toBeFalsy();
+
+        testRenderer.update(<SingleGameBoard isLoading />);
+
+        expect(contentLoadingStatus.props.isLoading).toBeTruthy();
+      });
+
+      it("error", () => {
+        const testRenderer = TestRenderer.create(<SingleGameBoard />);
+        const testInstance = testRenderer.root;
+
+        const contentLoadingStatus = testInstance.findByType(
+          ContentLoadingStatus
+        );
+
+        expect(contentLoadingStatus.props.error).toBeNull();
+
+        testRenderer.update(<SingleGameBoard error="error text" />);
+
+        expect(contentLoadingStatus.props.error).toBe("error text");
+      });
+
+      it("isEmpty", () => {
+        const testRenderer = TestRenderer.create(<SingleGameBoard />);
+        const testInstance = testRenderer.root;
+
+        const contentLoadingStatus = testInstance.findByType(
+          ContentLoadingStatus
+        );
+
+        expect(contentLoadingStatus.props.isEmpty).toBeTruthy();
+
+        testRenderer.update(<SingleGameBoard game={defaultGameSample} />);
+
+        expect(contentLoadingStatus.props.isEmpty).toBeFalsy();
+      });
+    });
+
     describe("Board", () => {
       it("position", () => {
         const testRenderer = TestRenderer.create(

@@ -5,9 +5,24 @@ import { GamePreviewsList } from "../GamePreviewsList";
 import mountTest from "../../../test-utils/mountTest";
 import {
   defaultState,
+  makeStateSample,
   stateWithDataSample4,
 } from "../../../test-utils/data-sample/state";
 import CompletedGamesContainer from "../CompletedGamesContainer";
+
+const stateWithLoadingGames = makeStateSample({
+  gamesList: {
+    isLoading: true,
+    error: null,
+  },
+});
+
+const stateWithLoadingError = makeStateSample({
+  gamesList: {
+    isLoading: false,
+    error: "error text",
+  },
+});
 
 describe("CompletedGamesContainer", () => {
   beforeEach(() => {
@@ -79,6 +94,51 @@ describe("CompletedGamesContainer", () => {
             winner: "white",
           },
         ]);
+      });
+
+      it("isLoading", () => {
+        const testRenderer = TestRenderer.create(<CompletedGamesContainer />);
+        const testInstance = testRenderer.root;
+
+        const gamePreviewsComponent = testInstance.findByType(GamePreviewsList);
+
+        expect(gamePreviewsComponent.props.isLoading).toBeFalsy();
+
+        (useSelector as jest.Mock).mockImplementation((cb) =>
+          cb(stateWithLoadingGames)
+        );
+
+        testRenderer.update(<CompletedGamesContainer />);
+
+        expect(gamePreviewsComponent.props.isLoading).toBeTruthy();
+      });
+
+      it("error", () => {
+        const testRenderer = TestRenderer.create(<CompletedGamesContainer />);
+        const testInstance = testRenderer.root;
+
+        const gamePreviewsComponent = testInstance.findByType(GamePreviewsList);
+
+        expect(gamePreviewsComponent.props.error).toBeNull();
+
+        (useSelector as jest.Mock).mockImplementation((cb) =>
+          cb(stateWithLoadingError)
+        );
+
+        testRenderer.update(<CompletedGamesContainer />);
+
+        expect(gamePreviewsComponent.props.error).toBe("error text");
+      });
+
+      it("emptyContentMessage", () => {
+        const testRenderer = TestRenderer.create(<CompletedGamesContainer />);
+        const testInstance = testRenderer.root;
+
+        const gamePreviewsComponent = testInstance.findByType(GamePreviewsList);
+
+        expect(gamePreviewsComponent.props.emptyContentMessage).toBe(
+          "There is no finished games yet"
+        );
       });
     });
   });

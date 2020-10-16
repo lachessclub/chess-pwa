@@ -8,6 +8,7 @@ import {
 } from "../../../test-utils/data-sample/seek";
 import { Seek } from "../../../interfaces/Seek";
 import { SeeksListItem } from "../SeeksListItem";
+import { ContentLoadingStatus } from "../../../components/ContentLoadingStatus";
 
 const seeksList: Seek[] = [defaultSeekSample, seekSample2];
 
@@ -24,9 +25,76 @@ describe("SeeksList", () => {
       testRenderer.update(<SeeksList seeks={seeksList} />);
       expect(testInstance.findAllByType(SeeksListItem).length).toBe(2);
     });
+
+    it("contains ContentLoadingStatus", () => {
+      const testRenderer = TestRenderer.create(<SeeksList />);
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(ContentLoadingStatus).length).toBe(1);
+    });
   });
 
   describe("children components props", () => {
+    describe("ContentLoadingStatus", () => {
+      it("isLoading", () => {
+        const testRenderer = TestRenderer.create(<SeeksList />);
+        const testInstance = testRenderer.root;
+
+        const contentLoadingStatus = testInstance.findByType(
+          ContentLoadingStatus
+        );
+
+        expect(contentLoadingStatus.props.isLoading).toBeFalsy();
+
+        testRenderer.update(<SeeksList isLoading />);
+
+        expect(contentLoadingStatus.props.isLoading).toBeTruthy();
+      });
+
+      it("error", () => {
+        const testRenderer = TestRenderer.create(<SeeksList />);
+        const testInstance = testRenderer.root;
+
+        const contentLoadingStatus = testInstance.findByType(
+          ContentLoadingStatus
+        );
+
+        expect(contentLoadingStatus.props.error).toBeNull();
+
+        testRenderer.update(<SeeksList error="error text" />);
+
+        expect(contentLoadingStatus.props.error).toBe("error text");
+      });
+
+      it("isEmpty", () => {
+        const testRenderer = TestRenderer.create(<SeeksList />);
+        const testInstance = testRenderer.root;
+
+        const contentLoadingStatus = testInstance.findByType(
+          ContentLoadingStatus
+        );
+
+        expect(contentLoadingStatus.props.isEmpty).toBeTruthy();
+
+        testRenderer.update(<SeeksList seeks={seeksList} />);
+
+        expect(contentLoadingStatus.props.isEmpty).toBeFalsy();
+      });
+
+      it("emptyContentMessage", () => {
+        const testRenderer = TestRenderer.create(<SeeksList />);
+        const testInstance = testRenderer.root;
+
+        const contentLoadingStatus = testInstance.findByType(
+          ContentLoadingStatus
+        );
+
+        expect(contentLoadingStatus.props.emptyContentMessage).toBe(
+          "Nobody is waiting for opponent"
+        );
+      });
+    });
+
     describe("SeeksListItem", () => {
       it("game", () => {
         const testRenderer = TestRenderer.create(

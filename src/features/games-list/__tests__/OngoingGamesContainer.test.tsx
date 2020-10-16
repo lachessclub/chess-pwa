@@ -6,8 +6,23 @@ import { GamePreviewsList } from "../GamePreviewsList";
 import mountTest from "../../../test-utils/mountTest";
 import {
   defaultState,
+  makeStateSample,
   stateWithDataSample4,
 } from "../../../test-utils/data-sample/state";
+
+const stateWithLoadingGames = makeStateSample({
+  gamesList: {
+    isLoading: true,
+    error: null,
+  },
+});
+
+const stateWithLoadingError = makeStateSample({
+  gamesList: {
+    isLoading: false,
+    error: "error text",
+  },
+});
 
 describe("OngoingGamesContainer", () => {
   beforeEach(() => {
@@ -79,6 +94,51 @@ describe("OngoingGamesContainer", () => {
             winner: null,
           },
         ]);
+      });
+
+      it("isLoading", () => {
+        const testRenderer = TestRenderer.create(<OngoingGamesContainer />);
+        const testInstance = testRenderer.root;
+
+        const gamePreviewsComponent = testInstance.findByType(GamePreviewsList);
+
+        expect(gamePreviewsComponent.props.isLoading).toBeFalsy();
+
+        (useSelector as jest.Mock).mockImplementation((cb) =>
+          cb(stateWithLoadingGames)
+        );
+
+        testRenderer.update(<OngoingGamesContainer />);
+
+        expect(gamePreviewsComponent.props.isLoading).toBeTruthy();
+      });
+
+      it("error", () => {
+        const testRenderer = TestRenderer.create(<OngoingGamesContainer />);
+        const testInstance = testRenderer.root;
+
+        const gamePreviewsComponent = testInstance.findByType(GamePreviewsList);
+
+        expect(gamePreviewsComponent.props.error).toBeNull();
+
+        (useSelector as jest.Mock).mockImplementation((cb) =>
+          cb(stateWithLoadingError)
+        );
+
+        testRenderer.update(<OngoingGamesContainer />);
+
+        expect(gamePreviewsComponent.props.error).toBe("error text");
+      });
+
+      it("emptyContentMessage", () => {
+        const testRenderer = TestRenderer.create(<OngoingGamesContainer />);
+        const testInstance = testRenderer.root;
+
+        const gamePreviewsComponent = testInstance.findByType(GamePreviewsList);
+
+        expect(gamePreviewsComponent.props.emptyContentMessage).toBe(
+          "Nobody is playing right now"
+        );
       });
     });
   });

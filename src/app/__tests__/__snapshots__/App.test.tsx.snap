@@ -77,7 +77,16 @@ exports[`App Snapshot 1`] = `
       >
         Waiting for opponent
       </div>
-      <div />
+      <div>
+        <div
+          className="alert alert-warning text-center"
+          data-testid="empty-content-message"
+          role="alert"
+        >
+          Nobody is waiting for opponent
+        </div>
+        <div />
+      </div>
     </div>
   </div>
   <div
@@ -91,9 +100,18 @@ exports[`App Snapshot 1`] = `
       >
         Playing right now
       </div>
-      <div
-        className="grid"
-      />
+      <div>
+        <div
+          className="alert alert-warning text-center"
+          data-testid="empty-content-message"
+          role="alert"
+        >
+          Nobody is playing right now
+        </div>
+        <div
+          className="grid"
+        />
+      </div>
     </div>
   </div>
   <div
@@ -107,9 +125,18 @@ exports[`App Snapshot 1`] = `
       >
         Finished
       </div>
-      <div
-        className="grid"
-      />
+      <div>
+        <div
+          className="alert alert-warning text-center"
+          data-testid="empty-content-message"
+          role="alert"
+        >
+          There is no finished games yet
+        </div>
+        <div
+          className="grid"
+        />
+      </div>
     </div>
   </div>
 </div>

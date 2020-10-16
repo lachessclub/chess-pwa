@@ -23,6 +23,10 @@ const SeeksListContainer: FC<unknown> = () => {
   const seeks = useSelector((state: RootState) =>
     denormalize(state.seeksList.items, [seekSchema], state.entities)
   );
+  const isLoading = useSelector(
+    (state: RootState) => state.seeksList.isLoading
+  );
+  const error = useSelector((state: RootState) => state.seeksList.error);
 
   const acceptSeekRequest = useSelector(
     (state: RootState) => state.acceptSeekRequest
@@ -49,6 +53,8 @@ const SeeksListContainer: FC<unknown> = () => {
       seeks={seeks}
       onPlay={handlePlay}
       acceptInProcess={acceptInProcess}
+      isLoading={isLoading}
+      error={error}
     />
   );
 };

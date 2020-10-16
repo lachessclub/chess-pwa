@@ -11,6 +11,7 @@ import Game from "../../interfaces/Game";
 import makeChessInstance from "../../utils/makeChessInstance";
 import User from "../../interfaces/User";
 import css from "./SingleGameBoard.module.scss";
+import { ContentLoadingStatus } from "../../components/ContentLoadingStatus";
 
 export interface SingleGameBoardProps {
   currentUser?: User;
@@ -18,6 +19,8 @@ export interface SingleGameBoardProps {
   isFlipped?: boolean;
   onMove?(move: Move): void;
   rewindToMoveIndex?: number | null;
+  isLoading?: boolean;
+  error?: string | null;
 }
 
 export const SingleGameBoard: FC<SingleGameBoardProps> = ({
@@ -26,83 +29,97 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
   isFlipped = false,
   onMove,
   rewindToMoveIndex = null,
+  isLoading = false,
+  error = null,
 }) => {
-  if (!game) {
-    return null;
-  }
+  let boardContent = null;
 
-  const chessWithAllMoves: ChessInstance = makeChessInstance(game);
+  if (game) {
+    const chessWithAllMoves: ChessInstance = makeChessInstance(game);
 
-  const chess: ChessInstance =
-    rewindToMoveIndex === null
-      ? chessWithAllMoves
-      : makeChessInstance(game, rewindToMoveIndex);
+    const chess: ChessInstance =
+      rewindToMoveIndex === null
+        ? chessWithAllMoves
+        : makeChessInstance(game, rewindToMoveIndex);
 
-  const fen: string = chess.fen();
+    const fen: string = chess.fen();
 
-  const check: boolean = chess.in_check();
+    const check: boolean = chess.in_check();
 
-  const turnColor: PieceColor =
-    game.turn === "white" ? PieceColor.WHITE : PieceColor.BLACK;
+    const turnColor: PieceColor =
+      game.turn === "white" ? PieceColor.WHITE : PieceColor.BLACK;
 
-  const validMoves: ValidMoves = getValidMoves(chess);
+    const validMoves: ValidMoves = getValidMoves(chess);
 
-  let viewOnly = true;
-  if (
-    currentUser &&
-    (currentUser.id === game.white?.id || currentUser.id === game.black?.id) &&
-    game.status === "started" &&
-    rewindToMoveIndex === null
-  ) {
-    viewOnly = false;
-  }
+    let viewOnly = true;
+    if (
+      currentUser &&
+      (currentUser.id === game.white?.id ||
+        currentUser.id === game.black?.id) &&
+      game.status === "started" &&
+      rewindToMoveIndex === null
+    ) {
+      viewOnly = false;
+    }
 
-  let movableColor: PieceColor | undefined;
-  if (currentUser && currentUser.id === game.white?.id) {
-    movableColor = PieceColor.WHITE;
-  }
-  if (currentUser && currentUser.id === game.black?.id) {
-    movableColor = PieceColor.BLACK;
-  }
+    let movableColor: PieceColor | undefined;
+    if (currentUser && currentUser.id === game.white?.id) {
+      movableColor = PieceColor.WHITE;
+    }
+    if (currentUser && currentUser.id === game.black?.id) {
+      movableColor = PieceColor.BLACK;
+    }
 
-  let orientation = PieceColor.WHITE;
-  if (currentUser && currentUser.id === game.black?.id) {
-    orientation = PieceColor.BLACK;
-  }
-  if (isFlipped) {
-    orientation =
-      orientation === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
-  }
+    let orientation = PieceColor.WHITE;
+    if (currentUser && currentUser.id === game.black?.id) {
+      orientation = PieceColor.BLACK;
+    }
+    if (isFlipped) {
+      orientation =
+        orientation === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+    }
 
-  const movesHistory = chessWithAllMoves.history({ verbose: true });
+    const movesHistory = chessWithAllMoves.history({ verbose: true });
 
-  let lastMoveSquares: string[] | undefined;
-  if (rewindToMoveIndex === null) {
-    if (movesHistory.length) {
-      const lastMove = movesHistory[movesHistory.length - 1];
+    let lastMoveSquares: string[] | undefined;
+    if (rewindToMoveIndex === null) {
+      if (movesHistory.length) {
+        const lastMove = movesHistory[movesHistory.length - 1];
+        lastMoveSquares = [lastMove.from, lastMove.to];
+      }
+    } else if (rewindToMoveIndex > 0) {
+      const lastMove = movesHistory[rewindToMoveIndex - 1];
       lastMoveSquares = [lastMove.from, lastMove.to];
     }
-  } else if (rewindToMoveIndex > 0) {
-    const lastMove = movesHistory[rewindToMoveIndex - 1];
-    lastMoveSquares = [lastMove.from, lastMove.to];
+
+    boardContent = (
+      <div className={css.singleGameBoard}>
+        <Board
+          allowMarkers
+          check={check}
+          clickable
+          draggable
+          lastMoveSquares={lastMoveSquares}
+          movableColor={movableColor}
+          onMove={onMove}
+          orientation={orientation}
+          position={fen}
+          turnColor={turnColor}
+          validMoves={validMoves}
+          viewOnly={viewOnly}
+        />
+      </div>
+    );
   }
 
   return (
-    <div className={css.singleGameBoard}>
-      <Board
-        allowMarkers
-        check={check}
-        clickable
-        draggable
-        lastMoveSquares={lastMoveSquares}
-        movableColor={movableColor}
-        onMove={onMove}
-        orientation={orientation}
-        position={fen}
-        turnColor={turnColor}
-        validMoves={validMoves}
-        viewOnly={viewOnly}
+    <div>
+      <ContentLoadingStatus
+        isLoading={isLoading}
+        error={error}
+        isEmpty={!game}
       />
+      {boardContent}
     </div>
   );
 };
