@@ -16,6 +16,7 @@ import { CreateSeekData } from "../../interfaces/CreateSeekData";
 import ItemErrorPayload from "../../interfaces/ItemErrorPayload";
 import { Seek } from "../../interfaces/Seek";
 import seekSchema from "../../normalizr/schemas/seekSchema";
+import getErrorMessageFromJWR from "../../utils/getErrorMessageFromJWR";
 
 interface ChallengeState {}
 
@@ -78,7 +79,7 @@ export const challengeAi = (data: ChallengeAiData): AppThunk<Promise<Game>> => (
           dispatch(challengeAiSuccess(normalizedGame));
           resolve(body as Game);
         } else {
-          dispatch(challengeAiError(body as string));
+          dispatch(challengeAiError(getErrorMessageFromJWR(jwr)));
           reject(jwr);
         }
       }
@@ -102,9 +103,7 @@ export const createSeek = (data: CreateSeekData): AppThunk<Promise<Game>> => (
           dispatch(createSeekSuccess(normalizedGame));
           resolve(body as Game);
         } else {
-          dispatch(
-            createSeekError(_isString(body) ? body : "Internal server error")
-          );
+          dispatch(createSeekError(getErrorMessageFromJWR(jwr)));
           reject(jwr);
         }
       }
@@ -128,15 +127,10 @@ export const acceptSeek = (seekId: number): AppThunk<Promise<Seek>> => (
           dispatch(acceptSeekSuccess(normalizedSeek));
           resolve(body as Seek);
         } else {
-          let errorMessage = body as string;
-          if (jwr.statusCode === 401) {
-            errorMessage = "You must log in to play a game";
-          }
-
           dispatch(
             acceptSeekError({
               itemId: seekId,
-              error: errorMessage,
+              error: getErrorMessageFromJWR(jwr),
             })
           );
           reject(jwr);

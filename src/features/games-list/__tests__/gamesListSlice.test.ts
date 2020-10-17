@@ -8,8 +8,10 @@ import gamesListReducer, {
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
 import { defaultGameSample } from "../../../test-utils/data-sample/game";
+import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
 jest.mock("../../../services/ioClient");
+jest.mock("../../../utils/getErrorMessageFromJWR");
 
 describe("gamesListSlice reducer", () => {
   it("should handle initial state", () => {
@@ -124,6 +126,7 @@ describe("gamesListSlice reducer", () => {
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = fetchGames()(dispatch, () => defaultState, null);
 
@@ -138,7 +141,7 @@ describe("gamesListSlice reducer", () => {
       });
       expect(dispatch).toHaveBeenNthCalledWith(2, {
         type: getGamesListError.type,
-        payload: "internal server error",
+        payload: "error text",
       });
     });
   });

@@ -11,6 +11,7 @@ import { AppDispatch } from "../../app/store";
 import Game from "../../interfaces/Game";
 
 import ioClient from "../../services/ioClient";
+import getErrorMessageFromJWR from "../../utils/getErrorMessageFromJWR";
 
 const CreateSeekFormContainer: FC<unknown> = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -24,12 +25,10 @@ const CreateSeekFormContainer: FC<unknown> = () => {
           history.push(`/game/${game.id}`);
         })
         .catch((err) => {
-          if (err.statusCode === 401) {
-            formikHelpers.setStatus("You must log in to create a game");
-          } else if (err.statusCode === 0) {
+          if (err.statusCode === 0) {
             // request is aborted by client. do nothing
           } else {
-            formikHelpers.setStatus("Internal server error");
+            formikHelpers.setStatus(getErrorMessageFromJWR(err));
           }
         });
     },

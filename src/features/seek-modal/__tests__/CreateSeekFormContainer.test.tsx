@@ -11,9 +11,11 @@ import { CreateSeekForm } from "../CreateSeekForm";
 import { createSeek } from "../../challenge/challengeSlice";
 import { defaultGameSample } from "../../../test-utils/data-sample/game";
 import ioClient from "../../../services/ioClient";
+import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
 jest.mock("../../challenge/challengeSlice");
 jest.mock("../../../services/ioClient");
+jest.mock("../../../utils/getErrorMessageFromJWR");
 
 describe("CreateSeekFormContainer", () => {
   beforeEach(() => {
@@ -89,13 +91,15 @@ describe("CreateSeekFormContainer", () => {
       expect(push).toBeCalledWith("/game/1");
     });
 
-    it("should handle dispatch(createSeek()) fail 401", async () => {
+    it("should handle dispatch(createSeek()) fail", async () => {
       const dispatch = useDispatch<jest.Mock>();
       dispatch.mockImplementationOnce(() =>
         Promise.reject({
-          statusCode: 401,
+          body: "internal server error",
+          statusCode: 500,
         })
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const testRenderer = TestRenderer.create(<CreateSeekFormContainer />);
       const testInstance = testRenderer.root;
@@ -118,9 +122,7 @@ describe("CreateSeekFormContainer", () => {
       });
 
       expect(formikSetStatusFn).toBeCalledTimes(1);
-      expect(formikSetStatusFn).toBeCalledWith(
-        "You must log in to create a game"
-      );
+      expect(formikSetStatusFn).toBeCalledWith("error text");
     });
 
     // 0 statusCode is for aborted request
@@ -153,38 +155,6 @@ describe("CreateSeekFormContainer", () => {
       });
 
       expect(formikSetStatusFn).toBeCalledTimes(0);
-    });
-
-    it("should handle dispatch(createSeek()) fail NOT 401 and NOT 0", async () => {
-      const dispatch = useDispatch<jest.Mock>();
-      dispatch.mockImplementationOnce(() =>
-        Promise.reject({
-          statusCode: 500,
-        })
-      );
-
-      const testRenderer = TestRenderer.create(<CreateSeekFormContainer />);
-      const testInstance = testRenderer.root;
-
-      const createSeekForm = testInstance.findByType(CreateSeekForm);
-
-      const formikSetStatusFn = jest.fn();
-
-      await TestRenderer.act(async () => {
-        createSeekForm.props.onSubmit(
-          {
-            color: "random",
-            clockLimit: 300,
-            clockIncrement: 10,
-          },
-          {
-            setStatus: formikSetStatusFn,
-          }
-        );
-      });
-
-      expect(formikSetStatusFn).toBeCalledTimes(1);
-      expect(formikSetStatusFn).toBeCalledWith("Internal server error");
     });
   });
 

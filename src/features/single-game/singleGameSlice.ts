@@ -12,6 +12,7 @@ import ioClient from "../../services/ioClient";
 import gameSchema from "../../normalizr/schemas/gameSchema";
 import ItemErrorPayload from "../../interfaces/ItemErrorPayload";
 import NormalizedData from "../../normalizr/interfaces/NormalizedData";
+import getErrorMessageFromJWR from "../../utils/getErrorMessageFromJWR";
 
 export interface RewindToMovePayload {
   gameId: number;
@@ -153,7 +154,7 @@ export const fetchGame = (id: number): AppThunk<Promise<Game>> => (
         dispatch(
           getSingleGameError({
             itemId: id,
-            error: body as string,
+            error: getErrorMessageFromJWR(jwr),
           })
         );
         reject(jwr);
@@ -179,7 +180,7 @@ export const abortGame = (id: number): AppThunk<Promise<Game>> => (
           dispatch(
             abortGameError({
               itemId: id,
-              error: body as string,
+              error: getErrorMessageFromJWR(jwr),
             })
           );
           reject(jwr);
@@ -206,7 +207,7 @@ export const resignGame = (id: number): AppThunk<Promise<Game>> => (
           dispatch(
             resignGameError({
               itemId: id,
-              error: body as string,
+              error: getErrorMessageFromJWR(jwr),
             })
           );
           reject(jwr);
@@ -233,7 +234,7 @@ export const offerDraw = (id: number): AppThunk<Promise<Game>> => (
           dispatch(
             offerDrawError({
               itemId: id,
-              error: body as string,
+              error: getErrorMessageFromJWR(jwr),
             })
           );
           reject(jwr);
@@ -260,7 +261,7 @@ export const acceptDrawOffer = (id: number): AppThunk<Promise<Game>> => (
           dispatch(
             acceptDrawOfferError({
               itemId: id,
-              error: body as string,
+              error: getErrorMessageFromJWR(jwr),
             })
           );
           reject(jwr);
@@ -286,7 +287,7 @@ export const declineDrawOffer = (id: number): AppThunk<Promise<Game>> => (
           dispatch(
             declineDrawOfferError({
               itemId: id,
-              error: body as string,
+              error: getErrorMessageFromJWR(jwr),
             })
           );
           reject(jwr);

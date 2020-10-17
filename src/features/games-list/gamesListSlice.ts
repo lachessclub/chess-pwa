@@ -10,6 +10,7 @@ import Game from "../../interfaces/Game";
 import ioClient from "../../services/ioClient";
 import gameSchema from "../../normalizr/schemas/gameSchema";
 import NormalizedData from "../../normalizr/interfaces/NormalizedData";
+import getErrorMessageFromJWR from "../../utils/getErrorMessageFromJWR";
 
 interface GamesListState {
   isLoading: boolean;
@@ -62,7 +63,7 @@ export const fetchGames = (): AppThunk<Promise<Game[]>> => (dispatch) => {
 
         resolve(body as Game[]);
       } else {
-        dispatch(getGamesListError(body as string));
+        dispatch(getGamesListError(getErrorMessageFromJWR(jwr)));
         reject(jwr);
       }
     });

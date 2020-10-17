@@ -7,6 +7,7 @@ import { RegistrationForm, RegistrationFormData } from "./RegistrationForm";
 import LoginData from "../../interfaces/LoginData";
 import { login, register } from "../current-user/currentUserSlice";
 import { AppDispatch } from "../../app/store";
+import getErrorMessageFromJWR from "../../utils/getErrorMessageFromJWR";
 
 const LoginTabsContainer: FC<unknown> = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,11 +15,7 @@ const LoginTabsContainer: FC<unknown> = () => {
   const doLogin = React.useCallback(
     (values: LoginData, formikHelpers: FormikHelpers<LoginData>) => {
       return dispatch(login(values)).catch((err) => {
-        if (err.statusCode === 401) {
-          formikHelpers.setStatus("Incorrect email or password");
-        } else {
-          formikHelpers.setStatus("Internal server error");
-        }
+        formikHelpers.setStatus(getErrorMessageFromJWR(err));
       });
     },
     [dispatch]
@@ -36,13 +33,7 @@ const LoginTabsContainer: FC<unknown> = () => {
           password: values.password,
         })
       ).catch((err) => {
-        if (err.statusCode === 409) {
-          formikHelpers.setStatus(
-            "The provided email address is already in use"
-          );
-        } else {
-          formikHelpers.setStatus("Internal server error");
-        }
+        formikHelpers.setStatus(getErrorMessageFromJWR(err));
       });
     },
     [dispatch]

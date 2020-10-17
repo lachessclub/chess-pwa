@@ -7,6 +7,7 @@ import { AppDispatch } from "../../app/store";
 import { challengeAi } from "../challenge/challengeSlice";
 import { ChallengeAiData } from "../../interfaces/ChallengeAiData";
 import Game from "../../interfaces/Game";
+import getErrorMessageFromJWR from "../../utils/getErrorMessageFromJWR";
 
 const ChallengeAiFormContainer: FC<unknown> = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,11 +24,7 @@ const ChallengeAiFormContainer: FC<unknown> = () => {
           history.push(`/game/${game.id}`);
         })
         .catch((err) => {
-          if (err.statusCode === 401) {
-            formikHelpers.setStatus("You must log in to play with computer");
-          } else {
-            formikHelpers.setStatus("Internal server error");
-          }
+          formikHelpers.setStatus(getErrorMessageFromJWR(err));
         });
     },
     [dispatch, history]

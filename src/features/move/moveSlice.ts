@@ -10,6 +10,7 @@ import { AppThunk } from "../../app/store";
 import Game from "../../interfaces/Game";
 import ioClient from "../../services/ioClient";
 import gameSchema from "../../normalizr/schemas/gameSchema";
+import getErrorMessageFromJWR from "../../utils/getErrorMessageFromJWR";
 
 interface MoveState {}
 
@@ -61,7 +62,7 @@ export const makeMove = (
           dispatch(makeMoveSuccess(normalizedGame));
           resolve(body as Game);
         } else {
-          dispatch(makeMoveError(body as string));
+          dispatch(makeMoveError(getErrorMessageFromJWR(jwr)));
           reject(jwr);
         }
       }

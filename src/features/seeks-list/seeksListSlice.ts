@@ -15,6 +15,7 @@ import {
   updateSeekBySubscription,
   removeSeekBySubscription,
 } from "../data-subscription/dataSubscriptionSlice";
+import getErrorMessageFromJWR from "../../utils/getErrorMessageFromJWR";
 
 interface SeeksListState {
   isLoading: boolean;
@@ -95,7 +96,7 @@ export const fetchSeeks = (): AppThunk<Promise<Seek[]>> => (dispatch) => {
 
         resolve(body as Seek[]);
       } else {
-        dispatch(getSeeksListError(body as string));
+        dispatch(getSeeksListError(getErrorMessageFromJWR(jwr)));
         reject(jwr);
       }
     });

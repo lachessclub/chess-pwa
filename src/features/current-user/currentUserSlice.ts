@@ -1,5 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable import/no-cycle */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { normalize } from "normalizr";
@@ -11,6 +12,7 @@ import LoginData from "../../interfaces/LoginData";
 import SignUpData from "../../interfaces/SignUpData";
 import userSchema from "../../normalizr/schemas/userSchema";
 import NormalizedData from "../../normalizr/interfaces/NormalizedData";
+import getErrorMessageFromJWR from "../../utils/getErrorMessageFromJWR";
 
 interface CurrentUserState {
   userId: number | null;
@@ -44,15 +46,21 @@ const currentUserSlice = createSlice({
       state.isLoading = false;
       state.error = action.payload;
     },
+    loginRequest(_state) {},
     loginSuccess(state, action: PayloadAction<NormalizedData<number>>) {
       state.userId = action.payload.result;
     },
+    loginError(_state, _action: PayloadAction<string>) {},
+    registerRequest(_state) {},
     registerSuccess(state, action: PayloadAction<NormalizedData<number>>) {
       state.userId = action.payload.result;
     },
+    registerError(_state, _action: PayloadAction<string>) {},
+    logoutRequest(_state) {},
     logoutSuccess(state) {
       state.userId = null;
     },
+    logoutError(_state, _action: PayloadAction<string>) {},
   },
 });
 
@@ -60,9 +68,15 @@ export const {
   getCurrentUserRequest,
   getCurrentUserSuccess,
   getCurrentUserError,
+  loginRequest,
   loginSuccess,
+  loginError,
+  registerRequest,
   registerSuccess,
+  registerError,
+  logoutRequest,
   logoutSuccess,
+  logoutError,
 } = currentUserSlice.actions;
 
 export default currentUserSlice.reducer;
@@ -83,7 +97,7 @@ export const fetchCurrentUser = (): AppThunk<Promise<User | null>> => (
         dispatch(getCurrentUserSuccess(null));
         resolve(null);
       } else {
-        dispatch(getCurrentUserError(body as string));
+        dispatch(getCurrentUserError(getErrorMessageFromJWR(jwr)));
         reject(jwr);
       }
     });
@@ -93,6 +107,8 @@ export const fetchCurrentUser = (): AppThunk<Promise<User | null>> => (
 export const login = (data: LoginData): AppThunk<Promise<User>> => (
   dispatch
 ) => {
+  dispatch(loginRequest());
+
   return new Promise((resolve, reject) => {
     ioClient.socket.put(
       "/api/v1/entrance/login",
@@ -108,6 +124,7 @@ export const login = (data: LoginData): AppThunk<Promise<User>> => (
           dispatch(loginSuccess(normalizedUser));
           resolve(body as User);
         } else {
+          dispatch(loginError(getErrorMessageFromJWR(jwr)));
           reject(jwr);
         }
       }
@@ -118,6 +135,8 @@ export const login = (data: LoginData): AppThunk<Promise<User>> => (
 export const register = (data: SignUpData): AppThunk<Promise<User>> => (
   dispatch
 ) => {
+  dispatch(registerRequest());
+
   return new Promise((resolve, reject) => {
     ioClient.socket.post(
       "/api/v1/entrance/signup",
@@ -135,6 +154,7 @@ export const register = (data: SignUpData): AppThunk<Promise<User>> => (
           dispatch(registerSuccess(normalizedUser));
           resolve(body as User);
         } else {
+          dispatch(registerError(getErrorMessageFromJWR(jwr)));
           reject(jwr);
         }
       }
@@ -143,6 +163,8 @@ export const register = (data: SignUpData): AppThunk<Promise<User>> => (
 };
 
 export const logout = (): AppThunk<Promise<void>> => (dispatch) => {
+  dispatch(logoutRequest());
+
   return new Promise((resolve, reject) => {
     ioClient.socket.post(
       "/api/v1/account/logout",
@@ -152,6 +174,7 @@ export const logout = (): AppThunk<Promise<void>> => (dispatch) => {
           dispatch(logoutSuccess());
           resolve();
         } else {
+          dispatch(logoutError(getErrorMessageFromJWR(jwr)));
           reject(jwr);
         }
       }

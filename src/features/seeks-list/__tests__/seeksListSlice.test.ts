@@ -16,8 +16,10 @@ import {
   defaultSeekSample,
   normalizedDefaultSeekSample,
 } from "../../../test-utils/data-sample/seek";
+import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
 jest.mock("../../../services/ioClient");
+jest.mock("../../../utils/getErrorMessageFromJWR");
 
 describe("seeksListSlice reducer", () => {
   it("should handle initial state", () => {
@@ -271,6 +273,7 @@ describe("seeksListSlice reducer", () => {
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = fetchSeeks()(dispatch, () => defaultState, null);
 
@@ -285,7 +288,7 @@ describe("seeksListSlice reducer", () => {
       });
       expect(dispatch).toHaveBeenNthCalledWith(2, {
         type: getSeeksListError.type,
-        payload: "internal server error",
+        payload: "error text",
       });
     });
   });

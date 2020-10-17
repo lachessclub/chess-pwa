@@ -5,9 +5,15 @@ import currentUserReducer, {
   getCurrentUserRequest,
   getCurrentUserSuccess,
   getCurrentUserError,
+  loginRequest,
   loginSuccess,
+  loginError,
+  registerRequest,
   registerSuccess,
+  registerError,
+  logoutRequest,
   logoutSuccess,
+  logoutError,
   fetchCurrentUser,
   login,
   register,
@@ -16,8 +22,10 @@ import currentUserReducer, {
 import User from "../../../interfaces/User";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
+import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
 jest.mock("../../../services/ioClient");
+jest.mock("../../../utils/getErrorMessageFromJWR");
 
 describe("currentUserSlice reducer", () => {
   it("should handle initial state", () => {
@@ -108,6 +116,25 @@ describe("currentUserSlice reducer", () => {
     });
   });
 
+  it("should handle loginRequest", () => {
+    expect(
+      currentUserReducer(
+        {
+          userId: 1,
+          isLoading: true,
+          error: "error text",
+        },
+        {
+          type: loginRequest.type,
+        }
+      )
+    ).toEqual({
+      userId: 1,
+      isLoading: true,
+      error: "error text",
+    });
+  });
+
   it("should handle loginSuccess", () => {
     expect(
       currentUserReducer(
@@ -122,6 +149,45 @@ describe("currentUserSlice reducer", () => {
             result: 1,
             entities: {},
           },
+        }
+      )
+    ).toEqual({
+      userId: 1,
+      isLoading: true,
+      error: "error text",
+    });
+  });
+
+  it("should handle loginError", () => {
+    expect(
+      currentUserReducer(
+        {
+          userId: 1,
+          isLoading: true,
+          error: "error text",
+        },
+        {
+          type: loginError.type,
+          payload: "login error text",
+        }
+      )
+    ).toEqual({
+      userId: 1,
+      isLoading: true,
+      error: "error text",
+    });
+  });
+
+  it("should handle registerRequest", () => {
+    expect(
+      currentUserReducer(
+        {
+          userId: 1,
+          isLoading: true,
+          error: "error text",
+        },
+        {
+          type: registerRequest.type,
         }
       )
     ).toEqual({
@@ -154,6 +220,45 @@ describe("currentUserSlice reducer", () => {
     });
   });
 
+  it("should handle registerError", () => {
+    expect(
+      currentUserReducer(
+        {
+          userId: 1,
+          isLoading: true,
+          error: "error text",
+        },
+        {
+          type: registerError.type,
+          payload: "register error text",
+        }
+      )
+    ).toEqual({
+      userId: 1,
+      isLoading: true,
+      error: "error text",
+    });
+  });
+
+  it("should handle logoutRequest", () => {
+    expect(
+      currentUserReducer(
+        {
+          userId: 1,
+          isLoading: true,
+          error: "error text",
+        },
+        {
+          type: logoutRequest.type,
+        }
+      )
+    ).toEqual({
+      userId: 1,
+      isLoading: true,
+      error: "error text",
+    });
+  });
+
   it("should handle logoutSuccess", () => {
     expect(
       currentUserReducer(
@@ -168,6 +273,26 @@ describe("currentUserSlice reducer", () => {
       )
     ).toEqual({
       userId: null,
+      isLoading: true,
+      error: "error text",
+    });
+  });
+
+  it("should handle logoutError", () => {
+    expect(
+      currentUserReducer(
+        {
+          userId: 1,
+          isLoading: true,
+          error: "error text",
+        },
+        {
+          type: logoutError.type,
+          payload: "logout error text",
+        }
+      )
+    ).toEqual({
+      userId: 1,
       isLoading: true,
       error: "error text",
     });
@@ -252,6 +377,7 @@ describe("currentUserSlice reducer", () => {
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = fetchCurrentUser()(dispatch, () => defaultState, null);
 
@@ -266,7 +392,7 @@ describe("currentUserSlice reducer", () => {
       });
       expect(dispatch).toHaveBeenNthCalledWith(2, {
         type: getCurrentUserError.type,
-        payload: "Not found",
+        payload: "error text",
       });
     });
   });
@@ -296,8 +422,12 @@ describe("currentUserSlice reducer", () => {
 
       await expect(result).resolves.toEqual(user);
 
-      expect(dispatch).toBeCalledTimes(1);
-      expect(dispatch).toBeCalledWith({
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: loginRequest.type,
+      });
+
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
         type: loginSuccess.type,
         payload: {
           result: 1,
@@ -324,6 +454,7 @@ describe("currentUserSlice reducer", () => {
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = login({
         email: "test@test.com",
@@ -335,7 +466,15 @@ describe("currentUserSlice reducer", () => {
         statusCode: 401,
       });
 
-      expect(dispatch).toBeCalledTimes(0);
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: loginRequest.type,
+      });
+
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: loginError.type,
+        payload: "error text",
+      });
     });
   });
 
@@ -365,8 +504,12 @@ describe("currentUserSlice reducer", () => {
 
       await expect(result).resolves.toEqual(user);
 
-      expect(dispatch).toBeCalledTimes(1);
-      expect(dispatch).toBeCalledWith({
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: registerRequest.type,
+      });
+
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
         type: registerSuccess.type,
         payload: {
           result: 1,
@@ -393,6 +536,7 @@ describe("currentUserSlice reducer", () => {
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = register({
         fullName: "Christopher Garcia",
@@ -405,12 +549,20 @@ describe("currentUserSlice reducer", () => {
         statusCode: 409,
       });
 
-      expect(dispatch).toBeCalledTimes(0);
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: registerRequest.type,
+      });
+
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: registerError.type,
+        payload: "error text",
+      });
     });
   });
 
   describe("should handle logout", () => {
-    it("success", () => {
+    it("success", async () => {
       const dispatch = jest.fn();
 
       (ioClient.socket.post as jest.Mock).mockImplementationOnce(
@@ -424,26 +576,46 @@ describe("currentUserSlice reducer", () => {
 
       const result = logout()(dispatch, () => defaultState, null);
 
-      return expect(result).resolves.toBeUndefined();
+      await expect(result).resolves.toBeUndefined();
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: logoutRequest.type,
+      });
+
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: logoutSuccess.type,
+      });
     });
 
-    it("fail", () => {
+    it("fail", async () => {
       const dispatch = jest.fn();
 
       (ioClient.socket.post as jest.Mock).mockImplementationOnce(
         (url: string, data: any, cb: RequestCallback) => {
-          cb("", {
-            body: "error text",
+          cb("User is not logged in", {
+            body: "User is not logged in",
             statusCode: 500,
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = logout()(dispatch, () => defaultState, null);
 
-      return expect(result).rejects.toEqual({
-        body: "error text",
+      await expect(result).rejects.toEqual({
+        body: "User is not logged in",
         statusCode: 500,
+      });
+
+      expect(dispatch).toBeCalledTimes(2);
+      expect(dispatch).toHaveBeenNthCalledWith(1, {
+        type: logoutRequest.type,
+      });
+
+      expect(dispatch).toHaveBeenNthCalledWith(2, {
+        type: logoutError.type,
+        payload: "error text",
       });
     });
   });

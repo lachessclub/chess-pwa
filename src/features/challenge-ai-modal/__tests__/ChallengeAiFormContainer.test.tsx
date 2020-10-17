@@ -9,8 +9,10 @@ import ChallengeAiFormContainer from "../ChallengeAiFormContainer";
 import { ChallengeAiForm } from "../ChallengeAiForm";
 import { challengeAi } from "../../challenge/challengeSlice";
 import { defaultGameSample } from "../../../test-utils/data-sample/game";
+import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
 jest.mock("../../challenge/challengeSlice");
+jest.mock("../../../utils/getErrorMessageFromJWR");
 
 describe("ChallengeAiFormContainer", () => {
   beforeEach(() => {
@@ -89,48 +91,15 @@ describe("ChallengeAiFormContainer", () => {
       expect(push).toBeCalledWith("/game/1");
     });
 
-    it("should handle dispatch(challengeAi()) fail 401", async () => {
+    it("should handle dispatch(challengeAi()) fail", async () => {
       const dispatch = useDispatch<jest.Mock>();
       dispatch.mockImplementationOnce(() =>
         Promise.reject({
-          statusCode: 401,
-        })
-      );
-
-      const testRenderer = TestRenderer.create(<ChallengeAiFormContainer />);
-      const testInstance = testRenderer.root;
-
-      const challengeAiForm = testInstance.findByType(ChallengeAiForm);
-
-      const formikSetStatusFn = jest.fn();
-
-      await TestRenderer.act(async () => {
-        challengeAiForm.props.onSubmit(
-          {
-            level: 3,
-            color: "random",
-            clockLimit: 300,
-            clockIncrement: 10,
-          },
-          {
-            setStatus: formikSetStatusFn,
-          }
-        );
-      });
-
-      expect(formikSetStatusFn).toBeCalledTimes(1);
-      expect(formikSetStatusFn).toBeCalledWith(
-        "You must log in to play with computer"
-      );
-    });
-
-    it("should handle dispatch(challengeAi()) fail NOT 401", async () => {
-      const dispatch = useDispatch<jest.Mock>();
-      dispatch.mockImplementationOnce(() =>
-        Promise.reject({
+          body: "internal server error",
           statusCode: 500,
         })
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const testRenderer = TestRenderer.create(<ChallengeAiFormContainer />);
       const testInstance = testRenderer.root;
@@ -154,7 +123,7 @@ describe("ChallengeAiFormContainer", () => {
       });
 
       expect(formikSetStatusFn).toBeCalledTimes(1);
-      expect(formikSetStatusFn).toBeCalledWith("Internal server error");
+      expect(formikSetStatusFn).toBeCalledWith("error text");
     });
   });
 });

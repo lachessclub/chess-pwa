@@ -8,8 +8,10 @@ import LoginTabsContainer from "../LoginTabsContainer";
 import { LoginForm } from "../LoginForm";
 import { RegistrationForm } from "../RegistrationForm";
 import { login, register } from "../../current-user/currentUserSlice";
+import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
 jest.mock("../../current-user/currentUserSlice");
+jest.mock("../../../utils/getErrorMessageFromJWR");
 
 describe("LoginTabsContainer", () => {
   beforeEach(() => {
@@ -66,44 +68,14 @@ describe("LoginTabsContainer", () => {
       expect(dispatch).toBeCalledWith(loginReturnedValue);
     });
 
-    it("should handle dispatch(login()) fail 401", async () => {
-      const dispatch = useDispatch<jest.Mock>();
-      dispatch.mockImplementationOnce(() =>
-        Promise.reject({
-          statusCode: 401,
-        })
-      );
-
-      const testRenderer = TestRenderer.create(<LoginTabsContainer />);
-      const testInstance = testRenderer.root;
-
-      const loginForm = testInstance.findByType(LoginForm);
-
-      const formikSetStatusFn = jest.fn();
-
-      await TestRenderer.act(async () => {
-        loginForm.props.onSubmit(
-          {
-            email: "test@test.com",
-            password: "123",
-          },
-          {
-            setStatus: formikSetStatusFn,
-          }
-        );
-      });
-
-      expect(formikSetStatusFn).toBeCalledTimes(1);
-      expect(formikSetStatusFn).toBeCalledWith("Incorrect email or password");
-    });
-
-    it("should handle dispatch(login()) fail NOT 401", async () => {
+    it("should handle dispatch(login()) fail", async () => {
       const dispatch = useDispatch<jest.Mock>();
       dispatch.mockImplementationOnce(() =>
         Promise.reject({
           statusCode: 500,
         })
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const testRenderer = TestRenderer.create(<LoginTabsContainer />);
       const testInstance = testRenderer.root;
@@ -125,7 +97,7 @@ describe("LoginTabsContainer", () => {
       });
 
       expect(formikSetStatusFn).toBeCalledTimes(1);
-      expect(formikSetStatusFn).toBeCalledWith("Internal server error");
+      expect(formikSetStatusFn).toBeCalledWith("error text");
     });
 
     it("should call dispatch(register())", () => {
@@ -162,46 +134,14 @@ describe("LoginTabsContainer", () => {
       expect(dispatch).toBeCalledWith(registerReturnedValue);
     });
 
-    it("should handle dispatch(register()) fail 409", async () => {
-      const dispatch = useDispatch<jest.Mock>();
-      dispatch.mockImplementationOnce(() =>
-        Promise.reject({
-          statusCode: 409,
-        })
-      );
-
-      const testRenderer = TestRenderer.create(<LoginTabsContainer />);
-      const testInstance = testRenderer.root;
-
-      const registrationForm = testInstance.findByType(RegistrationForm);
-
-      const formikSetStatusFn = jest.fn();
-
-      await TestRenderer.act(async () => {
-        registrationForm.props.onSubmit(
-          {
-            email: "test@test.com",
-            password: "123",
-          },
-          {
-            setStatus: formikSetStatusFn,
-          }
-        );
-      });
-
-      expect(formikSetStatusFn).toBeCalledTimes(1);
-      expect(formikSetStatusFn).toBeCalledWith(
-        "The provided email address is already in use"
-      );
-    });
-
-    it("should handle dispatch(register()) fail NOT 409", async () => {
+    it("should handle dispatch(register()) fail", async () => {
       const dispatch = useDispatch<jest.Mock>();
       dispatch.mockImplementationOnce(() =>
         Promise.reject({
           statusCode: 500,
         })
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const testRenderer = TestRenderer.create(<LoginTabsContainer />);
       const testInstance = testRenderer.root;
@@ -223,7 +163,7 @@ describe("LoginTabsContainer", () => {
       });
 
       expect(formikSetStatusFn).toBeCalledTimes(1);
-      expect(formikSetStatusFn).toBeCalledWith("Internal server error");
+      expect(formikSetStatusFn).toBeCalledWith("error text");
     });
   });
 });

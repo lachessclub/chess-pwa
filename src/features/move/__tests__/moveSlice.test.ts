@@ -10,8 +10,10 @@ import moveReducer, {
 } from "../moveSlice";
 import { defaultState } from "../../../test-utils/data-sample/state";
 import { gameWithMovesSample } from "../../../test-utils/data-sample/game";
+import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
 jest.mock("../../../services/ioClient");
+jest.mock("../../../utils/getErrorMessageFromJWR");
 
 describe("moveSlice reducer", () => {
   it("should handle initial state", () => {
@@ -109,6 +111,7 @@ describe("moveSlice reducer", () => {
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = makeMove(1, "e2e4")(dispatch, () => defaultState, null);
 
@@ -127,7 +130,7 @@ describe("moveSlice reducer", () => {
       });
       expect(dispatch).toHaveBeenNthCalledWith(2, {
         type: makeMoveError.type,
-        payload: "game not found",
+        payload: "error text",
       });
     });
   });

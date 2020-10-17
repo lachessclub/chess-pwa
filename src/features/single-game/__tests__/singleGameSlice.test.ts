@@ -30,8 +30,10 @@ import singleGameReducer, {
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
 import { defaultGameSample } from "../../../test-utils/data-sample/game";
+import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
 jest.mock("../../../services/ioClient");
+jest.mock("../../../utils/getErrorMessageFromJWR");
 
 describe("singleGameSlice reducer", () => {
   it("should handle initial state", () => {
@@ -267,6 +269,7 @@ describe("singleGameSlice reducer", () => {
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = fetchGame(1)(dispatch, () => defaultState, null);
 
@@ -284,7 +287,7 @@ describe("singleGameSlice reducer", () => {
         type: getSingleGameError.type,
         payload: {
           itemId: 1,
-          error: "game not found",
+          error: "error text",
         },
       });
     });
@@ -419,6 +422,7 @@ describe("singleGameSlice reducer", () => {
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = abortGame(1)(dispatch, () => defaultState, null);
 
@@ -436,7 +440,7 @@ describe("singleGameSlice reducer", () => {
         type: abortGameError.type,
         payload: {
           itemId: 1,
-          error: "game not found",
+          error: "error text",
         },
       });
     });
@@ -571,6 +575,7 @@ describe("singleGameSlice reducer", () => {
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = resignGame(1)(dispatch, () => defaultState, null);
 
@@ -588,7 +593,7 @@ describe("singleGameSlice reducer", () => {
         type: resignGameError.type,
         payload: {
           itemId: 1,
-          error: "game not found",
+          error: "error text",
         },
       });
     });
@@ -724,6 +729,7 @@ describe("singleGameSlice reducer", () => {
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = offerDraw(1)(dispatch, () => defaultState, null);
 
@@ -741,7 +747,7 @@ describe("singleGameSlice reducer", () => {
         type: offerDrawError.type,
         payload: {
           itemId: 1,
-          error: "game not found",
+          error: "error text",
         },
       });
     });
@@ -878,6 +884,7 @@ describe("singleGameSlice reducer", () => {
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = acceptDrawOffer(1)(dispatch, () => defaultState, null);
 
@@ -895,7 +902,7 @@ describe("singleGameSlice reducer", () => {
         type: acceptDrawOfferError.type,
         payload: {
           itemId: 1,
-          error: "game not found",
+          error: "error text",
         },
       });
     });
@@ -1032,6 +1039,7 @@ describe("singleGameSlice reducer", () => {
           } as JWR);
         }
       );
+      (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = declineDrawOffer(1)(dispatch, () => defaultState, null);
 
@@ -1049,7 +1057,7 @@ describe("singleGameSlice reducer", () => {
         type: declineDrawOfferError.type,
         payload: {
           itemId: 1,
-          error: "game not found",
+          error: "error text",
         },
       });
     });
