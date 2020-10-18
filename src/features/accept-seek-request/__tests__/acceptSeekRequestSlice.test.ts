@@ -4,7 +4,7 @@ import {
   acceptSeekSuccess,
   acceptSeekError,
 } from "../../challenge/challengeSlice";
-import { defaultSeekSample } from "../../../test-utils/data-sample/seek";
+import { seekSample1 } from "../../../test-utils/data-sample/seek";
 
 describe("challengeSlice reducer", () => {
   it("should handle initial state", () => {
@@ -53,7 +53,7 @@ describe("challengeSlice reducer", () => {
             result: 1,
             entities: {
               seeks: {
-                "1": defaultSeekSample,
+                1: seekSample1,
               },
             },
           },

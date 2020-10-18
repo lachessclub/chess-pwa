@@ -2,11 +2,12 @@ import { fireEvent, render } from "@testing-library/react";
 import React from "react";
 import TestRenderer from "react-test-renderer";
 import { GameMoves } from "../GameMoves";
-import {
-  gameWithMovesSample,
-  makeGameSample,
-} from "../../../test-utils/data-sample/game";
+import { makeGameSample } from "../../../test-utils/data-sample/game";
 import { GameControlPanelStatus } from "../GameControlPanelStatus";
+
+const gameWithMovesSample = makeGameSample({
+  moves: "e2e4 e7e5 g1f3 g8f6",
+});
 
 describe("GameMoves", () => {
   describe("children components", () => {

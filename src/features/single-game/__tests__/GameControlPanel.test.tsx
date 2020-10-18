@@ -3,8 +3,7 @@ import React from "react";
 import TestRenderer from "react-test-renderer";
 import { GameControlPanel } from "../GameControlPanel";
 import {
-  defaultGameSample,
-  gameWithMovesSample,
+  gameSample1,
   makeGameSample,
 } from "../../../test-utils/data-sample/game";
 import { GameClock } from "../GameClock";
@@ -14,18 +13,23 @@ import { GameControlPanelBottomToolbar } from "../GameControlPanelBottomToolbar"
 import { GameControlPanelTopToolbar } from "../GameControlPanelTopToolbar";
 import { DrawOfferDialog } from "../DrawOfferDialog";
 
-const gameWithOneMoveSample = makeGameSample(
-  {
-    moves: "e2e4",
-  },
-  defaultGameSample
-);
+const gameWithOneMoveSample = makeGameSample({
+  moves: "e2e4",
+});
+
+const gameWithMovesSample = makeGameSample({
+  moves: "e2e4 e7e5 g1f3 g8f6",
+});
+
+const gameWithoutMovesSample = makeGameSample({
+  moves: "",
+});
 
 describe("GameControlPanel", () => {
   describe("children components", () => {
     it("contains GameClock", () => {
       const testRenderer = TestRenderer.create(
-        <GameControlPanel game={defaultGameSample} />
+        <GameControlPanel game={gameSample1} />
       );
       const testInstance = testRenderer.root;
 
@@ -34,7 +38,7 @@ describe("GameControlPanel", () => {
 
     it("contains GameMoves", () => {
       const testRenderer = TestRenderer.create(
-        <GameControlPanel game={defaultGameSample} />
+        <GameControlPanel game={gameSample1} />
       );
       const testInstance = testRenderer.root;
 
@@ -43,14 +47,14 @@ describe("GameControlPanel", () => {
 
     it("contains DrawOfferDialog", () => {
       const testRenderer = TestRenderer.create(
-        <GameControlPanel game={defaultGameSample} />
+        <GameControlPanel game={gameSample1} />
       );
       const testInstance = testRenderer.root;
 
       expect(testInstance.findAllByType(DrawOfferDialog).length).toBe(0);
 
       testRenderer.update(
-        <GameControlPanel game={defaultGameSample} drawOfferSentByOpponent />
+        <GameControlPanel game={gameSample1} drawOfferSentByOpponent />
       );
 
       expect(testInstance.findAllByType(DrawOfferDialog).length).toBe(1);
@@ -58,7 +62,7 @@ describe("GameControlPanel", () => {
 
     it("contains GameControlPanelUserName", () => {
       const testRenderer = TestRenderer.create(
-        <GameControlPanel game={defaultGameSample} />
+        <GameControlPanel game={gameSample1} />
       );
       const testInstance = testRenderer.root;
 
@@ -69,7 +73,7 @@ describe("GameControlPanel", () => {
 
     it("contains GameControlPanelTopToolbar", () => {
       const testRenderer = TestRenderer.create(
-        <GameControlPanel game={defaultGameSample} />
+        <GameControlPanel game={gameSample1} />
       );
       const testInstance = testRenderer.root;
 
@@ -80,7 +84,7 @@ describe("GameControlPanel", () => {
 
     it("contains GameControlPanelBottomToolbar", () => {
       const testRenderer = TestRenderer.create(
-        <GameControlPanel game={defaultGameSample} />
+        <GameControlPanel game={gameSample1} />
       );
       const testInstance = testRenderer.root;
 
@@ -94,7 +98,7 @@ describe("GameControlPanel", () => {
     describe("GameClock", () => {
       it("time", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -104,7 +108,7 @@ describe("GameControlPanel", () => {
         expect(gameClocks[1].props.time).toBe(310000);
 
         testRenderer.update(
-          <GameControlPanel game={defaultGameSample} orientation="black" />
+          <GameControlPanel game={gameSample1} orientation="black" />
         );
 
         expect(gameClocks[0].props.time).toBe(310000);
@@ -113,7 +117,7 @@ describe("GameControlPanel", () => {
 
       it("isRunning", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -122,12 +126,9 @@ describe("GameControlPanel", () => {
         expect(gameClocks[0].props.isRunning).toBeFalsy();
         expect(gameClocks[1].props.isRunning).toBeTruthy();
 
-        const gameSampleWithBlackTurn = makeGameSample(
-          {
-            turn: "black",
-          },
-          defaultGameSample
-        );
+        const gameSampleWithBlackTurn = makeGameSample({
+          turn: "black",
+        });
 
         testRenderer.update(
           <GameControlPanel game={gameSampleWithBlackTurn} />
@@ -143,7 +144,7 @@ describe("GameControlPanel", () => {
     describe("GameControlPanelUserName", () => {
       it("game", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -151,13 +152,13 @@ describe("GameControlPanel", () => {
           GameControlPanelUserName
         );
 
-        expect(gameControlPanelUserNames[0].props.game).toBe(defaultGameSample);
-        expect(gameControlPanelUserNames[1].props.game).toBe(defaultGameSample);
+        expect(gameControlPanelUserNames[0].props.game).toBe(gameSample1);
+        expect(gameControlPanelUserNames[1].props.game).toBe(gameSample1);
       });
 
       it("color", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -169,7 +170,7 @@ describe("GameControlPanel", () => {
         expect(gameControlPanelUserNames[1].props.color).toBe("white");
 
         testRenderer.update(
-          <GameControlPanel game={defaultGameSample} orientation="black" />
+          <GameControlPanel game={gameSample1} orientation="black" />
         );
 
         expect(gameControlPanelUserNames[0].props.color).toBe("white");
@@ -180,7 +181,7 @@ describe("GameControlPanel", () => {
     describe("DrawOfferDialog", () => {
       it("onAccept", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} drawOfferSentByOpponent />
+          <GameControlPanel game={gameSample1} drawOfferSentByOpponent />
         );
         const testInstance = testRenderer.root;
 
@@ -192,7 +193,7 @@ describe("GameControlPanel", () => {
 
         testRenderer.update(
           <GameControlPanel
-            game={defaultGameSample}
+            game={gameSample1}
             drawOfferSentByOpponent
             onAcceptDrawOffer={onAcceptDrawOffer}
           />
@@ -203,7 +204,7 @@ describe("GameControlPanel", () => {
 
       it("onDecline", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} drawOfferSentByOpponent />
+          <GameControlPanel game={gameSample1} drawOfferSentByOpponent />
         );
         const testInstance = testRenderer.root;
 
@@ -215,7 +216,7 @@ describe("GameControlPanel", () => {
 
         testRenderer.update(
           <GameControlPanel
-            game={defaultGameSample}
+            game={gameSample1}
             drawOfferSentByOpponent
             onDeclineDrawOffer={onDeclineDrawOffer}
           />
@@ -228,13 +229,13 @@ describe("GameControlPanel", () => {
     describe("GameMoves", () => {
       it("game", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
         const gameMoves = testInstance.findByType(GameMoves);
 
-        expect(gameMoves.props.game).toBe(defaultGameSample);
+        expect(gameMoves.props.game).toBe(gameSample1);
       });
 
       it("rewindToMoveIndex", () => {
@@ -256,7 +257,7 @@ describe("GameControlPanel", () => {
 
       it("onRewindToMove", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -268,7 +269,7 @@ describe("GameControlPanel", () => {
 
         testRenderer.update(
           <GameControlPanel
-            game={defaultGameSample}
+            game={gameSample1}
             onRewindToMove={onRewindToMove}
           />
         );
@@ -299,7 +300,7 @@ describe("GameControlPanel", () => {
         // isFirstMove because rewindToMoveIndex is 0
         expect(topToolbar.props.isFirstMove).toBeTruthy();
 
-        testRenderer.update(<GameControlPanel game={defaultGameSample} />);
+        testRenderer.update(<GameControlPanel game={gameWithoutMovesSample} />);
 
         // isFirstMove because gameSample.moves is empty
         expect(topToolbar.props.isFirstMove).toBeTruthy();
@@ -335,7 +336,7 @@ describe("GameControlPanel", () => {
         // hasPrevMove because gameWithMovesSample.moves is not empty and rewindToMoveIndex is not 0
         expect(topToolbar.props.hasPrevMove).toBeTruthy();
 
-        testRenderer.update(<GameControlPanel game={defaultGameSample} />);
+        testRenderer.update(<GameControlPanel game={gameWithoutMovesSample} />);
 
         // hasPrevMove false because gameWithMovesSample.moves is empty
         expect(topToolbar.props.hasPrevMove).toBeFalsy();
@@ -362,7 +363,7 @@ describe("GameControlPanel", () => {
         // hasNextMove because gameWithMovesSample.moves is not empty and rewindToMoveIndex is not null
         expect(topToolbar.props.hasNextMove).toBeTruthy();
 
-        testRenderer.update(<GameControlPanel game={defaultGameSample} />);
+        testRenderer.update(<GameControlPanel game={gameWithoutMovesSample} />);
 
         // hasNextMove false because gameWithMovesSample.moves is empty
         expect(topToolbar.props.hasNextMove).toBeFalsy();
@@ -375,7 +376,7 @@ describe("GameControlPanel", () => {
 
       it("onFlipBoard", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -386,10 +387,7 @@ describe("GameControlPanel", () => {
         const onFlipBoard = jest.fn();
 
         testRenderer.update(
-          <GameControlPanel
-            game={defaultGameSample}
-            onFlipBoard={onFlipBoard}
-          />
+          <GameControlPanel game={gameSample1} onFlipBoard={onFlipBoard} />
         );
 
         expect(topToolbar.props.onFlipBoard).toBe(onFlipBoard);
@@ -397,7 +395,7 @@ describe("GameControlPanel", () => {
 
       it("onRewindToPrevMove", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -409,7 +407,7 @@ describe("GameControlPanel", () => {
 
         testRenderer.update(
           <GameControlPanel
-            game={defaultGameSample}
+            game={gameSample1}
             onRewindToPrevMove={onRewindToPrevMove}
           />
         );
@@ -419,7 +417,7 @@ describe("GameControlPanel", () => {
 
       it("onRewindToNextMove", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -431,7 +429,7 @@ describe("GameControlPanel", () => {
 
         testRenderer.update(
           <GameControlPanel
-            game={defaultGameSample}
+            game={gameSample1}
             onRewindToNextMove={onRewindToNextMove}
           />
         );
@@ -441,7 +439,7 @@ describe("GameControlPanel", () => {
 
       it("onRewindToFirstMove", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -453,7 +451,7 @@ describe("GameControlPanel", () => {
 
         testRenderer.update(
           <GameControlPanel
-            game={defaultGameSample}
+            game={gameSample1}
             onRewindToFirstMove={onRewindToFirstMove}
           />
         );
@@ -463,7 +461,7 @@ describe("GameControlPanel", () => {
 
       it("onRewindToLastMove", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -475,7 +473,7 @@ describe("GameControlPanel", () => {
 
         testRenderer.update(
           <GameControlPanel
-            game={defaultGameSample}
+            game={gameSample1}
             onRewindToLastMove={onRewindToLastMove}
           />
         );
@@ -544,7 +542,7 @@ describe("GameControlPanel", () => {
 
       it("onAbortGame", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -557,10 +555,7 @@ describe("GameControlPanel", () => {
         const onAbortGame = jest.fn();
 
         testRenderer.update(
-          <GameControlPanel
-            game={defaultGameSample}
-            onAbortGame={onAbortGame}
-          />
+          <GameControlPanel game={gameSample1} onAbortGame={onAbortGame} />
         );
 
         expect(bottomToolbar.props.onAbortGame).toBe(onAbortGame);
@@ -568,7 +563,7 @@ describe("GameControlPanel", () => {
 
       it("onOfferDraw", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -581,10 +576,7 @@ describe("GameControlPanel", () => {
         const onOfferDraw = jest.fn();
 
         testRenderer.update(
-          <GameControlPanel
-            game={defaultGameSample}
-            onOfferDraw={onOfferDraw}
-          />
+          <GameControlPanel game={gameSample1} onOfferDraw={onOfferDraw} />
         );
 
         expect(bottomToolbar.props.onOfferDraw).toBe(onOfferDraw);
@@ -592,7 +584,7 @@ describe("GameControlPanel", () => {
 
       it("onResignGame", () => {
         const testRenderer = TestRenderer.create(
-          <GameControlPanel game={defaultGameSample} />
+          <GameControlPanel game={gameSample1} />
         );
         const testInstance = testRenderer.root;
 
@@ -605,10 +597,7 @@ describe("GameControlPanel", () => {
         const onResignGame = jest.fn();
 
         testRenderer.update(
-          <GameControlPanel
-            game={defaultGameSample}
-            onResignGame={onResignGame}
-          />
+          <GameControlPanel game={gameSample1} onResignGame={onResignGame} />
         );
 
         expect(bottomToolbar.props.onResignGame).toBe(onResignGame);
@@ -624,13 +613,13 @@ describe("GameControlPanel", () => {
 
     it("should contain draw offer sent message", () => {
       const { queryByTestId, rerender } = render(
-        <GameControlPanel game={defaultGameSample} />
+        <GameControlPanel game={gameSample1} />
       );
 
       expect(queryByTestId("draw-offer-sent-message")).not.toBeInTheDocument();
 
       rerender(
-        <GameControlPanel game={defaultGameSample} drawOfferSentByCurrentUser />
+        <GameControlPanel game={gameSample1} drawOfferSentByCurrentUser />
       );
 
       expect(queryByTestId("draw-offer-sent-message")).toBeInTheDocument();

@@ -9,7 +9,7 @@ import moveReducer, {
   makeMoveError,
 } from "../moveSlice";
 import { defaultState } from "../../../test-utils/data-sample/state";
-import { gameWithMovesSample } from "../../../test-utils/data-sample/game";
+import { gameSample1 } from "../../../test-utils/data-sample/game";
 import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
 jest.mock("../../../services/ioClient");
@@ -68,8 +68,8 @@ describe("moveSlice reducer", () => {
 
       (ioClient.socket.post as jest.Mock).mockImplementationOnce(
         (url: string, data: any, cb: RequestCallback) => {
-          cb(gameWithMovesSample, {
-            body: gameWithMovesSample,
+          cb(gameSample1, {
+            body: gameSample1,
             statusCode: 200,
           } as JWR);
         }
@@ -77,7 +77,7 @@ describe("moveSlice reducer", () => {
 
       const result = makeMove(2, "e2e4")(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual(gameWithMovesSample);
+      await expect(result).resolves.toEqual(gameSample1);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -90,10 +90,10 @@ describe("moveSlice reducer", () => {
       expect(dispatch).toHaveBeenNthCalledWith(2, {
         type: makeMoveSuccess.type,
         payload: {
-          result: 2,
+          result: 1,
           entities: {
             games: {
-              "2": gameWithMovesSample,
+              1: gameSample1,
             },
           },
         },

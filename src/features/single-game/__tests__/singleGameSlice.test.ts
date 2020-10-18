@@ -29,7 +29,7 @@ import singleGameReducer, {
 } from "../singleGameSlice";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
-import { defaultGameSample } from "../../../test-utils/data-sample/game";
+import { gameSample1 } from "../../../test-utils/data-sample/game";
 import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
 jest.mock("../../../services/ioClient");
@@ -48,7 +48,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: false,
             error: "error text",
             isFlipped: true,
@@ -61,7 +61,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -72,7 +72,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: false,
             error: "error text",
             isFlipped: true,
@@ -85,13 +85,13 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: false,
         error: "error text",
         isFlipped: true,
         rewindToMoveIndex: 2,
       },
-      "2": {
+      2: {
         isLoading: true,
         error: null,
         isFlipped: false,
@@ -104,7 +104,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: "error text",
             isFlipped: true,
@@ -120,7 +120,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: false,
         error: null,
         isFlipped: true,
@@ -131,7 +131,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: "error text",
             isFlipped: true,
@@ -147,13 +147,13 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: "error text",
         isFlipped: true,
         rewindToMoveIndex: 2,
       },
-      "2": {
+      2: {
         isLoading: false,
         error: null,
         isFlipped: false,
@@ -166,7 +166,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -182,7 +182,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: false,
         error: "error text",
         isFlipped: true,
@@ -193,7 +193,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -209,13 +209,13 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
         rewindToMoveIndex: 2,
       },
-      "2": {
+      2: {
         isLoading: false,
         error: "error text",
         isFlipped: false,
@@ -230,7 +230,8 @@ describe("singleGameSlice reducer", () => {
 
       (ioClient.socket.get as jest.Mock).mockImplementationOnce(
         (url: string, cb: RequestCallback) => {
-          cb(defaultGameSample, {
+          cb(gameSample1, {
+            body: gameSample1,
             statusCode: 200,
           } as JWR);
         }
@@ -238,7 +239,7 @@ describe("singleGameSlice reducer", () => {
 
       const result = fetchGame(1)(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual(defaultGameSample);
+      await expect(result).resolves.toEqual(gameSample1);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -251,7 +252,7 @@ describe("singleGameSlice reducer", () => {
           result: 1,
           entities: {
             games: {
-              "1": defaultGameSample,
+              1: gameSample1,
             },
           },
         },
@@ -297,7 +298,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -310,7 +311,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -323,7 +324,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -339,7 +340,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -352,7 +353,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -368,7 +369,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -383,7 +384,8 @@ describe("singleGameSlice reducer", () => {
 
       (ioClient.socket.post as jest.Mock).mockImplementationOnce(
         (url: string, cb: RequestCallback) => {
-          cb(defaultGameSample, {
+          cb(gameSample1, {
+            body: gameSample1,
             statusCode: 200,
           } as JWR);
         }
@@ -391,7 +393,7 @@ describe("singleGameSlice reducer", () => {
 
       const result = abortGame(1)(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual(defaultGameSample);
+      await expect(result).resolves.toEqual(gameSample1);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -404,7 +406,7 @@ describe("singleGameSlice reducer", () => {
           result: 1,
           entities: {
             games: {
-              "1": defaultGameSample,
+              1: gameSample1,
             },
           },
         },
@@ -450,7 +452,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -463,7 +465,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -476,7 +478,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -492,7 +494,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -505,7 +507,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -521,7 +523,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -536,7 +538,8 @@ describe("singleGameSlice reducer", () => {
 
       (ioClient.socket.post as jest.Mock).mockImplementationOnce(
         (url: string, cb: RequestCallback) => {
-          cb(defaultGameSample, {
+          cb(gameSample1, {
+            body: gameSample1,
             statusCode: 200,
           } as JWR);
         }
@@ -544,7 +547,7 @@ describe("singleGameSlice reducer", () => {
 
       const result = resignGame(1)(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual(defaultGameSample);
+      await expect(result).resolves.toEqual(gameSample1);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -557,7 +560,7 @@ describe("singleGameSlice reducer", () => {
           result: 1,
           entities: {
             games: {
-              "1": defaultGameSample,
+              1: gameSample1,
             },
           },
         },
@@ -604,7 +607,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -617,7 +620,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -630,7 +633,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -646,7 +649,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -659,7 +662,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -675,7 +678,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -690,7 +693,8 @@ describe("singleGameSlice reducer", () => {
 
       (ioClient.socket.post as jest.Mock).mockImplementationOnce(
         (url: string, cb: RequestCallback) => {
-          cb(defaultGameSample, {
+          cb(gameSample1, {
+            body: gameSample1,
             statusCode: 200,
           } as JWR);
         }
@@ -698,7 +702,7 @@ describe("singleGameSlice reducer", () => {
 
       const result = offerDraw(1)(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual(defaultGameSample);
+      await expect(result).resolves.toEqual(gameSample1);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -711,7 +715,7 @@ describe("singleGameSlice reducer", () => {
           result: 1,
           entities: {
             games: {
-              "1": defaultGameSample,
+              1: gameSample1,
             },
           },
         },
@@ -759,7 +763,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -772,7 +776,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -785,7 +789,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -801,7 +805,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -814,7 +818,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -830,7 +834,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -845,7 +849,8 @@ describe("singleGameSlice reducer", () => {
 
       (ioClient.socket.post as jest.Mock).mockImplementationOnce(
         (url: string, cb: RequestCallback) => {
-          cb(defaultGameSample, {
+          cb(gameSample1, {
+            body: gameSample1,
             statusCode: 200,
           } as JWR);
         }
@@ -853,7 +858,7 @@ describe("singleGameSlice reducer", () => {
 
       const result = acceptDrawOffer(1)(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual(defaultGameSample);
+      await expect(result).resolves.toEqual(gameSample1);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -866,7 +871,7 @@ describe("singleGameSlice reducer", () => {
           result: 1,
           entities: {
             games: {
-              "1": defaultGameSample,
+              1: gameSample1,
             },
           },
         },
@@ -914,7 +919,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -927,7 +932,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -940,7 +945,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -956,7 +961,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -969,7 +974,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: true,
             error: null,
             isFlipped: true,
@@ -985,7 +990,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: true,
         error: null,
         isFlipped: true,
@@ -1000,7 +1005,8 @@ describe("singleGameSlice reducer", () => {
 
       (ioClient.socket.post as jest.Mock).mockImplementationOnce(
         (url: string, cb: RequestCallback) => {
-          cb(defaultGameSample, {
+          cb(gameSample1, {
+            body: gameSample1,
             statusCode: 200,
           } as JWR);
         }
@@ -1008,7 +1014,7 @@ describe("singleGameSlice reducer", () => {
 
       const result = declineDrawOffer(1)(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual(defaultGameSample);
+      await expect(result).resolves.toEqual(gameSample1);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -1021,7 +1027,7 @@ describe("singleGameSlice reducer", () => {
           result: 1,
           entities: {
             games: {
-              "1": defaultGameSample,
+              1: gameSample1,
             },
           },
         },
@@ -1068,7 +1074,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: false,
             error: "error text",
             isFlipped: true,
@@ -1081,7 +1087,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: false,
         error: "error text",
         isFlipped: false,
@@ -1092,7 +1098,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: false,
             error: "error text",
             isFlipped: false,
@@ -1105,7 +1111,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: false,
         error: "error text",
         isFlipped: true,
@@ -1118,7 +1124,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: false,
             error: "error text",
             isFlipped: true,
@@ -1134,7 +1140,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: false,
         error: "error text",
         isFlipped: true,
@@ -1145,7 +1151,7 @@ describe("singleGameSlice reducer", () => {
     expect(
       singleGameReducer(
         {
-          "1": {
+          1: {
             isLoading: false,
             error: "error text",
             isFlipped: true,
@@ -1161,7 +1167,7 @@ describe("singleGameSlice reducer", () => {
         }
       )
     ).toEqual({
-      "1": {
+      1: {
         isLoading: false,
         error: "error text",
         isFlipped: true,

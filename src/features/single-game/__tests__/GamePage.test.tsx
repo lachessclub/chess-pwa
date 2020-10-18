@@ -7,14 +7,25 @@ import { GameMetaContainer } from "../GameMetaContainer";
 import { GameControlPanelContainer } from "../GameControlPanelContainer";
 import { SingleGameBoardContainer } from "../SingleGameBoardContainer";
 import { fetchGame } from "../singleGameSlice";
-import { stateWithDataSample } from "../../../test-utils/data-sample/state";
+import { makeStateSample } from "../../../test-utils/data-sample/state";
+import { normalizedGameSample1 } from "../../../test-utils/data-sample/game";
 
 jest.mock("../singleGameSlice");
+
+const stateWithGameSample = makeStateSample({
+  entities: {
+    users: {},
+    games: {
+      1: normalizedGameSample1,
+    },
+    seeks: {},
+  },
+});
 
 describe("GamePage", () => {
   beforeEach(() => {
     (useSelector as jest.Mock).mockImplementation((cb) =>
-      cb(stateWithDataSample)
+      cb(stateWithGameSample)
     );
     useDispatch<jest.Mock>().mockClear();
     (useEffect as jest.Mock).mockReset();

@@ -79,11 +79,19 @@ exports[`App Snapshot 1`] = `
       </div>
       <div>
         <div
-          className="alert alert-warning text-center"
-          data-testid="empty-content-message"
-          role="alert"
+          className="text-center"
         >
-          Nobody is waiting for opponent
+          <div
+            className="spinner-border"
+            data-testid="loading-spinner"
+            role="status"
+          >
+            <span
+              className="sr-only"
+            >
+              Loading...
+            </span>
+          </div>
         </div>
         <div />
       </div>
@@ -102,11 +110,19 @@ exports[`App Snapshot 1`] = `
       </div>
       <div>
         <div
-          className="alert alert-warning text-center"
-          data-testid="empty-content-message"
-          role="alert"
+          className="text-center"
         >
-          Nobody is playing right now
+          <div
+            className="spinner-border"
+            data-testid="loading-spinner"
+            role="status"
+          >
+            <span
+              className="sr-only"
+            >
+              Loading...
+            </span>
+          </div>
         </div>
         <div
           className="grid"
@@ -127,11 +143,19 @@ exports[`App Snapshot 1`] = `
       </div>
       <div>
         <div
-          className="alert alert-warning text-center"
-          data-testid="empty-content-message"
-          role="alert"
+          className="text-center"
         >
-          There is no finished games yet
+          <div
+            className="spinner-border"
+            data-testid="loading-spinner"
+            role="status"
+          >
+            <span
+              className="sr-only"
+            >
+              Loading...
+            </span>
+          </div>
         </div>
         <div
           className="grid"

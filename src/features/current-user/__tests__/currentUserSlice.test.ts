@@ -19,10 +19,13 @@ import currentUserReducer, {
   register,
   logout,
 } from "../currentUserSlice";
-import User from "../../../interfaces/User";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
 import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
+import {
+  normalizedUserSample1,
+  userSample1,
+} from "../../../test-utils/data-sample/user";
 
 jest.mock("../../../services/ioClient");
 jest.mock("../../../utils/getErrorMessageFromJWR");
@@ -302,15 +305,10 @@ describe("currentUserSlice reducer", () => {
     it("success. User is authenticated", async () => {
       const dispatch = jest.fn();
 
-      const user: User = {
-        id: 1,
-        fullName: "Christopher Garcia",
-      };
-
       (ioClient.socket.get as jest.Mock).mockImplementationOnce(
         (url: string, cb: RequestCallback) => {
-          cb(user, {
-            body: user,
+          cb(userSample1, {
+            body: userSample1,
             statusCode: 200,
           } as JWR);
         }
@@ -318,7 +316,7 @@ describe("currentUserSlice reducer", () => {
 
       const result = fetchCurrentUser()(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual(user);
+      await expect(result).resolves.toEqual(userSample1);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -329,10 +327,7 @@ describe("currentUserSlice reducer", () => {
         payload: {
           entities: {
             users: {
-              "1": {
-                id: 1,
-                fullName: "Christopher Garcia",
-              },
+              1: normalizedUserSample1,
             },
           },
           result: 1,
@@ -401,15 +396,10 @@ describe("currentUserSlice reducer", () => {
     it("success", async () => {
       const dispatch = jest.fn();
 
-      const user: User = {
-        id: 1,
-        fullName: "Christopher Garcia",
-      };
-
       (ioClient.socket.put as jest.Mock).mockImplementationOnce(
         (url: string, data: any, cb: RequestCallback) => {
-          cb(user, {
-            body: user,
+          cb(userSample1, {
+            body: userSample1,
             statusCode: 200,
           } as JWR);
         }
@@ -420,7 +410,7 @@ describe("currentUserSlice reducer", () => {
         password: "123",
       })(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual(user);
+      await expect(result).resolves.toEqual(userSample1);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -433,10 +423,7 @@ describe("currentUserSlice reducer", () => {
           result: 1,
           entities: {
             users: {
-              "1": {
-                id: 1,
-                fullName: "Christopher Garcia",
-              },
+              1: normalizedUserSample1,
             },
           },
         },
@@ -482,27 +469,22 @@ describe("currentUserSlice reducer", () => {
     it("success", async () => {
       const dispatch = jest.fn();
 
-      const user: User = {
-        id: 1,
-        fullName: "Christopher Garcia",
-      };
-
       (ioClient.socket.post as jest.Mock).mockImplementationOnce(
         (url: string, data: any, cb: RequestCallback) => {
-          cb(user, {
-            body: user,
+          cb(userSample1, {
+            body: userSample1,
             statusCode: 200,
           } as JWR);
         }
       );
 
       const result = register({
-        fullName: "Christopher Garcia",
+        fullName: "Thomas Miller",
         email: "test@test.com",
         password: "123",
       })(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual(user);
+      await expect(result).resolves.toEqual(userSample1);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -515,10 +497,7 @@ describe("currentUserSlice reducer", () => {
           result: 1,
           entities: {
             users: {
-              "1": {
-                id: 1,
-                fullName: "Christopher Garcia",
-              },
+              1: normalizedUserSample1,
             },
           },
         },
@@ -539,7 +518,7 @@ describe("currentUserSlice reducer", () => {
       (getErrorMessageFromJWR as jest.Mock).mockReturnValueOnce("error text");
 
       const result = register({
-        fullName: "Christopher Garcia",
+        fullName: "Thomas Miller",
         email: "test@test.com",
         password: "123",
       })(dispatch, () => defaultState, null);

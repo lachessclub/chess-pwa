@@ -2,7 +2,7 @@ import React from "react";
 import { fireEvent, render } from "@testing-library/react";
 import mountTest from "../../../test-utils/mountTest";
 import { Header } from "../Header";
-import userSample from "../../../test-utils/data-sample/user";
+import { userSample1 } from "../../../test-utils/data-sample/user";
 
 describe("Header", () => {
   mountTest(Header);
@@ -10,7 +10,7 @@ describe("Header", () => {
   describe("DOM structure", () => {
     it("should contain logout button", () => {
       const { queryByTestId, rerender } = render(
-        <Header currentUser={userSample} />
+        <Header currentUser={userSample1} />
       );
 
       expect(queryByTestId("logout-btn")).toBeInTheDocument();
@@ -22,7 +22,7 @@ describe("Header", () => {
 
     it("should contain login button", () => {
       const { queryByTestId, rerender } = render(
-        <Header currentUser={userSample} />
+        <Header currentUser={userSample1} />
       );
 
       expect(queryByTestId("login-btn")).not.toBeInTheDocument();
@@ -38,7 +38,7 @@ describe("Header", () => {
       const onLogout = jest.fn();
 
       const { getByTestId } = render(
-        <Header currentUser={userSample} onLogout={onLogout} />
+        <Header currentUser={userSample1} onLogout={onLogout} />
       );
 
       fireEvent.click(getByTestId("logout-btn"));

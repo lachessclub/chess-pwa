@@ -89,7 +89,7 @@ describe("dataSubscriptionSlice reducer", () => {
           result: 1,
           entities: {
             games: {
-              "1": {
+              1: {
                 id: 1,
                 initialFen: "startpos",
                 wtime: 300000,
@@ -136,7 +136,7 @@ describe("dataSubscriptionSlice reducer", () => {
           result: 1,
           entities: {
             games: {
-              "1": {
+              1: {
                 id: 1,
                 initialFen: "startpos",
                 wtime: 300000,
@@ -218,7 +218,7 @@ describe("dataSubscriptionSlice reducer", () => {
           result: 1,
           entities: {
             seeks: {
-              "1": {
+              1: {
                 id: 1,
                 color: "white",
                 clockLimit: 300,
@@ -263,7 +263,7 @@ describe("dataSubscriptionSlice reducer", () => {
           result: 1,
           entities: {
             seeks: {
-              "1": {
+              1: {
                 id: 1,
                 color: "white",
                 clockLimit: 300,

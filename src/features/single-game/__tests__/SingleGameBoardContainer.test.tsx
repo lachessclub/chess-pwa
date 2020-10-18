@@ -2,51 +2,112 @@ import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import TestRenderer from "react-test-renderer";
 import {
+  defaultState,
   makeStateSample,
-  stateWithDataSample,
-  stateWithDataSample2,
-  stateWithDataSample3,
 } from "../../../test-utils/data-sample/state";
 import mountTest from "../../../test-utils/mountTest";
 import { SingleGameBoardContainer } from "../SingleGameBoardContainer";
 import { SingleGameBoard } from "../SingleGameBoard";
 import { makeMove } from "../../move/moveSlice";
+import {
+  normalizedUserSample1,
+  userSample1,
+} from "../../../test-utils/data-sample/user";
+import {
+  gameSample1,
+  normalizedGameSample1,
+} from "../../../test-utils/data-sample/game";
 
 jest.mock("../../move/moveSlice");
 
-const stateWithLoadedGame = makeStateSample(
-  {
-    singleGame: {
-      "1": {
-        isLoading: false,
-        error: null,
-        isFlipped: false,
-        rewindToMoveIndex: null,
-      },
+const stateWithGameSample = makeStateSample({
+  entities: {
+    users: {},
+    games: {
+      1: normalizedGameSample1,
     },
+    seeks: {},
   },
-  stateWithDataSample
-);
+});
 
-const stateWithLoadingError = makeStateSample(
-  {
-    singleGame: {
-      "1": {
-        isLoading: false,
-        error: "error text",
-        isFlipped: false,
-        rewindToMoveIndex: null,
-      },
+const stateWithLoadedGame = makeStateSample({
+  singleGame: {
+    1: {
+      isLoading: false,
+      error: null,
+      isFlipped: false,
+      rewindToMoveIndex: null,
     },
   },
-  stateWithDataSample
-);
+  entities: {
+    users: {},
+    games: {},
+    seeks: {},
+  },
+});
+
+const stateWithFlippedGame = makeStateSample({
+  singleGame: {
+    1: {
+      isLoading: false,
+      error: null,
+      isFlipped: true,
+      rewindToMoveIndex: null,
+    },
+  },
+  entities: {
+    users: {},
+    games: {},
+    seeks: {},
+  },
+});
+
+const stateWithRewindToMoveIndex = makeStateSample({
+  singleGame: {
+    1: {
+      isLoading: false,
+      error: null,
+      isFlipped: true,
+      rewindToMoveIndex: 2,
+    },
+  },
+  entities: {
+    users: {},
+    games: {},
+    seeks: {},
+  },
+});
+
+const stateWithLoadingError = makeStateSample({
+  singleGame: {
+    1: {
+      isLoading: false,
+      error: "error text",
+      isFlipped: false,
+      rewindToMoveIndex: null,
+    },
+  },
+});
+
+const stateWithAuthenticatedUser = makeStateSample({
+  currentUser: {
+    userId: 1,
+    isLoading: false,
+    error: null,
+  },
+  singleGame: {},
+  entities: {
+    users: {
+      1: normalizedUserSample1,
+    },
+    games: {},
+    seeks: {},
+  },
+});
 
 describe("SingleGameBoardContainer", () => {
   beforeEach(() => {
-    (useSelector as jest.Mock).mockImplementation((cb) =>
-      cb(stateWithDataSample)
-    );
+    (useSelector as jest.Mock).mockImplementation((cb) => cb(defaultState));
     useDispatch<jest.Mock>().mockClear();
     (useEffect as jest.Mock).mockReset();
   });
@@ -56,12 +117,16 @@ describe("SingleGameBoardContainer", () => {
   describe("children components", () => {
     it("contains SingleGameBoard", async () => {
       const testRenderer = TestRenderer.create(
-        <SingleGameBoardContainer id={2} />
+        <SingleGameBoardContainer id={1} />
       );
       const testInstance = testRenderer.root;
 
       // render SingleGameBoard event if there is no game in state
       expect(testInstance.findAllByType(SingleGameBoard).length).toBe(1);
+
+      (useSelector as jest.Mock).mockImplementation((cb) =>
+        cb(stateWithGameSample)
+      );
 
       testRenderer.update(<SingleGameBoardContainer id={1} />);
       expect(testInstance.findAllByType(SingleGameBoard).length).toBe(1);
@@ -78,23 +143,14 @@ describe("SingleGameBoardContainer", () => {
 
         const singleGameBoard = testInstance.findByType(SingleGameBoard);
 
-        expect(singleGameBoard.props.game).toEqual({
-          id: 1,
-          aiLevel: 3,
-          clockLimit: 300,
-          clockIncrement: 3,
-          createdAt: 0,
-          drawOffer: null,
-          initialFen: "startpos",
-          turn: "white",
-          wtime: 300000,
-          btime: 300000,
-          moves: "e2e4 e7e5 g1f3 g8f6",
-          status: "started",
-          white: null,
-          black: null,
-          winner: null,
-        });
+        expect(singleGameBoard.props.game).toBeUndefined();
+
+        (useSelector as jest.Mock).mockImplementation((cb) =>
+          cb(stateWithGameSample)
+        );
+        testRenderer.update(<SingleGameBoardContainer id={1} />);
+
+        expect(singleGameBoard.props.game).toEqual(gameSample1);
       });
 
       it("isLoading", async () => {
@@ -143,18 +199,14 @@ describe("SingleGameBoardContainer", () => {
 
         const singleGameBoard = testInstance.findByType(SingleGameBoard);
 
-        expect(singleGameBoard.props.currentUser).toEqual({
-          id: 1,
-          fullName: "Thomas Miller",
-        });
+        expect(singleGameBoard.props.currentUser).toBeUndefined();
 
         (useSelector as jest.Mock).mockImplementation((cb) =>
-          cb(stateWithDataSample2)
+          cb(stateWithAuthenticatedUser)
         );
-
         testRenderer.update(<SingleGameBoardContainer id={1} />);
 
-        expect(singleGameBoard.props.currentUser).toBeUndefined();
+        expect(singleGameBoard.props.currentUser).toEqual(userSample1);
       });
 
       it("isFlipped", async () => {
@@ -165,20 +217,21 @@ describe("SingleGameBoardContainer", () => {
 
         const singleGameBoard = testInstance.findByType(SingleGameBoard);
 
+        // isFlipped default is false
         expect(singleGameBoard.props.isFlipped).toBeFalsy();
 
         (useSelector as jest.Mock).mockImplementation((cb) =>
-          cb(stateWithDataSample2)
+          cb(stateWithLoadedGame)
         );
-
         testRenderer.update(<SingleGameBoardContainer id={1} />);
+        // isFlipped in state is false
         expect(singleGameBoard.props.isFlipped).toBeFalsy();
 
         (useSelector as jest.Mock).mockImplementation((cb) =>
-          cb(stateWithDataSample3)
+          cb(stateWithFlippedGame)
         );
-
         testRenderer.update(<SingleGameBoardContainer id={1} />);
+        // isFlipped in state is true
         expect(singleGameBoard.props.isFlipped).toBeTruthy();
       });
 
@@ -193,18 +246,11 @@ describe("SingleGameBoardContainer", () => {
         expect(singleGameBoard.props.rewindToMoveIndex).toBeNull();
 
         (useSelector as jest.Mock).mockImplementation((cb) =>
-          cb(stateWithDataSample2)
+          cb(stateWithRewindToMoveIndex)
         );
 
         testRenderer.update(<SingleGameBoardContainer id={1} />);
         expect(singleGameBoard.props.rewindToMoveIndex).toBe(2);
-
-        (useSelector as jest.Mock).mockImplementation((cb) =>
-          cb(stateWithDataSample3)
-        );
-
-        testRenderer.update(<SingleGameBoardContainer id={1} />);
-        expect(singleGameBoard.props.rewindToMoveIndex).toBe(0);
       });
     });
   });

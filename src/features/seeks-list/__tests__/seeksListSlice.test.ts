@@ -13,10 +13,11 @@ import {
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
 import {
-  defaultSeekSample,
-  normalizedDefaultSeekSample,
+  seekSample1,
+  normalizedSeekSample1,
 } from "../../../test-utils/data-sample/seek";
 import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
+import { normalizedUserSample1 } from "../../../test-utils/data-sample/user";
 
 jest.mock("../../../services/ioClient");
 jest.mock("../../../utils/getErrorMessageFromJWR");
@@ -228,8 +229,8 @@ describe("seeksListSlice reducer", () => {
 
       (ioClient.socket.get as jest.Mock).mockImplementationOnce(
         (url: string, cb: RequestCallback) => {
-          cb([defaultSeekSample], {
-            body: [defaultSeekSample],
+          cb([seekSample1], {
+            body: [seekSample1],
             statusCode: 200,
           } as JWR);
         }
@@ -237,7 +238,7 @@ describe("seeksListSlice reducer", () => {
 
       const result = fetchSeeks()(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual([defaultSeekSample]);
+      await expect(result).resolves.toEqual([seekSample1]);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -249,13 +250,10 @@ describe("seeksListSlice reducer", () => {
           result: [1],
           entities: {
             seeks: {
-              "1": normalizedDefaultSeekSample,
+              1: normalizedSeekSample1,
             },
             users: {
-              "1": {
-                id: 1,
-                fullName: "Thomas Miller",
-              },
+              1: normalizedUserSample1,
             },
           },
         },

@@ -4,7 +4,7 @@ import { Toast } from "react-bootstrap";
 import mountTest from "../../../test-utils/mountTest";
 import { Messages } from "../Messages";
 import {
-  defaultMessageSample,
+  messageSample1,
   messageSample2,
 } from "../../../test-utils/data-sample/message";
 
@@ -21,7 +21,7 @@ describe("Messages", () => {
       expect(testInstance.findAllByType(Toast).length).toBe(0);
 
       testRenderer.update(
-        <Messages items={[defaultMessageSample, messageSample2]} />
+        <Messages items={[messageSample1, messageSample2]} />
       );
 
       expect(testInstance.findAllByType(Toast).length).toBe(2);
@@ -32,7 +32,7 @@ describe("Messages", () => {
     describe("Toast", () => {
       it("autohide", () => {
         const testRenderer = TestRenderer.create(
-          <Messages items={[defaultMessageSample, messageSample2]} />
+          <Messages items={[messageSample1, messageSample2]} />
         );
         const testInstance = testRenderer.root;
 
@@ -44,7 +44,7 @@ describe("Messages", () => {
 
       it("show", () => {
         const testRenderer = TestRenderer.create(
-          <Messages items={[defaultMessageSample, messageSample2]} />
+          <Messages items={[messageSample1, messageSample2]} />
         );
         const testInstance = testRenderer.root;
 
@@ -62,7 +62,7 @@ describe("Messages", () => {
 
       const testRenderer = TestRenderer.create(
         <Messages
-          items={[defaultMessageSample, messageSample2]}
+          items={[messageSample1, messageSample2]}
           onHideMessage={onHideMessage}
         />
       );

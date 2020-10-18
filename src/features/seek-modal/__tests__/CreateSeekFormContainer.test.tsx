@@ -9,7 +9,7 @@ import mountTest from "../../../test-utils/mountTest";
 import CreateSeekFormContainer from "../CreateSeekFormContainer";
 import { CreateSeekForm } from "../CreateSeekForm";
 import { createSeek } from "../../challenge/challengeSlice";
-import { defaultGameSample } from "../../../test-utils/data-sample/game";
+import { gameSample1 } from "../../../test-utils/data-sample/game";
 import ioClient from "../../../services/ioClient";
 import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
@@ -70,7 +70,7 @@ describe("CreateSeekFormContainer", () => {
 
     it("should handle dispatch(createSeek()) success", async () => {
       const dispatch = useDispatch<jest.Mock>();
-      dispatch.mockImplementationOnce(() => Promise.resolve(defaultGameSample));
+      dispatch.mockImplementationOnce(() => Promise.resolve(gameSample1));
 
       const testRenderer = TestRenderer.create(<CreateSeekFormContainer />);
       const testInstance = testRenderer.root;

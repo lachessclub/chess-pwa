@@ -2,15 +2,12 @@ import TestRenderer from "react-test-renderer";
 import React from "react";
 import mountTest from "../../../test-utils/mountTest";
 import { SeeksList } from "../SeeksList";
-import {
-  defaultSeekSample,
-  seekSample2,
-} from "../../../test-utils/data-sample/seek";
+import { seekSample1, seekSample2 } from "../../../test-utils/data-sample/seek";
 import { Seek } from "../../../interfaces/Seek";
 import { SeeksListItem } from "../SeeksListItem";
 import { ContentLoadingStatus } from "../../../components/ContentLoadingStatus";
 
-const seeksList: Seek[] = [defaultSeekSample, seekSample2];
+const seeksList: Seek[] = [seekSample1, seekSample2];
 
 describe("SeeksList", () => {
   mountTest(SeeksList);
@@ -104,7 +101,7 @@ describe("SeeksList", () => {
 
         const seeksListItems = testInstance.findAllByType(SeeksListItem);
 
-        expect(seeksListItems[0].props.seek).toBe(defaultSeekSample);
+        expect(seeksListItems[0].props.seek).toBe(seekSample1);
         expect(seeksListItems[1].props.seek).toBe(seekSample2);
       });
 

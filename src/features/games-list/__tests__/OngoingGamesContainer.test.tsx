@@ -7,12 +7,12 @@ import mountTest from "../../../test-utils/mountTest";
 import {
   defaultState,
   makeStateSample,
-  stateWithDataSample4,
 } from "../../../test-utils/data-sample/state";
+import { makeNormalizedGameSample } from "../../../test-utils/data-sample/game";
 
-const stateWithLoadingGames = makeStateSample({
+const stateWithLoadedGames = makeStateSample({
   gamesList: {
-    isLoading: true,
+    isLoading: false,
     error: null,
   },
 });
@@ -21,6 +21,47 @@ const stateWithLoadingError = makeStateSample({
   gamesList: {
     isLoading: false,
     error: "error text",
+  },
+});
+
+const startedGameSample = makeNormalizedGameSample({
+  id: 1,
+  createdAt: 1,
+  status: "started",
+});
+const outOfTimeGameSample = makeNormalizedGameSample({
+  id: 2,
+  createdAt: 0,
+  status: "outoftime",
+  winner: "white",
+});
+const abortedGameSample = makeNormalizedGameSample({
+  id: 3,
+  status: "aborted",
+});
+const resignedGameSample = makeNormalizedGameSample({
+  id: 4,
+  createdAt: 1,
+  status: "resign",
+  winner: "white",
+});
+const startedGameSample2 = makeNormalizedGameSample({
+  id: 5,
+  createdAt: 2,
+  status: "started",
+});
+
+const stateWithGames = makeStateSample({
+  entities: {
+    users: {},
+    games: {
+      1: startedGameSample,
+      2: outOfTimeGameSample,
+      3: abortedGameSample,
+      4: resignedGameSample,
+      5: startedGameSample2,
+    },
+    seeks: {},
   },
 });
 
@@ -53,46 +94,14 @@ describe("OngoingGamesContainer", () => {
         expect(gamePreviewsComponent.props.games).toEqual([]);
 
         (useSelector as jest.Mock).mockImplementation((cb) =>
-          cb(stateWithDataSample4)
+          cb(stateWithGames)
         );
 
         testRenderer.update(<OngoingGamesContainer />);
 
         expect(gamePreviewsComponent.props.games).toEqual([
-          {
-            id: 4,
-            aiLevel: 3,
-            clockLimit: 300,
-            clockIncrement: 3,
-            createdAt: 1,
-            drawOffer: null,
-            initialFen: "startpos",
-            turn: "white",
-            wtime: 300000,
-            btime: 300000,
-            moves: "e2e4 e7e5 g1f3 g8f6",
-            status: "started",
-            white: null,
-            black: null,
-            winner: null,
-          },
-          {
-            id: 1,
-            aiLevel: 3,
-            clockLimit: 300,
-            clockIncrement: 3,
-            createdAt: 0,
-            drawOffer: null,
-            initialFen: "startpos",
-            turn: "white",
-            wtime: 300000,
-            btime: 300000,
-            moves: "e2e4 e7e5 g1f3 g8f6",
-            status: "started",
-            white: null,
-            black: null,
-            winner: null,
-          },
+          startedGameSample2,
+          startedGameSample,
         ]);
       });
 
@@ -102,15 +111,15 @@ describe("OngoingGamesContainer", () => {
 
         const gamePreviewsComponent = testInstance.findByType(GamePreviewsList);
 
-        expect(gamePreviewsComponent.props.isLoading).toBeFalsy();
+        expect(gamePreviewsComponent.props.isLoading).toBeTruthy();
 
         (useSelector as jest.Mock).mockImplementation((cb) =>
-          cb(stateWithLoadingGames)
+          cb(stateWithLoadedGames)
         );
 
         testRenderer.update(<OngoingGamesContainer />);
 
-        expect(gamePreviewsComponent.props.isLoading).toBeTruthy();
+        expect(gamePreviewsComponent.props.isLoading).toBeFalsy();
       });
 
       it("error", () => {

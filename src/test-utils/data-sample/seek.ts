@@ -1,19 +1,19 @@
 import { Seek } from "../../interfaces/Seek";
-import userSample from "./user";
-import { defaultGameSample } from "./game";
+import { userSample1, userSample2 } from "./user";
+import { gameSample2 } from "./game";
 import NormalizedSeekEntity from "../../normalizr/interfaces/NormalizedSeekEntity";
 
-export const defaultSeekSample: Seek = {
+export const seekSample1: Seek = {
   id: 1,
   color: "white",
   clockLimit: 300,
   createdAt: 0,
   clockIncrement: 5,
-  createdBy: userSample,
+  createdBy: userSample1,
   game: null,
 };
 
-export const normalizedDefaultSeekSample: NormalizedSeekEntity = {
+export const normalizedSeekSample1: NormalizedSeekEntity = {
   id: 1,
   color: "white",
   clockLimit: 300,
@@ -26,19 +26,36 @@ export const normalizedDefaultSeekSample: NormalizedSeekEntity = {
 export const seekSample2: Seek = {
   id: 2,
   color: "black",
-  clockLimit: 600,
+  clockLimit: 300,
   createdAt: 0,
-  clockIncrement: 3,
-  createdBy: userSample,
-  game: defaultGameSample,
+  clockIncrement: 5,
+  createdBy: userSample2,
+  game: gameSample2,
 };
 
-export const seekSample3: Seek = {
+export const normalizedSeekSample2: NormalizedSeekEntity = {
   id: 2,
-  color: "random",
-  clockLimit: 600,
+  color: "black",
+  clockLimit: 300,
   createdAt: 0,
-  clockIncrement: 3,
-  createdBy: userSample,
-  game: defaultGameSample,
+  clockIncrement: 5,
+  createdBy: 2,
+  game: 2,
 };
+
+// @todo. use this functions to create samples.
+export const makeSeekSample = (
+  data: Partial<Seek>,
+  originalSeekSample = seekSample1
+): Seek => ({
+  ...originalSeekSample,
+  ...data,
+});
+
+export const makeNormalizedSeekSample = (
+  data: Partial<NormalizedSeekEntity>,
+  originalSeekSample = normalizedSeekSample1
+): NormalizedSeekEntity => ({
+  ...originalSeekSample,
+  ...data,
+});

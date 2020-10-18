@@ -8,7 +8,7 @@ import mountTest from "../../../test-utils/mountTest";
 import ChallengeAiFormContainer from "../ChallengeAiFormContainer";
 import { ChallengeAiForm } from "../ChallengeAiForm";
 import { challengeAi } from "../../challenge/challengeSlice";
-import { defaultGameSample } from "../../../test-utils/data-sample/game";
+import { gameSample1 } from "../../../test-utils/data-sample/game";
 import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
 jest.mock("../../challenge/challengeSlice");
@@ -69,7 +69,7 @@ describe("ChallengeAiFormContainer", () => {
 
     it("should handle dispatch(challengeAi()) success", async () => {
       const dispatch = useDispatch<jest.Mock>();
-      dispatch.mockImplementationOnce(() => Promise.resolve(defaultGameSample));
+      dispatch.mockImplementationOnce(() => Promise.resolve(gameSample1));
 
       const testRenderer = TestRenderer.create(<ChallengeAiFormContainer />);
       const testInstance = testRenderer.root;

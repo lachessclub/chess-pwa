@@ -7,7 +7,7 @@ import gamesListReducer, {
 } from "../gamesListSlice";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
-import { defaultGameSample } from "../../../test-utils/data-sample/game";
+import { gameSample1 } from "../../../test-utils/data-sample/game";
 import getErrorMessageFromJWR from "../../../utils/getErrorMessageFromJWR";
 
 jest.mock("../../../services/ioClient");
@@ -87,8 +87,8 @@ describe("gamesListSlice reducer", () => {
 
       (ioClient.socket.get as jest.Mock).mockImplementationOnce(
         (url: string, cb: RequestCallback) => {
-          cb([defaultGameSample], {
-            body: [defaultGameSample],
+          cb([gameSample1], {
+            body: [gameSample1],
             statusCode: 200,
           } as JWR);
         }
@@ -96,7 +96,7 @@ describe("gamesListSlice reducer", () => {
 
       const result = fetchGames()(dispatch, () => defaultState, null);
 
-      await expect(result).resolves.toEqual([defaultGameSample]);
+      await expect(result).resolves.toEqual([gameSample1]);
 
       expect(dispatch).toBeCalledTimes(2);
       expect(dispatch).toHaveBeenNthCalledWith(1, {
@@ -108,7 +108,7 @@ describe("gamesListSlice reducer", () => {
           result: [1],
           entities: {
             games: {
-              "1": defaultGameSample,
+              1: gameSample1,
             },
           },
         },

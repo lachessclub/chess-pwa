@@ -1,15 +1,29 @@
 import { useDispatch, useSelector } from "react-redux";
 import TestRenderer from "react-test-renderer";
 import React, { useEffect } from "react";
-import { stateWithDataSample } from "../../../test-utils/data-sample/state";
+import { makeStateSample } from "../../../test-utils/data-sample/state";
 import mountTest from "../../../test-utils/mountTest";
 import { GameMetaContainer } from "../GameMetaContainer";
 import { GameMeta } from "../GameMeta";
+import {
+  gameSample1,
+  normalizedGameSample1,
+} from "../../../test-utils/data-sample/game";
+
+const stateWithGameSample = makeStateSample({
+  entities: {
+    users: {},
+    games: {
+      1: normalizedGameSample1,
+    },
+    seeks: {},
+  },
+});
 
 describe("GameMetaContainer", () => {
   beforeEach(() => {
     (useSelector as jest.Mock).mockImplementation((cb) =>
-      cb(stateWithDataSample)
+      cb(stateWithGameSample)
     );
     useDispatch<jest.Mock>().mockClear();
     (useEffect as jest.Mock).mockReset();
@@ -38,23 +52,7 @@ describe("GameMetaContainer", () => {
 
         const gameMeta = testInstance.findByType(GameMeta);
 
-        expect(gameMeta.props.game).toEqual({
-          id: 1,
-          aiLevel: 3,
-          clockLimit: 300,
-          clockIncrement: 3,
-          createdAt: 0,
-          drawOffer: null,
-          initialFen: "startpos",
-          turn: "white",
-          wtime: 300000,
-          btime: 300000,
-          moves: "e2e4 e7e5 g1f3 g8f6",
-          status: "started",
-          white: null,
-          black: null,
-          winner: null,
-        });
+        expect(gameMeta.props.game).toEqual(gameSample1);
       });
     });
   });
