@@ -3,6 +3,9 @@ import { Card } from "react-bootstrap";
 import cx from "classnames";
 import Game from "../../interfaces/Game";
 import getGameStatusText from "../../utils/getGameStatusText";
+import { ReactComponent as WhiteIcon } from "../../assets/icons/white.svg";
+import { ReactComponent as BlackIcon } from "../../assets/icons/black.svg";
+import css from "./GameMeta.module.scss";
 
 export interface GameMetaProps {
   game?: Game;
@@ -31,30 +34,12 @@ export const GameMeta: FC<GameMetaProps> = ({ game }) => {
         >
           {getGameStatusText(game)}
         </div>
-        <div data-testid="white-user">
-          <svg height="18" width="16" className="mr-1">
-            <circle
-              cx="9"
-              cy="9"
-              r="6"
-              stroke="black"
-              strokeWidth="1"
-              fill="#fff"
-            />
-          </svg>
+        <div data-testid="white-user" className="d-flex align-items-center">
+          <WhiteIcon className={cx(css.colorIcon, "mr-1")} />
           {game.white ? game.white.fullName : `AI level ${game.aiLevel}`}
         </div>
-        <div data-testid="black-user">
-          <svg height="18" width="16" className="mr-1">
-            <circle
-              cx="8"
-              cy="8"
-              r="6"
-              stroke="black"
-              strokeWidth="1"
-              fill="#000"
-            />
-          </svg>
+        <div data-testid="black-user" className="d-flex align-items-center">
+          <BlackIcon className={cx(css.colorIcon, "mr-1")} />
           {game.black ? game.black.fullName : `AI level ${game.aiLevel}`}
         </div>
       </Card.Body>

@@ -5,9 +5,9 @@ import { Button, Spinner } from "react-bootstrap";
 import cx from "classnames";
 import { Seek } from "../../interfaces/Seek";
 import css from "./SeeksListItem.module.scss";
-import { ReactComponent as WhiteIcon } from "./icons/white.svg";
-import { ReactComponent as BlackIcon } from "./icons/black.svg";
-import { ReactComponent as RandomIcon } from "./icons/random.svg";
+import { ReactComponent as WhiteIcon } from "../../assets/icons/white.svg";
+import { ReactComponent as BlackIcon } from "../../assets/icons/black.svg";
+import { ReactComponent as RandomIcon } from "../../assets/icons/random.svg";
 
 export interface SeeksListItemProps {
   acceptInProcess?: number | null;
