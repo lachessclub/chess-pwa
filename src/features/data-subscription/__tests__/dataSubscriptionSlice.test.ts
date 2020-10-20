@@ -11,6 +11,19 @@ import dataSubscriptionReducer, {
 } from "../dataSubscriptionSlice";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
+import {
+  makeNormalizedSeekSample,
+  makeSeekSample,
+  seekSample1,
+} from "../../../test-utils/data-sample/seek";
+import {
+  normalizedUserSample1,
+  userSample1,
+} from "../../../test-utils/data-sample/user";
+import {
+  makeGameSample,
+  makeNormalizedGameSample,
+} from "../../../test-utils/data-sample/game";
 
 jest.mock("../../../services/ioClient");
 
@@ -57,20 +70,24 @@ describe("dataSubscriptionSlice reducer", () => {
     it("update game", () => {
       const dispatch = jest.fn();
 
+      const normalizedGameSample = makeNormalizedGameSample({
+        id: 1,
+        moves: "",
+        white: null,
+        black: null,
+      });
+      const gameSample = makeGameSample({
+        id: 1,
+        moves: "",
+        white: null,
+        black: null,
+      });
+
       (ioClient.socket.on as jest.Mock).mockImplementationOnce(
         (url: string, cb: (...args: Array<any>) => any) => {
           cb({
             verb: "updated",
-            previous: {
-              id: 1,
-              initialFen: "startpos",
-              wtime: 300000,
-              btime: 300000,
-              moves: "",
-              status: "started",
-              white: null,
-              black: null,
-            },
+            previous: gameSample,
             data: {
               id: 1,
               moves: "e2e4",
@@ -90,14 +107,8 @@ describe("dataSubscriptionSlice reducer", () => {
           entities: {
             games: {
               1: {
-                id: 1,
-                initialFen: "startpos",
-                wtime: 300000,
-                btime: 300000,
+                ...normalizedGameSample,
                 moves: "e2e4",
-                status: "started",
-                white: null,
-                black: null,
               },
             },
           },
@@ -108,20 +119,22 @@ describe("dataSubscriptionSlice reducer", () => {
     it("create game", () => {
       const dispatch = jest.fn();
 
+      const normalizedGameSample = makeNormalizedGameSample({
+        id: 1,
+        white: null,
+        black: null,
+      });
+      const gameSample = makeGameSample({
+        id: 1,
+        white: null,
+        black: null,
+      });
+
       (ioClient.socket.on as jest.Mock).mockImplementationOnce(
         (url: string, cb: (...args: Array<any>) => any) => {
           cb({
             verb: "created",
-            data: {
-              id: 1,
-              initialFen: "startpos",
-              wtime: 300000,
-              btime: 300000,
-              moves: "e2e4",
-              status: "started",
-              white: null,
-              black: null,
-            },
+            data: gameSample,
             id: 1,
           });
         }
@@ -136,16 +149,7 @@ describe("dataSubscriptionSlice reducer", () => {
           result: 1,
           entities: {
             games: {
-              1: {
-                id: 1,
-                initialFen: "startpos",
-                wtime: 300000,
-                btime: 300000,
-                moves: "e2e4",
-                status: "started",
-                white: null,
-                black: null,
-              },
+              1: normalizedGameSample,
             },
           },
         },
@@ -187,22 +191,27 @@ describe("dataSubscriptionSlice reducer", () => {
     it("update seek", () => {
       const dispatch = jest.fn();
 
+      const normalizedSeekSample = makeNormalizedSeekSample({
+        id: 1,
+        color: "white",
+        game: null,
+        createdBy: 1,
+      });
+      const seekSample = makeSeekSample({
+        id: 1,
+        color: "white",
+        game: null,
+        createdBy: userSample1,
+      });
+
       (ioClient.socket.on as jest.Mock).mockImplementationOnce(
         (url: string, cb: (...args: Array<any>) => any) => {
           cb({
             verb: "updated",
-            previous: {
-              id: 1,
-              color: "white",
-              clockLimit: 300,
-              createdAt: 0,
-              clockIncrement: 5,
-              createdBy: 1,
-              game: null,
-            },
+            previous: seekSample,
             data: {
               id: 1,
-              game: 1,
+              color: "black",
             },
             id: 1,
           });
@@ -217,15 +226,13 @@ describe("dataSubscriptionSlice reducer", () => {
         payload: {
           result: 1,
           entities: {
+            users: {
+              1: normalizedUserSample1,
+            },
             seeks: {
               1: {
-                id: 1,
-                color: "white",
-                clockLimit: 300,
-                createdAt: 0,
-                clockIncrement: 5,
-                createdBy: 1,
-                game: 1,
+                ...normalizedSeekSample,
+                color: "black",
               },
             },
           },
@@ -236,19 +243,22 @@ describe("dataSubscriptionSlice reducer", () => {
     it("create seek", () => {
       const dispatch = jest.fn();
 
+      const normalizedSeekSample = makeNormalizedSeekSample({
+        id: 1,
+        game: null,
+        createdBy: 1,
+      });
+      const seekSample = makeSeekSample({
+        id: 1,
+        game: null,
+        createdBy: userSample1,
+      });
+
       (ioClient.socket.on as jest.Mock).mockImplementationOnce(
         (url: string, cb: (...args: Array<any>) => any) => {
           cb({
             verb: "created",
-            data: {
-              id: 1,
-              color: "white",
-              clockLimit: 300,
-              createdAt: 0,
-              clockIncrement: 5,
-              createdBy: 1,
-              game: null,
-            },
+            data: seekSample,
             id: 1,
           });
         }
@@ -262,16 +272,11 @@ describe("dataSubscriptionSlice reducer", () => {
         payload: {
           result: 1,
           entities: {
+            users: {
+              1: normalizedUserSample1,
+            },
             seeks: {
-              1: {
-                id: 1,
-                color: "white",
-                clockLimit: 300,
-                createdAt: 0,
-                clockIncrement: 5,
-                createdBy: 1,
-                game: null,
-              },
+              1: normalizedSeekSample,
             },
           },
         },
@@ -285,15 +290,7 @@ describe("dataSubscriptionSlice reducer", () => {
         (url: string, cb: (...args: Array<any>) => any) => {
           cb({
             verb: "destroyed",
-            previous: {
-              id: 1,
-              color: "white",
-              clockLimit: 300,
-              createdAt: 0,
-              clockIncrement: 5,
-              createdBy: 1,
-              game: null,
-            },
+            previous: seekSample1,
             id: 1,
           });
         }
