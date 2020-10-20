@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/chess-pwa/static/css/main.6c4e9fd5.chunk.css",
-    "main.js": "/chess-pwa/static/js/main.e69cfad9.chunk.js",
-    "main.js.map": "/chess-pwa/static/js/main.e69cfad9.chunk.js.map",
+    "main.css": "/chess-pwa/static/css/main.76ac5fa1.chunk.css",
+    "main.js": "/chess-pwa/static/js/main.813773f3.chunk.js",
+    "main.js.map": "/chess-pwa/static/js/main.813773f3.chunk.js.map",
     "runtime-main.js": "/chess-pwa/static/js/runtime-main.cbb0f1fa.js",
     "runtime-main.js.map": "/chess-pwa/static/js/runtime-main.cbb0f1fa.js.map",
     "static/css/2.11829350.chunk.css": "/chess-pwa/static/css/2.11829350.chunk.css",
-    "static/js/2.9f6b1fce.chunk.js": "/chess-pwa/static/js/2.9f6b1fce.chunk.js",
-    "static/js/2.9f6b1fce.chunk.js.map": "/chess-pwa/static/js/2.9f6b1fce.chunk.js.map",
+    "static/js/2.b28c56a6.chunk.js": "/chess-pwa/static/js/2.b28c56a6.chunk.js",
+    "static/js/2.b28c56a6.chunk.js.map": "/chess-pwa/static/js/2.b28c56a6.chunk.js.map",
     "index.html": "/chess-pwa/index.html",
-    "precache-manifest.215d2c38ce21fe5996fbfa53b88cb149.js": "/chess-pwa/precache-manifest.215d2c38ce21fe5996fbfa53b88cb149.js",
+    "precache-manifest.941d3f5c86d5a5a80abf2a51e4b7b246.js": "/chess-pwa/precache-manifest.941d3f5c86d5a5a80abf2a51e4b7b246.js",
     "service-worker.js": "/chess-pwa/service-worker.js",
     "static/css/2.11829350.chunk.css.map": "/chess-pwa/static/css/2.11829350.chunk.css.map",
-    "static/css/main.6c4e9fd5.chunk.css.map": "/chess-pwa/static/css/main.6c4e9fd5.chunk.css.map",
-    "static/js/2.9f6b1fce.chunk.js.LICENSE.txt": "/chess-pwa/static/js/2.9f6b1fce.chunk.js.LICENSE.txt",
+    "static/css/main.76ac5fa1.chunk.css.map": "/chess-pwa/static/css/main.76ac5fa1.chunk.css.map",
+    "static/js/2.b28c56a6.chunk.js.LICENSE.txt": "/chess-pwa/static/js/2.b28c56a6.chunk.js.LICENSE.txt",
     "static/media/black.f1ae6ff6.svg": "/chess-pwa/static/media/black.f1ae6ff6.svg",
     "static/media/random.668e615f.svg": "/chess-pwa/static/media/random.668e615f.svg",
     "static/media/white.1009e168.svg": "/chess-pwa/static/media/white.1009e168.svg"
@@ -21,8 +21,8 @@
   "entrypoints": [
     "static/js/runtime-main.cbb0f1fa.js",
     "static/css/2.11829350.chunk.css",
-    "static/js/2.9f6b1fce.chunk.js",
-    "static/css/main.6c4e9fd5.chunk.css",
-    "static/js/main.e69cfad9.chunk.js"
+    "static/js/2.b28c56a6.chunk.js",
+    "static/css/main.76ac5fa1.chunk.css",
+    "static/js/main.813773f3.chunk.js"
   ]
 }
