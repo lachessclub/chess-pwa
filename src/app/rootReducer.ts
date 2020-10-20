@@ -3,6 +3,7 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import gamesListReducer from "../features/games-list/gamesListSlice";
 import seeksListReducer from "../features/seeks-list/seeksListSlice";
+import usersListReducer from "../features/users-list/usersListSlice";
 import currentUserReducer from "../features/current-user/currentUserSlice";
 import authModalReducer from "../features/auth-modal/authModalSlice";
 import challengeAiModalReducer from "../features/challenge-ai-modal/challengeAiModalSlice";
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   singleGame: singleGameReducer,
   seekModal: seekModalReducer,
   seeksList: seeksListReducer,
+  usersList: usersListReducer,
   acceptSeekRequest: acceptSeekRequestReducer,
   messages: messagesReducer,
 });

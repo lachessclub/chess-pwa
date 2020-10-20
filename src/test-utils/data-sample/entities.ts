@@ -6,7 +6,6 @@ export const emptyEntities: EntitiesState = {
   games: {},
 };
 
-// @todo. use this functions to create samples.
 export const makeEntitiesSample = (
   data: Partial<EntitiesState>,
   originalEntitiesSample = emptyEntities

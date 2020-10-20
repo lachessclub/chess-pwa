@@ -10,6 +10,7 @@ import {
 } from "../current-user/currentUserSlice";
 import { getGamesListSuccess } from "../games-list/gamesListSlice";
 import { getSeeksListSuccess } from "../seeks-list/seeksListSlice";
+import { getUsersListSuccess } from "../users-list/usersListSlice";
 import {
   getSingleGameSuccess,
   abortGameSuccess,
@@ -30,6 +31,8 @@ import {
   createSeekBySubscription,
   updateSeekBySubscription,
   removeSeekBySubscription,
+  createUserBySubscription,
+  updateUserBySubscription,
 } from "../data-subscription/dataSubscriptionSlice";
 import {
   makeMoveRequest,
@@ -106,6 +109,9 @@ const entitiesSlice = createSlice({
     },
     [updateGameBySubscription.type]: getNormalizedDataReducer,
     [createGameBySubscription.type]: getNormalizedDataReducer,
+    [getUsersListSuccess.type]: getNormalizedDataReducer,
+    [createUserBySubscription.type]: getNormalizedDataReducer,
+    [updateUserBySubscription.type]: getNormalizedDataReducer,
     [makeMoveRequest.type]: (
       state: EntitiesState,
       action: PayloadAction<MoveRequestPayload>

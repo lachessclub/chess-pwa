@@ -10,6 +10,7 @@ import ChallengeAiModalContainer from "../../challenge-ai-modal/ChallengeAiModal
 import CompletedGamesContainer from "../../games-list/CompletedGamesContainer";
 import SeekModalContainer from "../../seek-modal/SeekModalContainer";
 import SeeksListContainer from "../../seeks-list/SeeksListContainer";
+import UsersListContainer from "../../users-list/UsersListContainer";
 
 describe("HomePage", () => {
   beforeEach(() => {
@@ -33,6 +34,13 @@ describe("HomePage", () => {
       const testInstance = testRenderer.root;
 
       expect(testInstance.findAllByType(SeeksListContainer).length).toBe(1);
+    });
+
+    it("contains UsersListContainer", () => {
+      const testRenderer = TestRenderer.create(<HomePage />);
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(UsersListContainer).length).toBe(1);
     });
 
     it("contains OngoingGamesContainer", () => {

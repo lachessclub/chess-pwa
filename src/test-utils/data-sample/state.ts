@@ -27,6 +27,11 @@ export const defaultState: RootState = {
     error: null,
     items: [],
   },
+  usersList: {
+    isLoading: true,
+    error: null,
+    items: [],
+  },
   singleGame: {},
   gamesList: {
     isLoading: true,
@@ -39,7 +44,6 @@ export const defaultState: RootState = {
   },
 };
 
-// @todo. use this function to create samples.
 export const makeStateSample = (
   data: Partial<RootState>,
   originalStateSample = defaultState

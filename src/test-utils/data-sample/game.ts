@@ -70,7 +70,6 @@ export const gameSample3ValidMoves: ValidMoves = {
   f2: ["f3", "f4"],
 };
 
-// @todo. use this function to create samples.
 export const makeGameSample = (
   data: Partial<Game>,
   originalGameSample = gameSample1

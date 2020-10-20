@@ -6,8 +6,11 @@ import dataSubscriptionReducer, {
   updateSeekBySubscription,
   createSeekBySubscription,
   removeSeekBySubscription,
+  updateUserBySubscription,
+  createUserBySubscription,
   watchGames,
   watchSeeks,
+  watchUsers,
 } from "../dataSubscriptionSlice";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
@@ -302,6 +305,103 @@ describe("dataSubscriptionSlice reducer", () => {
       expect(dispatch).toBeCalledWith({
         type: removeSeekBySubscription.type,
         payload: 1,
+      });
+    });
+  });
+
+  it("should handle updateUserBySubscription", () => {
+    expect(
+      dataSubscriptionReducer(
+        {},
+        {
+          type: updateUserBySubscription.type,
+          payload: {
+            result: 1,
+            entities: {},
+          },
+        }
+      )
+    ).toEqual({});
+  });
+
+  it("should handle createUserBySubscription", () => {
+    expect(
+      dataSubscriptionReducer(
+        {},
+        {
+          type: createUserBySubscription.type,
+          payload: {
+            result: 1,
+            entities: {},
+          },
+        }
+      )
+    ).toEqual({});
+  });
+
+  describe("should handle watchUsers", () => {
+    it("update user", () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.on as jest.Mock).mockImplementationOnce(
+        (url: string, cb: (...args: Array<any>) => any) => {
+          cb({
+            verb: "updated",
+            previous: userSample1,
+            data: {
+              id: 1,
+              fullName: "changed user name",
+            },
+            id: 1,
+          });
+        }
+      );
+
+      watchUsers()(dispatch, () => defaultState, null);
+
+      expect(dispatch).toBeCalledTimes(1);
+      expect(dispatch).toBeCalledWith({
+        type: updateUserBySubscription.type,
+        payload: {
+          result: 1,
+          entities: {
+            users: {
+              1: {
+                ...normalizedUserSample1,
+                fullName: "changed user name",
+              },
+            },
+          },
+        },
+      });
+    });
+
+    it("create user", () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.on as jest.Mock).mockImplementationOnce(
+        (url: string, cb: (...args: Array<any>) => any) => {
+          cb({
+            verb: "created",
+            data: userSample1,
+            id: 1,
+          });
+        }
+      );
+
+      watchUsers()(dispatch, () => defaultState, null);
+
+      expect(dispatch).toBeCalledTimes(1);
+      expect(dispatch).toBeCalledWith({
+        type: createUserBySubscription.type,
+        payload: {
+          result: 1,
+          entities: {
+            users: {
+              1: normalizedUserSample1,
+            },
+          },
+        },
       });
     });
   });

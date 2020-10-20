@@ -13,7 +13,7 @@ describe("SeeksList", () => {
   mountTest(SeeksList);
 
   describe("children components", () => {
-    it("contains GamePreviewsList", () => {
+    it("contains SeeksListItem", () => {
       const testRenderer = TestRenderer.create(<SeeksList />);
       const testInstance = testRenderer.root;
 

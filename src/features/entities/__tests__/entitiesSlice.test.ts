@@ -23,12 +23,15 @@ import {
   loginSuccess,
   registerSuccess,
 } from "../../current-user/currentUserSlice";
+import { getUsersListSuccess } from "../../users-list/usersListSlice";
 import {
   createGameBySubscription,
   updateGameBySubscription,
   createSeekBySubscription,
   updateSeekBySubscription,
   removeSeekBySubscription,
+  createUserBySubscription,
+  updateUserBySubscription,
 } from "../../data-subscription/dataSubscriptionSlice";
 import {
   emptyEntities,
@@ -490,5 +493,41 @@ describe("entitiesSlice reducer", () => {
         payload: 1,
       })
     ).toEqual(entitiesWithOneSeek);
+  });
+
+  it("should handle getUsersListSuccess", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: getUsersListSuccess.type,
+        payload: {
+          result: [1],
+          entities: entitiesPayloadSample,
+        },
+      })
+    ).toEqual(allEntitiesSample);
+  });
+
+  it("should handle createUserBySubscription", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: createUserBySubscription.type,
+        payload: {
+          result: 2,
+          entities: entitiesPayloadSample,
+        },
+      })
+    ).toEqual(allEntitiesSample);
+  });
+
+  it("should handle updateUserBySubscription", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: updateUserBySubscription.type,
+        payload: {
+          result: 2,
+          entities: entitiesPayloadSample,
+        },
+      })
+    ).toEqual(allEntitiesSample);
   });
 });
