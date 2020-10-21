@@ -2,22 +2,20 @@ import React, { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ChallengeAiModal } from "./ChallengeAiModal";
 import { RootState } from "../../app/rootReducer";
-import { hideChallengeAiModal } from "./challengeAiModalSlice";
+import { hideModal } from "../modal/modalSlice";
 
 const ChallengeAiModalContainer: FC<unknown> = () => {
-  const { isChallengeAiModalVisible } = useSelector(
-    (state: RootState) => state.challengeAiModal
+  const isModalVisible = useSelector(
+    (state: RootState) => state.modal.showModal === "challengeAi"
   );
 
   const dispatch = useDispatch();
 
   const handleHide = useCallback(() => {
-    dispatch(hideChallengeAiModal());
+    dispatch(hideModal());
   }, [dispatch]);
 
-  return (
-    <ChallengeAiModal show={isChallengeAiModalVisible} onHide={handleHide} />
-  );
+  return <ChallengeAiModal show={isModalVisible} onHide={handleHide} />;
 };
 
 export default ChallengeAiModalContainer;

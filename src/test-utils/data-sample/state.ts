@@ -11,16 +11,10 @@ export const defaultState: RootState = {
     isLoading: true,
     error: null,
   },
-  authModal: {
-    isAuthModalVisible: false,
-  },
-  challengeAiModal: {
-    isChallengeAiModalVisible: false,
-  },
   messages: [],
-  seekModal: {
-    isSeekModalVisible: false,
-    allowCloseSeekModal: true,
+  modal: {
+    showModal: null,
+    allowClose: true,
   },
   seeksList: {
     isLoading: true,

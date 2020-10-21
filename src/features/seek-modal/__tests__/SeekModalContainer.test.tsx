@@ -8,9 +8,9 @@ import {
 } from "../../../test-utils/data-sample/state";
 import SeekModalContainer from "../SeekModalContainer";
 import { SeekModal } from "../SeekModal";
-import { hideSeekModal } from "../seekModalSlice";
+import { hideModal } from "../../modal/modalSlice";
 
-jest.mock("../seekModalSlice");
+jest.mock("../../modal/modalSlice");
 
 describe("SeekModalContainer", () => {
   beforeEach(() => {
@@ -41,9 +41,9 @@ describe("SeekModalContainer", () => {
 
         const stateWithSeekModal = makeStateSample(
           {
-            seekModal: {
-              isSeekModalVisible: true,
-              allowCloseSeekModal: true,
+            modal: {
+              showModal: "seek",
+              allowClose: true,
             },
           },
           defaultState
@@ -68,9 +68,9 @@ describe("SeekModalContainer", () => {
 
         const stateWithSeekModal = makeStateSample(
           {
-            seekModal: {
-              isSeekModalVisible: true,
-              allowCloseSeekModal: false,
+            modal: {
+              showModal: "seek",
+              allowClose: false,
             },
           },
           defaultState
@@ -88,27 +88,27 @@ describe("SeekModalContainer", () => {
   });
 
   describe("dispatch() calls", () => {
-    it("should call dispatch(hideChallengeAiModal())", () => {
+    it("should call dispatch(hideModal())", () => {
       const dispatch = useDispatch<jest.Mock>();
-      const hideSeekModalReturnedValue = Symbol("hideChallengeAiModal");
+      const hideModalReturnedValue = Symbol("hideModal");
 
       const testRenderer = TestRenderer.create(<SeekModalContainer />);
       const testInstance = testRenderer.root;
 
       const seekModal = testInstance.findByType(SeekModal);
 
-      const hideSeekModalFn = (hideSeekModal as unknown) as jest.Mock;
-      hideSeekModalFn.mockClear();
-      hideSeekModalFn.mockReturnValue(hideSeekModalReturnedValue);
+      const hideModalFn = (hideModal as unknown) as jest.Mock;
+      hideModalFn.mockClear();
+      hideModalFn.mockReturnValue(hideModalReturnedValue);
 
       TestRenderer.act(() => {
         seekModal.props.onHide();
       });
 
-      expect(hideSeekModalFn).toBeCalledTimes(1);
-      expect(hideSeekModalFn).toBeCalledWith();
+      expect(hideModalFn).toBeCalledTimes(1);
+      expect(hideModalFn).toBeCalledWith();
 
-      expect(dispatch).toBeCalledWith(hideSeekModalReturnedValue);
+      expect(dispatch).toBeCalledWith(hideModalReturnedValue);
     });
   });
 });

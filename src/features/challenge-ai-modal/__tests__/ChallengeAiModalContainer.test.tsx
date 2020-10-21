@@ -8,9 +8,9 @@ import {
   defaultState,
   makeStateSample,
 } from "../../../test-utils/data-sample/state";
-import { hideChallengeAiModal } from "../challengeAiModalSlice";
+import { hideModal } from "../../modal/modalSlice";
 
-jest.mock("../challengeAiModalSlice");
+jest.mock("../../modal/modalSlice");
 
 describe("ChallengeAiModalContainer", () => {
   beforeEach(() => {
@@ -41,8 +41,9 @@ describe("ChallengeAiModalContainer", () => {
 
         const stateWithChallengeAiModal = makeStateSample(
           {
-            challengeAiModal: {
-              isChallengeAiModalVisible: true,
+            modal: {
+              showModal: "challengeAi",
+              allowClose: true,
             },
           },
           defaultState
@@ -60,27 +61,27 @@ describe("ChallengeAiModalContainer", () => {
   });
 
   describe("dispatch() calls", () => {
-    it("should call dispatch(hideChallengeAiModal())", () => {
+    it("should call dispatch(hideModal())", () => {
       const dispatch = useDispatch<jest.Mock>();
-      const hideChallengeAiModalReturnedValue = Symbol("hideChallengeAiModal");
+      const hideModalReturnedValue = Symbol("hideModal");
 
       const testRenderer = TestRenderer.create(<ChallengeAiModalContainer />);
       const testInstance = testRenderer.root;
 
       const challengeAiModal = testInstance.findByType(ChallengeAiModal);
 
-      const hideChallengeAiModalFn = (hideChallengeAiModal as unknown) as jest.Mock;
-      hideChallengeAiModalFn.mockClear();
-      hideChallengeAiModalFn.mockReturnValue(hideChallengeAiModalReturnedValue);
+      const hideModalFn = (hideModal as unknown) as jest.Mock;
+      hideModalFn.mockClear();
+      hideModalFn.mockReturnValue(hideModalReturnedValue);
 
       TestRenderer.act(() => {
         challengeAiModal.props.onHide();
       });
 
-      expect(hideChallengeAiModalFn).toBeCalledTimes(1);
-      expect(hideChallengeAiModalFn).toBeCalledWith();
+      expect(hideModalFn).toBeCalledTimes(1);
+      expect(hideModalFn).toBeCalledWith();
 
-      expect(dispatch).toBeCalledWith(hideChallengeAiModalReturnedValue);
+      expect(dispatch).toBeCalledWith(hideModalReturnedValue);
     });
   });
 });

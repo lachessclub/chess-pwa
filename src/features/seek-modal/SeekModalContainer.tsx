@@ -2,23 +2,25 @@ import React, { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SeekModal } from "./SeekModal";
 import { RootState } from "../../app/rootReducer";
-import { hideSeekModal } from "./seekModalSlice";
+import { hideModal } from "../modal/modalSlice";
 
 const SeekModalContainer: FC<unknown> = () => {
-  const { isSeekModalVisible, allowCloseSeekModal } = useSelector(
-    (state: RootState) => state.seekModal
+  const isModalVisible = useSelector(
+    (state: RootState) => state.modal.showModal === "seek"
   );
+
+  const allowClose = useSelector((state: RootState) => state.modal.allowClose);
 
   const dispatch = useDispatch();
 
   const handleHide = useCallback(() => {
-    dispatch(hideSeekModal());
+    dispatch(hideModal());
   }, [dispatch]);
 
   return (
     <SeekModal
-      allowClose={allowCloseSeekModal}
-      show={isSeekModalVisible}
+      allowClose={allowClose}
+      show={isModalVisible}
       onHide={handleHide}
     />
   );

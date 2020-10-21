@@ -13,10 +13,10 @@ import {
   userSample1,
 } from "../../../test-utils/data-sample/user";
 import { logout } from "../../current-user/currentUserSlice";
-import { showAuthModal } from "../../auth-modal/authModalSlice";
+import { showModal } from "../../modal/modalSlice";
 
 jest.mock("../../current-user/currentUserSlice");
-jest.mock("../../auth-modal/authModalSlice");
+jest.mock("../../modal/modalSlice");
 
 const stateWithAuthenticatedUser = makeStateSample({
   currentUser: {
@@ -94,27 +94,30 @@ describe("HeaderContainer", () => {
       expect(dispatch).toBeCalledWith(logoutReturnedValue);
     });
 
-    it("should call dispatch(showAuthModal())", () => {
+    it("should call dispatch(showModal())", () => {
       const dispatch = useDispatch<jest.Mock>();
-      const showAuthModalReturnedValue = Symbol("showAuthModal");
+      const showModalReturnedValue = Symbol("showModal");
 
       const testRenderer = TestRenderer.create(<HeaderContainer />);
       const testInstance = testRenderer.root;
 
       const header = testInstance.findByType(Header);
 
-      const showAuthModalFn = (showAuthModal as unknown) as jest.Mock;
-      showAuthModalFn.mockClear();
-      showAuthModalFn.mockReturnValue(showAuthModalReturnedValue);
+      const showModalFn = (showModal as unknown) as jest.Mock;
+      showModalFn.mockClear();
+      showModalFn.mockReturnValue(showModalReturnedValue);
 
       TestRenderer.act(() => {
         header.props.onShowAuthModal();
       });
 
-      expect(showAuthModalFn).toBeCalledTimes(1);
-      expect(showAuthModalFn).toBeCalledWith();
+      expect(showModalFn).toBeCalledTimes(1);
+      expect(showModalFn).toBeCalledWith({
+        name: "auth",
+        allowClose: true,
+      });
 
-      expect(dispatch).toBeCalledWith(showAuthModalReturnedValue);
+      expect(dispatch).toBeCalledWith(showModalReturnedValue);
     });
   });
 });

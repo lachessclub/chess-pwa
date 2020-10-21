@@ -9,9 +9,9 @@ import {
   makeStateSample,
 } from "../../../test-utils/data-sample/state";
 
-import { hideAuthModal } from "../authModalSlice";
+import { hideModal } from "../../modal/modalSlice";
 
-jest.mock("../authModalSlice");
+jest.mock("../../modal/modalSlice");
 
 describe("AuthModalContainer", () => {
   beforeEach(() => {
@@ -42,8 +42,9 @@ describe("AuthModalContainer", () => {
 
         const stateWithAuthModal = makeStateSample(
           {
-            authModal: {
-              isAuthModalVisible: true,
+            modal: {
+              showModal: "auth",
+              allowClose: true,
             },
           },
           defaultState
@@ -61,27 +62,27 @@ describe("AuthModalContainer", () => {
   });
 
   describe("dispatch() calls", () => {
-    it("should call dispatch(hideAuthModal())", () => {
+    it("should call dispatch(hideModal())", () => {
       const dispatch = useDispatch<jest.Mock>();
-      const hideAuthModalReturnedValue = Symbol("hideAuthModal");
+      const hideModalReturnedValue = Symbol("hideModal");
 
       const testRenderer = TestRenderer.create(<AuthModalContainer />);
       const testInstance = testRenderer.root;
 
-      const challengeAiModal = testInstance.findByType(AuthModal);
+      const authModal = testInstance.findByType(AuthModal);
 
-      const hideAuthModalFn = (hideAuthModal as unknown) as jest.Mock;
-      hideAuthModalFn.mockClear();
-      hideAuthModalFn.mockReturnValue(hideAuthModalReturnedValue);
+      const hideModalFn = (hideModal as unknown) as jest.Mock;
+      hideModalFn.mockClear();
+      hideModalFn.mockReturnValue(hideModalReturnedValue);
 
       TestRenderer.act(() => {
-        challengeAiModal.props.onHide();
+        authModal.props.onHide();
       });
 
-      expect(hideAuthModalFn).toBeCalledTimes(1);
-      expect(hideAuthModalFn).toBeCalledWith();
+      expect(hideModalFn).toBeCalledTimes(1);
+      expect(hideModalFn).toBeCalledWith();
 
-      expect(dispatch).toBeCalledWith(hideAuthModalReturnedValue);
+      expect(dispatch).toBeCalledWith(hideModalReturnedValue);
     });
   });
 });

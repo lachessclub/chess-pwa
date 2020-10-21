@@ -6,7 +6,7 @@ import User from "../../interfaces/User";
 import { RootState } from "../../app/rootReducer";
 import userSchema from "../../normalizr/schemas/userSchema";
 import { logout } from "../current-user/currentUserSlice";
-import { showAuthModal } from "../auth-modal/authModalSlice";
+import { showModal } from "../modal/modalSlice";
 
 const HeaderContainer: FC<unknown> = () => {
   const currentUser: User | null = useSelector((state: RootState) => {
@@ -23,7 +23,12 @@ const HeaderContainer: FC<unknown> = () => {
   }, [dispatch]);
 
   const handleShowAuthModal = useCallback(() => {
-    dispatch(showAuthModal());
+    dispatch(
+      showModal({
+        name: "auth",
+        allowClose: true,
+      })
+    );
   }, [dispatch]);
 
   return (

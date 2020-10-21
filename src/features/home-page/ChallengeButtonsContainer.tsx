@@ -1,18 +1,27 @@
 import React, { FC, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import { ChallengeButtons } from "./ChallengeButtons";
-import { showChallengeAiModal } from "../challenge-ai-modal/challengeAiModalSlice";
-import { showSeekModal } from "../seek-modal/seekModalSlice";
+import { showModal } from "../modal/modalSlice";
 
 const ChallengeButtonsContainer: FC<unknown> = () => {
   const dispatch = useDispatch();
 
   const handleChallengeAi = useCallback(() => {
-    dispatch(showChallengeAiModal());
+    dispatch(
+      showModal({
+        name: "challengeAi",
+        allowClose: true,
+      })
+    );
   }, [dispatch]);
 
   const handleCreateGame = useCallback(() => {
-    dispatch(showSeekModal());
+    dispatch(
+      showModal({
+        name: "seek",
+        allowClose: true,
+      })
+    );
   }, [dispatch]);
 
   return (
