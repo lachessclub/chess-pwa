@@ -1,7 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React, { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Move } from "ii-react-chessboard";
 import { denormalize } from "normalizr";
+import {
+  useDeepEqualSelector,
+  useShallowEqualSelector,
+} from "ii-react-libraries";
 import { RootState } from "../../app/rootReducer";
 import gameSchema from "../../normalizr/schemas/gameSchema";
 import { SingleGameBoard } from "./SingleGameBoard";
@@ -18,16 +24,29 @@ export interface SingleGameBoardProps {
 export const SingleGameBoardContainer: FC<SingleGameBoardProps> = ({ id }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const game = useSelector((state: RootState) =>
-    denormalize(id, gameSchema, state.entities)
+  const game = useDeepEqualSelector(
+    (state: RootState) => denormalize(id, gameSchema, state.entities),
+    (_value: any, _other: any, indexOrKey: any) => {
+      // ignore time to improve performance
+      if (indexOrKey === "wtime" || indexOrKey === "btime") {
+        return true;
+      }
+      return undefined;
+    }
   );
 
-  const currentUser: User | undefined = useSelector((state: RootState) => {
-    if (state.currentUser.userId) {
-      return denormalize(state.currentUser.userId, userSchema, state.entities);
+  const currentUser: User | undefined = useShallowEqualSelector(
+    (state: RootState) => {
+      if (state.currentUser.userId) {
+        return denormalize(
+          state.currentUser.userId,
+          userSchema,
+          state.entities
+        );
+      }
+      return undefined;
     }
-    return undefined;
-  });
+  );
 
   const singleGameItemState =
     useSelector((state: RootState) => state.singleGame[id]) ||

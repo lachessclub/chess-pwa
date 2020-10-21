@@ -9145,6 +9145,13 @@ ii-react-libraries@^1.0.0:
   dependencies:
     lodash "^4.17.15"
 
+ii-react-libraries@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/ii-react-libraries/-/ii-react-libraries-1.2.1.tgz#ce635ca89111e9f271d510d231517236f558a4ed"
+  integrity sha512-ByTeyYGSb7eAVNBB/scN0fdDpES5CipOoZbCuqnmH7gP1rXUW46zUPS2wAj7U7aBMesPIsEe+a4jHv5gCRD4Rw==
+  dependencies:
+    lodash "^4.17.19"
+
 immer@1.10.0:
   version "1.10.0"
   resolved "https://registry.yarnpkg.com/immer/-/immer-1.10.0.tgz#bad67605ba9c810275d91e1c2a47d4582e98286d"
