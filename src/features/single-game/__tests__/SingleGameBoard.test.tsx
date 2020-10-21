@@ -173,6 +173,17 @@ describe("SingleGameBoard", () => {
         expect(board.props.draggable).toBeTruthy();
       });
 
+      it("premovable", () => {
+        const testRenderer = TestRenderer.create(
+          <SingleGameBoard game={gameSample1} />
+        );
+        const testInstance = testRenderer.root;
+
+        const board = testInstance.findByType(Board);
+
+        expect(board.props.premovable).toBeTruthy();
+      });
+
       it("turnColor", () => {
         const blackTurnGameSample = makeGameSample({
           turn: "black",
@@ -429,4 +440,6 @@ describe("SingleGameBoard", () => {
       });
     });
   });
+
+  // @todo. test premoves
 });

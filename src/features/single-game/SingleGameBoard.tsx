@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef } from "react";
+import React, { FC, useCallback, useEffect, useRef } from "react";
 import {
   Board,
   getValidMoves,
@@ -38,6 +38,8 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
   isLoading = false,
   error = null,
 }) => {
+  const premove = useRef<[Move, () => void, () => void] | null>(null);
+
   // @todo. test useEffect
   const lastStatus = useRef<GameStatus | null>(null);
   useEffect(() => {
@@ -47,6 +49,10 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
 
     if (lastStatus.current === "started" && game.status !== "started") {
       playEndGameSound();
+
+      if (premove.current) {
+        premove.current[2](); // cancelPremove()
+      }
     }
     lastStatus.current = game.status;
   }, [game, lastStatus]);
@@ -76,6 +82,46 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
 
     lastSelectedMoveIndex.current = selectedMoveIndex;
   }, [game, lastSelectedMoveIndex, movesHistory.length, rewindToMoveIndex]);
+
+  // @todo. test useEffect
+  const lastMovesQnt = useRef<number | null>(null);
+  useEffect(() => {
+    if (!game) {
+      return;
+    }
+
+    const movesQnt = movesHistory.length;
+
+    if (
+      lastMovesQnt.current !== null &&
+      movesQnt === lastMovesQnt.current + 1 &&
+      rewindToMoveIndex === null &&
+      premove.current
+    ) {
+      premove.current[1](); // playPremove()
+      premove.current = null;
+    }
+
+    lastMovesQnt.current = movesQnt;
+  }, [game, premove, lastMovesQnt, movesHistory.length, rewindToMoveIndex]);
+
+  // @todo. test useEffect
+  useEffect(() => {
+    if (rewindToMoveIndex !== null && premove.current) {
+      premove.current[2](); // cancelPremove()
+    }
+  }, [premove, rewindToMoveIndex]);
+
+  const handleSetPremove = useCallback(
+    (move: Move, playPremove: () => void, cancelPremove: () => void) => {
+      premove.current = [move, playPremove, cancelPremove];
+    },
+    [premove]
+  );
+
+  const handleUnsetPremove = useCallback(() => {
+    premove.current = null;
+  }, [premove]);
 
   let boardContent = null;
 
@@ -147,8 +193,11 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
           lastMoveSquares={lastMoveSquares}
           movableColor={movableColor}
           onMove={onMove}
+          onSetPremove={handleSetPremove}
+          onUnsetPremove={handleUnsetPremove}
           orientation={orientation}
           position={fen}
+          premovable
           turnColor={turnColor}
           validMoves={validMoves}
           viewOnly={viewOnly}
