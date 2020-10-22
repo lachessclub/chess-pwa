@@ -21,8 +21,12 @@ export const { oneSecondPassed } = gameClockSlice.actions;
 
 export default gameClockSlice.reducer;
 
-export const startGameClock = (): AppThunk<void> => (dispatch) => {
-  setInterval(() => {
+export const startGameClock = (): AppThunk<() => void> => (dispatch) => {
+  const intervalId = setInterval(() => {
     dispatch(oneSecondPassed());
   }, 1000);
+
+  return () => {
+    clearInterval(intervalId);
+  };
 };

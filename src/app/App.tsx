@@ -18,19 +18,24 @@ import { fetchGames } from "../features/games-list/gamesListSlice";
 import { fetchSeeks } from "../features/seeks-list/seeksListSlice";
 import MessagesContainer from "../features/messages/MessagesContainer";
 import { fetchUsers } from "../features/users-list/usersListSlice";
+import { AppDispatch } from "./store";
 
 const App: FC = () => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     dispatch(fetchCurrentUser());
+    const stopGameClock = dispatch(startGameClock());
     dispatch(watchGames());
     dispatch(watchSeeks());
     dispatch(watchUsers());
-    dispatch(startGameClock());
     dispatch(fetchGames());
     dispatch(fetchUsers());
     dispatch(fetchSeeks());
+
+    return () => {
+      stopGameClock();
+    };
   }, [dispatch]);
 
   return (

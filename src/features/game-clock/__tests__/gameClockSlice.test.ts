@@ -31,20 +31,26 @@ describe("gameClockSlice reducer", () => {
 
     const result = startGameClock()(dispatch, () => defaultState, null);
 
-    expect(result).toBeUndefined();
+    expect(result).toBeInstanceOf(Function);
 
     expect(dispatch).toBeCalledTimes(0);
 
     jest.advanceTimersByTime(1000);
     expect(dispatch).toBeCalledTimes(1);
-    expect(dispatch).toHaveBeenNthCalledWith(1, {
+    expect(dispatch).toBeCalledWith({
       type: oneSecondPassed.type,
     });
+    dispatch.mockClear();
 
     jest.advanceTimersByTime(1000);
-    expect(dispatch).toBeCalledTimes(2);
-    expect(dispatch).toHaveBeenNthCalledWith(2, {
+    expect(dispatch).toBeCalledTimes(1);
+    expect(dispatch).toBeCalledWith({
       type: oneSecondPassed.type,
     });
+    dispatch.mockClear();
+
+    result(); // stop timer
+    jest.advanceTimersByTime(1000);
+    expect(dispatch).toBeCalledTimes(0);
   });
 });
