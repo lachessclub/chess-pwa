@@ -69,14 +69,15 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
     }
   }, [game, rewindToMoveIndex]);
 
-  let movesHistory: Move[] = [];
-
   // @todo. test useEffect
   const lastSelectedMoveIndex = useRef<number | null>(null);
   useEffect(() => {
     if (!game) {
       return;
     }
+
+    const chess: ChessInstance = makeChessInstance(game);
+    const movesHistory = chess.history();
 
     if (lastSelectedMoveIndex.current === null && movesHistory.length === 0) {
       playStartGameSound();
@@ -93,7 +94,7 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
     }
 
     lastSelectedMoveIndex.current = selectedMoveIndex;
-  }, [game, lastSelectedMoveIndex, movesHistory.length, rewindToMoveIndex]);
+  }, [game, lastSelectedMoveIndex, rewindToMoveIndex]);
 
   // play premove
   // @todo. test useEffect
@@ -102,6 +103,9 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
     if (!game) {
       return;
     }
+
+    const chess: ChessInstance = makeChessInstance(game);
+    const movesHistory = chess.history();
 
     const movesQnt = movesHistory.length;
 
@@ -112,7 +116,6 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
       game.status === "started" &&
       rewindToMoveIndex === null
     ) {
-      const chess = makeChessInstance(game);
       if (isValidMove(chess, premove.current[0])) {
         premove.current[1](); // playPremove()
         premove.current = null;
@@ -122,7 +125,7 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
     }
 
     lastMovesQnt.current = movesQnt;
-  }, [game, lastMovesQnt, movesHistory.length, rewindToMoveIndex]);
+  }, [game, lastMovesQnt, rewindToMoveIndex]);
 
   const handleSetPremove = useCallback(
     (move: Move, playPremove: () => void, cancelPremove: () => void) => {
@@ -182,7 +185,7 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
         orientation === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
     }
 
-    movesHistory = chessWithAllMoves.history({ verbose: true });
+    const movesHistory = chessWithAllMoves.history({ verbose: true });
 
     let lastMoveSquares: string[] | undefined;
     if (rewindToMoveIndex === null) {
