@@ -2,6 +2,7 @@ import React, { FC, useCallback, useEffect, useRef } from "react";
 import {
   Board,
   getValidMoves,
+  isValidMove,
   Move,
   PieceColor,
   ValidMoves,
@@ -49,13 +50,24 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
 
     if (lastStatus.current === "started" && game.status !== "started") {
       playEndGameSound();
-
-      if (premove.current) {
-        premove.current[2](); // cancelPremove()
-      }
     }
     lastStatus.current = game.status;
   }, [game, lastStatus]);
+
+  // cancel premove if game is over or if we rewind moves
+  // @todo. test useEffect
+  useEffect(() => {
+    if (!game) {
+      return;
+    }
+
+    if (
+      premove.current &&
+      (game.status !== "started" || rewindToMoveIndex !== null)
+    ) {
+      premove.current[2](); // cancelPremove()
+    }
+  }, [game, rewindToMoveIndex]);
 
   let movesHistory: Move[] = [];
 
@@ -83,6 +95,7 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
     lastSelectedMoveIndex.current = selectedMoveIndex;
   }, [game, lastSelectedMoveIndex, movesHistory.length, rewindToMoveIndex]);
 
+  // play premove
   // @todo. test useEffect
   const lastMovesQnt = useRef<number | null>(null);
   useEffect(() => {
@@ -93,24 +106,23 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
     const movesQnt = movesHistory.length;
 
     if (
+      premove.current &&
       lastMovesQnt.current !== null &&
       movesQnt === lastMovesQnt.current + 1 &&
-      rewindToMoveIndex === null &&
-      premove.current
+      game.status === "started" &&
+      rewindToMoveIndex === null
     ) {
-      premove.current[1](); // playPremove()
-      premove.current = null;
+      const chess = makeChessInstance(game);
+      if (isValidMove(chess, premove.current[0])) {
+        premove.current[1](); // playPremove()
+        premove.current = null;
+      } else {
+        premove.current[2](); // cancelPremove()
+      }
     }
 
     lastMovesQnt.current = movesQnt;
-  }, [game, premove, lastMovesQnt, movesHistory.length, rewindToMoveIndex]);
-
-  // @todo. test useEffect
-  useEffect(() => {
-    if (rewindToMoveIndex !== null && premove.current) {
-      premove.current[2](); // cancelPremove()
-    }
-  }, [premove, rewindToMoveIndex]);
+  }, [game, lastMovesQnt, movesHistory.length, rewindToMoveIndex]);
 
   const handleSetPremove = useCallback(
     (move: Move, playPremove: () => void, cancelPremove: () => void) => {
