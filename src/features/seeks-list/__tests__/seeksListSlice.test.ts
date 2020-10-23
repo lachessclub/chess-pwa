@@ -137,7 +137,7 @@ describe("seeksListSlice reducer", () => {
     ).toEqual({
       isLoading: true,
       error: "error text",
-      items: [1, 2, 3],
+      items: [3, 1, 2],
     });
   });
 
@@ -181,7 +181,7 @@ describe("seeksListSlice reducer", () => {
     ).toEqual({
       isLoading: true,
       error: "error text",
-      items: [1, 2, 3],
+      items: [3, 1, 2],
     });
   });
 
@@ -228,7 +228,7 @@ describe("seeksListSlice reducer", () => {
       const dispatch = jest.fn();
 
       (ioClient.socket.get as jest.Mock).mockImplementationOnce(
-        (url: string, cb: RequestCallback) => {
+        (url: string, data: unknown, cb: RequestCallback) => {
           cb([seekSample1], {
             body: [seekSample1],
             statusCode: 200,
@@ -264,7 +264,7 @@ describe("seeksListSlice reducer", () => {
       const dispatch = jest.fn();
 
       (ioClient.socket.get as jest.Mock).mockImplementationOnce(
-        (url: string, cb: RequestCallback) => {
+        (url: string, data: unknown, cb: RequestCallback) => {
           cb("internal server error", {
             body: "internal server error",
             statusCode: 500,

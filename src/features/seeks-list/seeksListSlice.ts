@@ -57,7 +57,7 @@ const seeksListSlice = createSlice({
       action: PayloadAction<NormalizedData<number>>
     ) => {
       if (!state.items.includes(action.payload.result)) {
-        state.items.push(action.payload.result);
+        state.items.unshift(action.payload.result);
       }
     },
     [updateSeekBySubscription.type]: (
@@ -65,7 +65,7 @@ const seeksListSlice = createSlice({
       action: PayloadAction<NormalizedData<number>>
     ) => {
       if (!state.items.includes(action.payload.result)) {
-        state.items.push(action.payload.result);
+        state.items.unshift(action.payload.result);
       }
     },
     [removeSeekBySubscription.type]: (
@@ -89,16 +89,22 @@ export const fetchSeeks = (): AppThunk<Promise<Seek[]>> => (dispatch) => {
   dispatch(getSeeksListRequest());
 
   return new Promise((resolve, reject) => {
-    ioClient.socket.get("/seek", (body: unknown, jwr: JWR) => {
-      if (jwr.statusCode === 200) {
-        const normalizedGames = normalize(body as Seek[], [seekSchema]);
-        dispatch(getSeeksListSuccess(normalizedGames));
+    ioClient.socket.get(
+      "/seek",
+      {
+        sort: "createdAt DESC",
+      },
+      (body: unknown, jwr: JWR) => {
+        if (jwr.statusCode === 200) {
+          const normalizedGames = normalize(body as Seek[], [seekSchema]);
+          dispatch(getSeeksListSuccess(normalizedGames));
 
-        resolve(body as Seek[]);
-      } else {
-        dispatch(getSeeksListError(getErrorMessageFromJWR(jwr)));
-        reject(jwr);
+          resolve(body as Seek[]);
+        } else {
+          dispatch(getSeeksListError(getErrorMessageFromJWR(jwr)));
+          reject(jwr);
+        }
       }
-    });
+    );
   });
 };
