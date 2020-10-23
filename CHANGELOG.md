@@ -5,6 +5,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [1.1.0](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.0.0...v1.1.0) (2020-10-23)
+
+
+### Features
+
+* CHESSPWA-71 sort seeks by creation date descending ([#89](https://github.com/ildar-icoosoft/chess-pwa/issues/89)) ([4ca0194](https://github.com/ildar-icoosoft/chess-pwa/commit/4ca0194d12efeb90f65fcba208d465cb6e7fb65f))
+
 # 1.0.0 (2020-10-23)
 
 
