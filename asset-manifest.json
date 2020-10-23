@@ -1,20 +1,21 @@
 {
   "files": {
-    "main.css": "/chess-pwa/static/css/main.16f3287f.chunk.css",
-    "main.js": "/chess-pwa/static/js/main.c0520f73.chunk.js",
-    "main.js.map": "/chess-pwa/static/js/main.c0520f73.chunk.js.map",
+    "main.css": "/chess-pwa/static/css/main.b0e0ee56.chunk.css",
+    "main.js": "/chess-pwa/static/js/main.2d4f884f.chunk.js",
+    "main.js.map": "/chess-pwa/static/js/main.2d4f884f.chunk.js.map",
     "runtime-main.js": "/chess-pwa/static/js/runtime-main.cbb0f1fa.js",
     "runtime-main.js.map": "/chess-pwa/static/js/runtime-main.cbb0f1fa.js.map",
     "static/css/2.11829350.chunk.css": "/chess-pwa/static/css/2.11829350.chunk.css",
-    "static/js/2.8bea4525.chunk.js": "/chess-pwa/static/js/2.8bea4525.chunk.js",
-    "static/js/2.8bea4525.chunk.js.map": "/chess-pwa/static/js/2.8bea4525.chunk.js.map",
+    "static/js/2.0e9599b4.chunk.js": "/chess-pwa/static/js/2.0e9599b4.chunk.js",
+    "static/js/2.0e9599b4.chunk.js.map": "/chess-pwa/static/js/2.0e9599b4.chunk.js.map",
     "index.html": "/chess-pwa/index.html",
-    "precache-manifest.b10cc2095ac5a629fec8b1c55b8bbc0b.js": "/chess-pwa/precache-manifest.b10cc2095ac5a629fec8b1c55b8bbc0b.js",
+    "precache-manifest.337ed9aba44b273a34c55e352dcec02f.js": "/chess-pwa/precache-manifest.337ed9aba44b273a34c55e352dcec02f.js",
     "service-worker.js": "/chess-pwa/service-worker.js",
     "static/css/2.11829350.chunk.css.map": "/chess-pwa/static/css/2.11829350.chunk.css.map",
-    "static/css/main.16f3287f.chunk.css.map": "/chess-pwa/static/css/main.16f3287f.chunk.css.map",
-    "static/js/2.8bea4525.chunk.js.LICENSE.txt": "/chess-pwa/static/js/2.8bea4525.chunk.js.LICENSE.txt",
+    "static/css/main.b0e0ee56.chunk.css.map": "/chess-pwa/static/css/main.b0e0ee56.chunk.css.map",
+    "static/js/2.0e9599b4.chunk.js.LICENSE.txt": "/chess-pwa/static/js/2.0e9599b4.chunk.js.LICENSE.txt",
     "static/media/black.f1ae6ff6.svg": "/chess-pwa/static/media/black.f1ae6ff6.svg",
+    "static/media/PromotionChoiceModal.module.scss": "/chess-pwa/static/media/white_rook.ffc4a1b8.svg",
     "static/media/offline.8ce2bca1.svg": "/chess-pwa/static/media/offline.8ce2bca1.svg",
     "static/media/online.5fbf667c.svg": "/chess-pwa/static/media/online.5fbf667c.svg",
     "static/media/random.668e615f.svg": "/chess-pwa/static/media/random.668e615f.svg",
@@ -23,8 +24,8 @@
   "entrypoints": [
     "static/js/runtime-main.cbb0f1fa.js",
     "static/css/2.11829350.chunk.css",
-    "static/js/2.8bea4525.chunk.js",
-    "static/css/main.16f3287f.chunk.css",
-    "static/js/main.c0520f73.chunk.js"
+    "static/js/2.0e9599b4.chunk.js",
+    "static/css/main.b0e0ee56.chunk.css",
+    "static/js/main.2d4f884f.chunk.js"
   ]
 }
