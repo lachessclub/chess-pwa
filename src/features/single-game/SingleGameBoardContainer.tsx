@@ -2,7 +2,7 @@
 
 import React, { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Move } from "ii-react-chessboard";
+import { ShortMove } from "chess.js";
 import { denormalize } from "normalizr";
 import {
   useDeepEqualSelector,
@@ -53,8 +53,8 @@ export const SingleGameBoardContainer: FC<SingleGameBoardProps> = ({ id }) => {
     defaultSingleGameItemState;
 
   const handleMove = useCallback(
-    (move: Move) => {
-      dispatch(makeMove(id, `${move.from}${move.to}`));
+    (move: ShortMove) => {
+      dispatch(makeMove(id, `${move.from}${move.to}${move.promotion || ""}`));
     },
     [dispatch, id]
   );

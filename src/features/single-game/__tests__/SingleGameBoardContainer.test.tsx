@@ -283,5 +283,34 @@ describe("SingleGameBoardContainer", () => {
 
       expect(dispatch).toBeCalledWith(makeMoveReturnedValue);
     });
+
+    it("should call dispatch(makeMove()) promotion", () => {
+      const dispatch = useDispatch<jest.Mock>();
+      const makeMoveReturnedValue = Symbol("makeMove");
+
+      const testRenderer = TestRenderer.create(
+        <SingleGameBoardContainer id={1} />
+      );
+      const testInstance = testRenderer.root;
+
+      const singleGameBoard = testInstance.findByType(SingleGameBoard);
+
+      const makeMoveFn = makeMove as jest.Mock;
+      makeMoveFn.mockClear();
+      makeMoveFn.mockReturnValue(makeMoveReturnedValue);
+
+      TestRenderer.act(() => {
+        singleGameBoard.props.onMove({
+          from: "e7",
+          to: "e8",
+          promotion: "r",
+        });
+      });
+
+      expect(makeMoveFn).toBeCalledTimes(1);
+      expect(makeMoveFn).toBeCalledWith(1, "e7e8r");
+
+      expect(dispatch).toBeCalledWith(makeMoveReturnedValue);
+    });
   });
 });

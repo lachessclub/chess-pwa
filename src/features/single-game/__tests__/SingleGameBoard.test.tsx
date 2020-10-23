@@ -11,6 +11,10 @@ import {
 import { SingleGameBoard } from "../SingleGameBoard";
 import { userSample1 } from "../../../test-utils/data-sample/user";
 import { ContentLoadingStatus } from "../../../components/ContentLoadingStatus";
+import { PromotionChoiceModal } from "../PromotionChoiceModal";
+import { isPromotionMove } from "../../../utils/chess";
+
+jest.mock("../../../utils/chess");
 
 describe("SingleGameBoard", () => {
   describe("children components", () => {
@@ -30,6 +34,17 @@ describe("SingleGameBoard", () => {
       const testInstance = testRenderer.root;
 
       expect(testInstance.findAllByType(ContentLoadingStatus).length).toBe(1);
+    });
+
+    it("contains PromotionChoiceModal", () => {
+      const testRenderer = TestRenderer.create(<SingleGameBoard />);
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(PromotionChoiceModal).length).toBe(0);
+
+      testRenderer.update(<SingleGameBoard game={gameSample1} />);
+
+      expect(testInstance.findAllByType(PromotionChoiceModal).length).toBe(1);
     });
   });
 
@@ -78,6 +93,47 @@ describe("SingleGameBoard", () => {
         testRenderer.update(<SingleGameBoard game={gameSample1} />);
 
         expect(contentLoadingStatus.props.isEmpty).toBeFalsy();
+      });
+    });
+
+    describe("PromotionChoiceModal", () => {
+      describe("show", () => {
+        it("true", () => {
+          (isPromotionMove as jest.Mock).mockReturnValueOnce(true);
+
+          const onMove = jest.fn();
+
+          const testInstance = TestRenderer.create(
+            <SingleGameBoard game={gameSample1} onMove={onMove} />
+          ).root;
+
+          const board: TestRenderer.ReactTestInstance = testInstance.findByType(
+            Board
+          );
+
+          const promotionChoiceModal = testInstance.findByType(
+            PromotionChoiceModal
+          );
+
+          expect(promotionChoiceModal.props.show).toBeFalsy();
+
+          TestRenderer.act(() => {
+            board.props.onMove({
+              from: "e2",
+              to: "e4",
+            });
+          });
+
+          expect(onMove).toBeCalledTimes(0);
+
+          expect(promotionChoiceModal.props.show).toBeTruthy();
+
+          TestRenderer.act(() => {
+            promotionChoiceModal.props.onPromotion("b");
+          });
+
+          expect(promotionChoiceModal.props.show).toBeFalsy();
+        });
       });
     });
 
@@ -424,19 +480,73 @@ describe("SingleGameBoard", () => {
         );
         expect(board.props.lastMoveSquares).toEqual(["g1", "f3"]);
       });
+    });
+  });
 
-      it("onMove", () => {
-        const onMove = jest.fn();
+  describe("Events", () => {
+    it("onMove", () => {
+      (isPromotionMove as jest.Mock).mockReturnValueOnce(false);
 
-        const testInstance = TestRenderer.create(
-          <SingleGameBoard game={gameSample1} onMove={onMove} />
-        ).root;
+      const onMove = jest.fn();
 
-        const board: TestRenderer.ReactTestInstance = testInstance.findByType(
-          Board
-        );
+      const testInstance = TestRenderer.create(
+        <SingleGameBoard game={gameSample1} onMove={onMove} />
+      ).root;
 
-        expect(board.props.onMove).toBe(onMove);
+      const board: TestRenderer.ReactTestInstance = testInstance.findByType(
+        Board
+      );
+
+      board.props.onMove({
+        from: "e2",
+        to: "e4",
+      });
+
+      expect(onMove).toBeCalledTimes(1);
+      expect(onMove).toBeCalledWith({
+        from: "e2",
+        to: "e4",
+      });
+    });
+
+    it("onMove (with promotion)", () => {
+      (isPromotionMove as jest.Mock).mockReturnValueOnce(true);
+
+      const initialGameSample = makeGameSample({
+        initialFen: "startpos",
+        moves: "",
+      });
+
+      const onMove = jest.fn();
+
+      const testInstance = TestRenderer.create(
+        <SingleGameBoard game={initialGameSample} onMove={onMove} />
+      ).root;
+
+      const board: TestRenderer.ReactTestInstance = testInstance.findByType(
+        Board
+      );
+
+      const promotionChoiceModal = testInstance.findByType(
+        PromotionChoiceModal
+      );
+
+      TestRenderer.act(() => {
+        board.props.onMove({
+          from: "e2",
+          to: "e4",
+        });
+      });
+
+      TestRenderer.act(() => {
+        promotionChoiceModal.props.onPromotion("b");
+      });
+
+      expect(onMove).toBeCalledTimes(1);
+      expect(onMove).toBeCalledWith({
+        from: "e2",
+        to: "e4",
+        promotion: "b",
       });
     });
   });
