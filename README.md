@@ -1,6 +1,18 @@
 <h1 align="center">Chess PWA</h1>
 
-[![codecov](https://codecov.io/gh/ildar-icoosoft/chess-pwa/branch/master/graph/badge.svg)](https://codecov.io/gh/ildar-icoosoft/chess-pwa)
+<div align="center">
+
+Renders a chess board using React
+
+![CI](https://github.com/ildar-icoosoft/chess-pwa/workflows/CI/badge.svg)
+![GH-Pages](https://github.com/ildar-icoosoft/chess-pwa/workflows/GH-Pages/badge.svg)
+![Semantic Release](https://github.com/ildar-icoosoft/chess-pwa/workflows/Semantic%20Release/badge.svg)
+[![codecov][codecov-image]][codecov-url]
+
+[codecov-image]: https://codecov.io/gh/ildar-icoosoft/chess-pwa/branch/master/graph/badge.svg
+[codecov-url]: https://codecov.io/gh/ildar-icoosoft/chess-pwa
+
+</div>
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
