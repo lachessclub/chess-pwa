@@ -6,6 +6,7 @@ export interface ContentLoadingStatusProps {
   isEmpty?: boolean;
   isLoading?: boolean;
   error?: string | null;
+  showEmptyContentMessage?: boolean;
 }
 
 const defaultEmptyContentMessage = "content is empty";
@@ -15,8 +16,9 @@ export const ContentLoadingStatus: FC<ContentLoadingStatusProps> = ({
   isEmpty = false,
   isLoading = false,
   error = null,
+  showEmptyContentMessage = true,
 }) => {
-  if (isEmpty && !isLoading && !error) {
+  if (isEmpty && !isLoading && !error && showEmptyContentMessage) {
     return (
       <div
         className="alert alert-warning text-center"

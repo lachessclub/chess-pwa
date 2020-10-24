@@ -4,6 +4,7 @@ export const emptyEntities: EntitiesState = {
   users: {},
   seeks: {},
   games: {},
+  chatMessages: {},
 };
 
 export const makeEntitiesSample = (

@@ -4,6 +4,10 @@ import entitiesReducer, { EntitiesState } from "../entitiesSlice";
 import { getGamesListSuccess } from "../../games-list/gamesListSlice";
 import { getSeeksListSuccess } from "../../seeks-list/seeksListSlice";
 import {
+  getChatMessagesListSuccess,
+  createChatMessageSuccess,
+} from "../../chat/chatSlice";
+import {
   abortGameSuccess,
   getSingleGameSuccess,
   resignGameSuccess,
@@ -32,6 +36,7 @@ import {
   removeSeekBySubscription,
   createUserBySubscription,
   updateUserBySubscription,
+  createChatMessageBySubscription,
 } from "../../data-subscription/dataSubscriptionSlice";
 import {
   emptyEntities,
@@ -49,6 +54,10 @@ import {
   normalizedGameSample1,
   normalizedGameSample2,
 } from "../../../test-utils/data-sample/game";
+import {
+  normalizedChatMessageSample1,
+  normalizedChatMessageSample2,
+} from "../../../test-utils/data-sample/chat-message";
 
 jest.mock("../../../services/ioClient");
 
@@ -62,6 +71,9 @@ const entitiesSample = makeEntitiesSample({
   games: {
     1: normalizedGameSample1,
   },
+  chatMessages: {
+    1: normalizedChatMessageSample1,
+  },
 });
 
 const entitiesPayloadSample = makeEntitiesSample({
@@ -73,6 +85,9 @@ const entitiesPayloadSample = makeEntitiesSample({
   },
   games: {
     2: normalizedGameSample2,
+  },
+  chatMessages: {
+    2: normalizedChatMessageSample2,
   },
 });
 
@@ -88,6 +103,10 @@ const allEntitiesSample = makeEntitiesSample({
   games: {
     1: normalizedGameSample1,
     2: normalizedGameSample2,
+  },
+  chatMessages: {
+    1: normalizedChatMessageSample1,
+    2: normalizedChatMessageSample2,
   },
 });
 
@@ -526,6 +545,45 @@ describe("entitiesSlice reducer", () => {
         payload: {
           result: 2,
           entities: entitiesPayloadSample,
+        },
+      })
+    ).toEqual(allEntitiesSample);
+  });
+
+  it("should handle createChatMessageSuccess", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: createChatMessageSuccess.type,
+        payload: {
+          result: 2,
+          entities: entitiesPayloadSample,
+        },
+      })
+    ).toEqual(allEntitiesSample);
+  });
+
+  it("should handle createChatMessageBySubscription", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: createChatMessageBySubscription.type,
+        payload: {
+          result: 2,
+          entities: entitiesPayloadSample,
+        },
+      })
+    ).toEqual(allEntitiesSample);
+  });
+
+  it("should handle getChatMessagesListSuccess", () => {
+    expect(
+      entitiesReducer(entitiesSample, {
+        type: getChatMessagesListSuccess.type,
+        payload: {
+          gameId: 2,
+          normalizedChatMessages: {
+            result: [2],
+            entities: entitiesPayloadSample,
+          },
         },
       })
     ).toEqual(allEntitiesSample);

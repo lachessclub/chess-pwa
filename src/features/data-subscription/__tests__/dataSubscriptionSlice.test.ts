@@ -8,9 +8,11 @@ import dataSubscriptionReducer, {
   removeSeekBySubscription,
   updateUserBySubscription,
   createUserBySubscription,
+  createChatMessageBySubscription,
   watchGames,
   watchSeeks,
   watchUsers,
+  watchChatMessages,
 } from "../dataSubscriptionSlice";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
@@ -27,6 +29,10 @@ import {
   makeGameSample,
   makeNormalizedGameSample,
 } from "../../../test-utils/data-sample/game";
+import {
+  chatMessageSample1,
+  normalizedChatMessageSample1,
+} from "../../../test-utils/data-sample/chat-message";
 
 jest.mock("../../../services/ioClient");
 
@@ -339,6 +345,21 @@ describe("dataSubscriptionSlice reducer", () => {
     ).toEqual({});
   });
 
+  it("should handle createChatMessageBySubscription", () => {
+    expect(
+      dataSubscriptionReducer(
+        {},
+        {
+          type: createChatMessageBySubscription.type,
+          payload: {
+            result: 1,
+            entities: {},
+          },
+        }
+      )
+    ).toEqual({});
+  });
+
   describe("should handle watchUsers", () => {
     it("update user", () => {
       const dispatch = jest.fn();
@@ -399,6 +420,40 @@ describe("dataSubscriptionSlice reducer", () => {
           entities: {
             users: {
               1: normalizedUserSample1,
+            },
+          },
+        },
+      });
+    });
+  });
+
+  describe("should handle watchChatMessages", () => {
+    it("create chat message", () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.on as jest.Mock).mockImplementationOnce(
+        (url: string, cb: (...args: Array<any>) => any) => {
+          cb({
+            verb: "created",
+            data: chatMessageSample1,
+            id: 1,
+          });
+        }
+      );
+
+      watchChatMessages()(dispatch, () => defaultState, null);
+
+      expect(dispatch).toBeCalledTimes(1);
+      expect(dispatch).toBeCalledWith({
+        type: createChatMessageBySubscription.type,
+        payload: {
+          result: 1,
+          entities: {
+            users: {
+              1: normalizedUserSample1,
+            },
+            chatMessages: {
+              1: normalizedChatMessageSample1,
             },
           },
         },

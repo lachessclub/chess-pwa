@@ -9,6 +9,7 @@ import {
   watchGames,
   watchSeeks,
   watchUsers,
+  watchChatMessages,
 } from "../../features/data-subscription/dataSubscriptionSlice";
 import { defaultState } from "../../test-utils/data-sample/state";
 import { startGameClock } from "../../features/game-clock/gameClockSlice";
@@ -132,6 +133,25 @@ describe("App", () => {
       expect(watchGamesFn).toBeCalledWith();
 
       expect(dispatch).toBeCalledWith(watchGamesReturnedValue);
+    });
+
+    it("should call dispatch(watchChatMessages())", () => {
+      const dispatch = useDispatch<jest.Mock>();
+
+      (useEffect as jest.Mock).mockImplementationOnce((cb) => cb());
+
+      const watchChatMessagesReturnedValue = Symbol("watchChatMessages");
+
+      const watchChatMessagesFn = watchChatMessages as jest.Mock;
+      watchChatMessagesFn.mockClear();
+      watchChatMessagesFn.mockReturnValue(watchChatMessagesReturnedValue);
+
+      TestRenderer.create(<App />);
+
+      expect(watchChatMessagesFn).toBeCalledTimes(1);
+      expect(watchChatMessagesFn).toBeCalledWith();
+
+      expect(dispatch).toBeCalledWith(watchChatMessagesReturnedValue);
     });
 
     it("should call dispatch(watchSeeks())", () => {

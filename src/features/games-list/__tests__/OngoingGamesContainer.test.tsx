@@ -62,6 +62,7 @@ const stateWithGames = makeStateSample({
       5: startedGameSample2,
     },
     seeks: {},
+    chatMessages: {},
   },
 });
 

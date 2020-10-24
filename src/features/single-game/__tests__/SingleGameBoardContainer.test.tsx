@@ -27,6 +27,7 @@ const stateWithGameSample = makeStateSample({
       1: normalizedGameSample1,
     },
     seeks: {},
+    chatMessages: {},
   },
 });
 
@@ -39,11 +40,6 @@ const stateWithLoadedGame = makeStateSample({
       rewindToMoveIndex: null,
     },
   },
-  entities: {
-    users: {},
-    games: {},
-    seeks: {},
-  },
 });
 
 const stateWithFlippedGame = makeStateSample({
@@ -55,11 +51,6 @@ const stateWithFlippedGame = makeStateSample({
       rewindToMoveIndex: null,
     },
   },
-  entities: {
-    users: {},
-    games: {},
-    seeks: {},
-  },
 });
 
 const stateWithRewindToMoveIndex = makeStateSample({
@@ -70,11 +61,6 @@ const stateWithRewindToMoveIndex = makeStateSample({
       isFlipped: true,
       rewindToMoveIndex: 2,
     },
-  },
-  entities: {
-    users: {},
-    games: {},
-    seeks: {},
   },
 });
 
@@ -102,6 +88,7 @@ const stateWithAuthenticatedUser = makeStateSample({
     },
     games: {},
     seeks: {},
+    chatMessages: {},
   },
 });
 

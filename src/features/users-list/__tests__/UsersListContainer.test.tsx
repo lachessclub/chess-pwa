@@ -52,6 +52,7 @@ const stateWithUsers = makeStateSample({
     },
     games: {},
     seeks: {},
+    chatMessages: {},
   },
 });
 

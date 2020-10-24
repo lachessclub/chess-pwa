@@ -9,8 +9,11 @@ import { SingleGameBoardContainer } from "../SingleGameBoardContainer";
 import { fetchGame } from "../singleGameSlice";
 import { makeStateSample } from "../../../test-utils/data-sample/state";
 import { normalizedGameSample1 } from "../../../test-utils/data-sample/game";
+import { Chat } from "../../chat/Chat";
+import { fetchChatMessages } from "../../chat/chatSlice";
 
 jest.mock("../singleGameSlice");
+jest.mock("../../chat/chatSlice");
 
 const stateWithGameSample = makeStateSample({
   entities: {
@@ -19,6 +22,7 @@ const stateWithGameSample = makeStateSample({
       1: normalizedGameSample1,
     },
     seeks: {},
+    chatMessages: {},
   },
 });
 
@@ -73,6 +77,19 @@ describe("GamePage", () => {
       expect(testInstance.findAllByType(SingleGameBoardContainer).length).toBe(
         1
       );
+    });
+
+    it("contains Chat", () => {
+      const testRenderer = TestRenderer.create(
+        <MemoryRouter initialEntries={["/game/1"]}>
+          <Route path="/game/:id">
+            <GamePage />
+          </Route>
+        </MemoryRouter>
+      );
+      const testInstance = testRenderer.root;
+
+      expect(testInstance.findAllByType(Chat).length).toBe(1);
     });
   });
 
@@ -133,6 +150,23 @@ describe("GamePage", () => {
         expect(singleGameBoardContainer.props.id).toBe(2);
       });
     });
+
+    describe("Chat", () => {
+      it("gameId", () => {
+        const testRenderer = TestRenderer.create(
+          <MemoryRouter initialEntries={["/game/2"]}>
+            <Route path="/game/:id">
+              <GamePage />
+            </Route>
+          </MemoryRouter>
+        );
+        const testInstance = testRenderer.root;
+
+        const chat = testInstance.findByType(Chat);
+
+        expect(chat.props.gameId).toBe(2);
+      });
+    });
   });
 
   describe("dispatch() calls", () => {
@@ -179,6 +213,31 @@ describe("GamePage", () => {
 
       expect(dispatch).toBeCalledWith(fetchGameReturnedValue);
       */
+    });
+
+    it("should call dispatch(fetchChatMessages())", () => {
+      const dispatch = useDispatch<jest.Mock>();
+
+      (useEffect as jest.Mock).mockImplementationOnce((cb) => cb());
+
+      const fetchChatMessagesReturnedValue = Symbol("fetchChatMessages");
+
+      const fetchChatMessagesFn = fetchChatMessages as jest.Mock;
+      fetchChatMessagesFn.mockClear();
+      fetchChatMessagesFn.mockReturnValue(fetchChatMessagesReturnedValue);
+
+      TestRenderer.create(
+        <MemoryRouter initialEntries={["/game/1"]}>
+          <Route path="/game/:id">
+            <GamePage />
+          </Route>
+        </MemoryRouter>
+      );
+
+      expect(fetchChatMessagesFn).toBeCalledTimes(1);
+      expect(fetchChatMessagesFn).toBeCalledWith(1);
+
+      expect(dispatch).toBeCalledWith(fetchChatMessagesReturnedValue);
     });
   });
 });

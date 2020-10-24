@@ -30,6 +30,7 @@ const stateWithAuthenticatedUser = makeStateSample({
     },
     games: {},
     seeks: {},
+    chatMessages: {},
   },
 });
 

@@ -11,6 +11,7 @@ import { SubscriptionData } from "../../interfaces/SubscriptionData";
 import gameSchema from "../../normalizr/schemas/gameSchema";
 import seekSchema from "../../normalizr/schemas/seekSchema";
 import userSchema from "../../normalizr/schemas/userSchema";
+import chatMessageSchema from "../../normalizr/schemas/chatMessageSchema";
 
 interface DataSubscriptionState {}
 
@@ -45,6 +46,10 @@ const dataSubscriptionSlice = createSlice({
       _state,
       _action: PayloadAction<NormalizedData<number>>
     ) {},
+    createChatMessageBySubscription(
+      _state,
+      _action: PayloadAction<NormalizedData<number>>
+    ) {},
   },
   extraReducers: {},
 });
@@ -57,6 +62,7 @@ export const {
   removeSeekBySubscription,
   createUserBySubscription,
   updateUserBySubscription,
+  createChatMessageBySubscription,
 } = dataSubscriptionSlice.actions;
 
 export default dataSubscriptionSlice.reducer;
@@ -116,6 +122,19 @@ export const watchUsers = (): AppThunk<void> => (dispatch) => {
       const normalizedSeek = normalize(subscriptionData.data, userSchema);
 
       dispatch(createUserBySubscription(normalizedSeek));
+    }
+  });
+};
+
+export const watchChatMessages = (): AppThunk<void> => (dispatch) => {
+  ioClient.socket.on("chat-message", (subscriptionData: SubscriptionData) => {
+    if (subscriptionData.verb === "created") {
+      const normalizedChatMessage = normalize(
+        subscriptionData.data,
+        chatMessageSchema
+      );
+
+      dispatch(createChatMessageBySubscription(normalizedChatMessage));
     }
   });
 };

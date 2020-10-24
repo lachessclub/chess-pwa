@@ -17,6 +17,7 @@ import {
   offerDrawError,
   resignGameError,
 } from "../single-game/singleGameSlice";
+import { createChatMessageError } from "../chat/chatSlice";
 
 const initialState: Message[] = [];
 
@@ -62,6 +63,15 @@ const messagesSlice = createSlice({
     [abortGameError.type]: (state, action: PayloadAction<ItemErrorPayload>) => {
       state.push({
         id: "abortGameError",
+        body: action.payload.error,
+      });
+    },
+    [createChatMessageError.type]: (
+      state,
+      action: PayloadAction<ItemErrorPayload>
+    ) => {
+      state.push({
+        id: "createChatMessageError",
         body: action.payload.error,
       });
     },

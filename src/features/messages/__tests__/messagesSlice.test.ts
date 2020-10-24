@@ -12,6 +12,7 @@ import {
   offerDrawError,
   resignGameError,
 } from "../../single-game/singleGameSlice";
+import { createChatMessageError } from "../../chat/chatSlice";
 
 describe("messagesSlice reducer", () => {
   it("should handle initial state", () => {
@@ -101,6 +102,35 @@ describe("messagesSlice reducer", () => {
       },
       {
         id: "acceptSeekError",
+        body: "error text",
+      },
+    ]);
+  });
+
+  it("should handle createChatMessageError", () => {
+    expect(
+      messagesReducer(
+        [
+          {
+            id: "message1",
+            body: "some message",
+          },
+        ],
+        {
+          type: createChatMessageError.type,
+          payload: {
+            itemId: 5,
+            error: "error text",
+          },
+        }
+      )
+    ).toEqual([
+      {
+        id: "message1",
+        body: "some message",
+      },
+      {
+        id: "createChatMessageError",
         body: "error text",
       },
     ]);

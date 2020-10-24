@@ -7,6 +7,7 @@ import HomePage from "../features/home-page/HomePage";
 import GamePage from "../features/single-game/GamePage";
 import { fetchCurrentUser } from "../features/current-user/currentUserSlice";
 import {
+  watchChatMessages,
   watchGames,
   watchSeeks,
   watchUsers,
@@ -26,6 +27,7 @@ const App: FC = () => {
   useEffect(() => {
     dispatch(fetchCurrentUser());
     const stopGameClock = dispatch(startGameClock());
+    dispatch(watchChatMessages());
     dispatch(watchGames());
     dispatch(watchSeeks());
     dispatch(watchUsers());

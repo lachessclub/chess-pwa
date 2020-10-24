@@ -17,6 +17,7 @@ const stateWithGameSample = makeStateSample({
       1: normalizedGameSample1,
     },
     seeks: {},
+    chatMessages: {},
   },
 });
 

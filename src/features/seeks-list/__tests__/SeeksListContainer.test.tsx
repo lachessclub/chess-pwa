@@ -74,6 +74,7 @@ const stateWithSeeks = makeStateSample({
       1: normalizedSeekSample1,
       2: normalizedSeekSample2,
     },
+    chatMessages: {},
   },
 });
 

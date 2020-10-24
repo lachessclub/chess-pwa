@@ -17,6 +17,11 @@ describe("ContentLoadingStatus", () => {
       rerender(<ContentLoadingStatus isEmpty error="error text" />);
       expect(queryByTestId("empty-content-message")).not.toBeInTheDocument();
 
+      rerender(
+        <ContentLoadingStatus isEmpty showEmptyContentMessage={false} />
+      );
+      expect(queryByTestId("empty-content-message")).not.toBeInTheDocument();
+
       rerender(<ContentLoadingStatus isEmpty />);
       expect(queryByTestId("empty-content-message")).toBeInTheDocument();
     });

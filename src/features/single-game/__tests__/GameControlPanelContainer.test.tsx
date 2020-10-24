@@ -32,6 +32,7 @@ const stateWithGame = makeStateSample({
       1: normalizedGameSample1,
     },
     seeks: {},
+    chatMessages: {},
   },
 });
 
@@ -50,6 +51,7 @@ const stateWithLoadedGame = makeStateSample({
       1: normalizedGameSample1,
     },
     seeks: {},
+    chatMessages: {},
   },
 });
 
@@ -68,6 +70,7 @@ const stateWithFlippedGame = makeStateSample({
       1: normalizedGameSample1,
     },
     seeks: {},
+    chatMessages: {},
   },
 });
 
@@ -86,6 +89,7 @@ const stateWithRewindToMoveIndex = makeStateSample({
       1: normalizedGameSample1,
     },
     seeks: {},
+    chatMessages: {},
   },
 });
 
@@ -104,6 +108,7 @@ const stateWithGameAndAuthenticatedUser = makeStateSample({
       1: normalizedGameSample1,
     },
     seeks: {},
+    chatMessages: {},
   },
 });
 

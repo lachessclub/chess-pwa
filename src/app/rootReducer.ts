@@ -1,6 +1,7 @@
 /* eslint-disable import/no-cycle */
 
 import { combineReducers } from "@reduxjs/toolkit";
+import chatReducer from "../features/chat/chatSlice";
 import gamesListReducer from "../features/games-list/gamesListSlice";
 import seeksListReducer from "../features/seeks-list/seeksListSlice";
 import usersListReducer from "../features/users-list/usersListSlice";
@@ -13,6 +14,7 @@ import modalReducer from "../features/modal/modalSlice";
 
 const rootReducer = combineReducers({
   // challenge: challengeReducer,
+  chat: chatReducer,
   currentUser: currentUserReducer,
   gamesList: gamesListReducer,
   entities: entitiesReducer,

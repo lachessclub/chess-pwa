@@ -6,6 +6,7 @@ export const defaultState: RootState = {
     itemId: null,
     error: null,
   },
+  chat: {},
   currentUser: {
     userId: null,
     isLoading: true,
@@ -35,6 +36,7 @@ export const defaultState: RootState = {
     users: {},
     games: {},
     seeks: {},
+    chatMessages: {},
   },
 };
 
