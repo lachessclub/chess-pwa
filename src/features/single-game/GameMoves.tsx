@@ -27,9 +27,7 @@ export const GameMoves: FC<GameMovesProps> = ({
   rewindToMoveIndex = null,
   onRewindToMove,
 }) => {
-  let movesHistory: Move[] = [];
-
-  const scrollToElementRef = useRef<HTMLDivElement>(null);
+  const scrollElementRef = useRef<HTMLDivElement>(null);
   const lastMovesQnt = useRef<number>(-1);
   const lastGameStatus = useRef<GameStatus>();
 
@@ -39,26 +37,22 @@ export const GameMoves: FC<GameMovesProps> = ({
       return;
     }
 
+    const chess = makeChessInstance(game);
+    const movesHistory = chess.history();
+
     if (
       (lastMovesQnt.current !== movesHistory.length ||
         lastGameStatus.current !== game.status) &&
       rewindToMoveIndex === null
     ) {
-      if (scrollToElementRef.current) {
-        scrollToElementRef.current.scrollTop =
-          scrollToElementRef.current.scrollHeight;
+      if (scrollElementRef.current) {
+        scrollElementRef.current.scrollTop =
+          scrollElementRef.current.scrollHeight;
       }
     }
     lastMovesQnt.current = movesHistory.length;
     lastGameStatus.current = game.status;
-  }, [
-    game,
-    lastMovesQnt,
-    lastGameStatus,
-    movesHistory.length,
-    rewindToMoveIndex,
-    scrollToElementRef,
-  ]);
+  }, [game, lastMovesQnt, lastGameStatus, rewindToMoveIndex, scrollElementRef]);
 
   if (!game) {
     return null;
@@ -66,7 +60,7 @@ export const GameMoves: FC<GameMovesProps> = ({
 
   const chess = makeChessInstance(game);
 
-  movesHistory = chess.history({ verbose: true });
+  const movesHistory = chess.history({ verbose: true });
 
   const movesQnt = movesHistory.length;
 
@@ -81,7 +75,7 @@ export const GameMoves: FC<GameMovesProps> = ({
   };
 
   return (
-    <div className={css.movesWrapper} ref={scrollToElementRef}>
+    <div className={css.movesWrapper} ref={scrollElementRef}>
       {movesPairs.map((pair, index) => {
         const whiteMoveIndex = index * 2 + 1;
         const blackMoveIndex = index * 2 + 2;
