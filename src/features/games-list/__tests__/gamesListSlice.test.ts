@@ -86,7 +86,7 @@ describe("gamesListSlice reducer", () => {
       const dispatch = jest.fn();
 
       (ioClient.socket.get as jest.Mock).mockImplementationOnce(
-        (url: string, cb: RequestCallback) => {
+        (url: string, data: unknown, cb: RequestCallback) => {
           cb([gameSample1], {
             body: [gameSample1],
             statusCode: 200,
@@ -119,7 +119,7 @@ describe("gamesListSlice reducer", () => {
       const dispatch = jest.fn();
 
       (ioClient.socket.get as jest.Mock).mockImplementationOnce(
-        (url: string, cb: RequestCallback) => {
+        (url: string, data: unknown, cb: RequestCallback) => {
           cb("internal server error", {
             body: "internal server error",
             statusCode: 500,
