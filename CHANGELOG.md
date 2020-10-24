@@ -5,6 +5,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [1.3.0](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.2.0...v1.3.0) (2020-10-24)
+
+
+### Features
+
+* update github actions badges in readme file ([#95](https://github.com/ildar-icoosoft/chess-pwa/issues/95)) ([76b0c4b](https://github.com/ildar-icoosoft/chess-pwa/commit/76b0c4b66d0f4386aca55048d42592ae85c77a27))
+
 # [1.2.0](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.1.1...v1.2.0) (2020-10-24)
 
 
