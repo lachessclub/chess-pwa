@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/chess-pwa/static/css/main.b0e0ee56.chunk.css",
+    "main.css": "/chess-pwa/static/css/main.85fcd891.chunk.css",
     "main.js": "/chess-pwa/static/js/main.9a624bb6.chunk.js",
     "main.js.map": "/chess-pwa/static/js/main.9a624bb6.chunk.js.map",
     "runtime-main.js": "/chess-pwa/static/js/runtime-main.cbb0f1fa.js",
@@ -9,10 +9,10 @@
     "static/js/2.0e9599b4.chunk.js": "/chess-pwa/static/js/2.0e9599b4.chunk.js",
     "static/js/2.0e9599b4.chunk.js.map": "/chess-pwa/static/js/2.0e9599b4.chunk.js.map",
     "index.html": "/chess-pwa/index.html",
-    "precache-manifest.a784b6eefea1edb4008bdb7e74f919a7.js": "/chess-pwa/precache-manifest.a784b6eefea1edb4008bdb7e74f919a7.js",
+    "precache-manifest.ee261075d894587dd798b4bc722ab29b.js": "/chess-pwa/precache-manifest.ee261075d894587dd798b4bc722ab29b.js",
     "service-worker.js": "/chess-pwa/service-worker.js",
     "static/css/2.11829350.chunk.css.map": "/chess-pwa/static/css/2.11829350.chunk.css.map",
-    "static/css/main.b0e0ee56.chunk.css.map": "/chess-pwa/static/css/main.b0e0ee56.chunk.css.map",
+    "static/css/main.85fcd891.chunk.css.map": "/chess-pwa/static/css/main.85fcd891.chunk.css.map",
     "static/js/2.0e9599b4.chunk.js.LICENSE.txt": "/chess-pwa/static/js/2.0e9599b4.chunk.js.LICENSE.txt",
     "static/media/black.f1ae6ff6.svg": "/chess-pwa/static/media/black.f1ae6ff6.svg",
     "static/media/PromotionChoiceModal.module.scss": "/chess-pwa/static/media/white_rook.ffc4a1b8.svg",
@@ -25,7 +25,7 @@
     "static/js/runtime-main.cbb0f1fa.js",
     "static/css/2.11829350.chunk.css",
     "static/js/2.0e9599b4.chunk.js",
-    "static/css/main.b0e0ee56.chunk.css",
+    "static/css/main.85fcd891.chunk.css",
     "static/js/main.9a624bb6.chunk.js"
   ]
 }
