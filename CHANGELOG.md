@@ -5,6 +5,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [1.2.0](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.1.1...v1.2.0) (2020-10-24)
+
+
+### Features
+
+* CHESSPWA-52 create chat ([#94](https://github.com/ildar-icoosoft/chess-pwa/issues/94)) ([d459cbd](https://github.com/ildar-icoosoft/chess-pwa/commit/d459cbd85f88cf18b0df6d85d7f2f52e75a73866))
+
 ## [1.1.1](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.1.0...v1.1.1) (2020-10-24)
 
 
