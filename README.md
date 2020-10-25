@@ -6,7 +6,7 @@ Renders a chess board using React
 
 ![CI](https://github.com/ildar-icoosoft/chess-pwa/workflows/CI/badge.svg)
 ![GH-Pages](https://github.com/ildar-icoosoft/chess-pwa/workflows/GH-Pages/badge.svg)
-![Semantic Release](https://github.com/ildar-icoosoft/chess-pwa/workflows/Semantic%20Release/badge.svg)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![codecov][codecov-image]][codecov-url]
 
 [codecov-image]: https://codecov.io/gh/ildar-icoosoft/chess-pwa/branch/master/graph/badge.svg
