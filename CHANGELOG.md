@@ -5,6 +5,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [1.4.0](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.3.1...v1.4.0) (2020-10-27)
+
+
+### Features
+
+* update ii-react-chessboard which has breaking changes ([#98](https://github.com/ildar-icoosoft/chess-pwa/issues/98)) ([2df2419](https://github.com/ildar-icoosoft/chess-pwa/commit/2df2419a80797dcc684852fcf903bd0b2a9cd7e9))
+
 ## [1.3.1](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.3.0...v1.3.1) (2020-10-27)
 
 
