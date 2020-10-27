@@ -1,5 +1,5 @@
 import TestRenderer from "react-test-renderer";
-import { Board, PieceColor } from "ii-react-chessboard";
+import { Board } from "ii-react-chessboard";
 import React from "react";
 import {
   gameSample1,
@@ -252,7 +252,7 @@ describe("SingleGameBoard", () => {
 
         const board = testInstance.findByType(Board);
 
-        expect(board.props.turnColor).toBe(PieceColor.BLACK);
+        expect(board.props.turnColor).toBe("black");
 
         const whiteTurnGameSample = makeGameSample({
           turn: "white",
@@ -260,7 +260,7 @@ describe("SingleGameBoard", () => {
 
         testRenderer.update(<SingleGameBoard game={whiteTurnGameSample} />);
 
-        expect(board.props.turnColor).toBe(PieceColor.WHITE);
+        expect(board.props.turnColor).toBe("white");
       });
 
       it("validMoves", async () => {
@@ -390,8 +390,8 @@ describe("SingleGameBoard", () => {
             game={playingGameWithBlackUserSample}
           />
         );
-        // PieceColor.BLACK because currentUser plays with black
-        expect(board.props.movableColor).toBe(PieceColor.BLACK);
+        // "black" because currentUser plays with black
+        expect(board.props.movableColor).toBe("black");
 
         const playingGameWithWhiteUserSample = makeGameSample({
           status: "started",
@@ -405,8 +405,8 @@ describe("SingleGameBoard", () => {
             game={playingGameWithWhiteUserSample}
           />
         );
-        // PieceColor.BLACK because currentUser plays with white
-        expect(board.props.movableColor).toBe(PieceColor.WHITE);
+        // "black" because currentUser plays with white
+        expect(board.props.movableColor).toBe("white");
       });
 
       it("orientation", () => {
@@ -418,7 +418,7 @@ describe("SingleGameBoard", () => {
         const board = testInstance.findByType(Board);
 
         // white by default
-        expect(board.props.orientation).toBe(PieceColor.WHITE);
+        expect(board.props.orientation).toBe("white");
 
         const playingGameWithBlackUserSample = makeGameSample({
           status: "started",
@@ -433,7 +433,7 @@ describe("SingleGameBoard", () => {
           />
         );
         // black because current user plays black
-        expect(board.props.orientation).toBe(PieceColor.BLACK);
+        expect(board.props.orientation).toBe("black");
 
         testRenderer.update(
           <SingleGameBoard
@@ -443,7 +443,7 @@ describe("SingleGameBoard", () => {
           />
         );
         // white because flipped is true
-        expect(board.props.orientation).toBe(PieceColor.WHITE);
+        expect(board.props.orientation).toBe("white");
       });
 
       it("lastMoveSquares", () => {

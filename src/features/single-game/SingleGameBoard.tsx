@@ -211,8 +211,7 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
 
     const check: boolean = chess.in_check();
 
-    const turnColor: PieceColor =
-      game.turn === "white" ? PieceColor.WHITE : PieceColor.BLACK;
+    const turnColor: PieceColor = game.turn;
 
     const validMoves: ValidMoves = getValidMoves(chess);
 
@@ -229,19 +228,18 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
 
     let movableColor: PieceColor | undefined;
     if (currentUser && currentUser.id === game.white?.id) {
-      movableColor = PieceColor.WHITE;
+      movableColor = "white";
     }
     if (currentUser && currentUser.id === game.black?.id) {
-      movableColor = PieceColor.BLACK;
+      movableColor = "black";
     }
 
-    let orientation = PieceColor.WHITE;
+    let orientation: PieceColor = "white";
     if (currentUser && currentUser.id === game.black?.id) {
-      orientation = PieceColor.BLACK;
+      orientation = "black";
     }
     if (isFlipped) {
-      orientation =
-        orientation === PieceColor.WHITE ? PieceColor.BLACK : PieceColor.WHITE;
+      orientation = orientation === "white" ? "black" : "white";
     }
 
     const movesHistory = chessWithAllMoves.history({ verbose: true });
