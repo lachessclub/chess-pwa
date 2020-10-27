@@ -5,6 +5,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.3.0...v1.3.1) (2020-10-27)
+
+
+### Bug Fixes
+
+* backend blueprint API URLs were changed ([#97](https://github.com/ildar-icoosoft/chess-pwa/issues/97)) ([7e78016](https://github.com/ildar-icoosoft/chess-pwa/commit/7e78016484271b12c422e0ceae57bd47b00d4eac))
+
 # [1.3.0](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.2.0...v1.3.0) (2020-10-24)
 
 
