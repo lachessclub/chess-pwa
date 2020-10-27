@@ -57,7 +57,7 @@ export const fetchGames = (): AppThunk<Promise<Game[]>> => (dispatch) => {
 
   return new Promise((resolve, reject) => {
     ioClient.socket.get(
-      "/game",
+      "/api/v1/game",
       { limit: 300, sort: "createdAt DESC" },
       (body: unknown, jwr: JWR) => {
         if (jwr.statusCode === 200) {

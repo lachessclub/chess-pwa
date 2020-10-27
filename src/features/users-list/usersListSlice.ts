@@ -90,7 +90,7 @@ export const fetchUsers = (): AppThunk<Promise<User[]>> => (dispatch) => {
   dispatch(getUsersListRequest());
 
   return new Promise((resolve, reject) => {
-    ioClient.socket.get("/user", (body: unknown, jwr: JWR) => {
+    ioClient.socket.get("/api/v1/user", (body: unknown, jwr: JWR) => {
       if (jwr.statusCode === 200) {
         const normalizedUsers = normalize(body as User[], [userSchema]);
         dispatch(getUsersListSuccess(normalizedUsers));

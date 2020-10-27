@@ -145,7 +145,7 @@ export const fetchGame = (id: number): AppThunk<Promise<Game>> => (
   dispatch(getSingleGameRequest(id));
 
   return new Promise((resolve, reject) => {
-    ioClient.socket.get(`/game/${id}`, (body: unknown, jwr: JWR) => {
+    ioClient.socket.get(`/api/v1/game/${id}`, (body: unknown, jwr: JWR) => {
       if (jwr.statusCode === 200) {
         const normalizedGame = normalize(body as Game, gameSchema);
         dispatch(getSingleGameSuccess(normalizedGame));

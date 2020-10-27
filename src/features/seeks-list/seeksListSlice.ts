@@ -90,7 +90,7 @@ export const fetchSeeks = (): AppThunk<Promise<Seek[]>> => (dispatch) => {
 
   return new Promise((resolve, reject) => {
     ioClient.socket.get(
-      "/seek",
+      "/api/v1/seek",
       {
         sort: "createdAt DESC",
       },
