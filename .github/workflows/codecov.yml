@@ -1,5 +1,8 @@
 name: Codecov
 
+env:
+  REACT_APP_BACKEND_HOST: ${{ secrets.REACT_APP_BACKEND_HOST }}
+
 on:
   push:
     branches: [ master ]
@@ -33,8 +36,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-        env:
-          CI: true
 
       - name: Generate coverage report
         run: yarn test:coverage

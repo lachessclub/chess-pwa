@@ -1,5 +1,8 @@
 name: CI
 
+env:
+  REACT_APP_BACKEND_HOST: ${{ secrets.REACT_APP_BACKEND_HOST }}
+
 on:
   push:
     branches: [ master ]
@@ -33,15 +36,9 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-        env:
-          CI: true
 
       - name: Lint
         run: yarn lint
-        env:
-          CI: true
 
       - name: Test
         run: yarn test --ci
-        env:
-          CI: true
