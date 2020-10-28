@@ -1,61 +1,81 @@
 <h1 align="center">Chess PWA</h1>
 
+<p align="center">
+    A small <a href="https://reactjs.org/">React</a> application where users can play chess. <a href="https://ildar-icoosoft.github.io/chess-pwa/">Live Demo</a>
+</p>
+
+<p align="center">
+    <img alt="CI" src="https://github.com/ildar-icoosoft/chess-pwa/workflows/CI/badge.svg">
+     <a href="https://ildar-icoosoft.github.io/chess-pwa/">
+        <img src="https://github.com/ildar-icoosoft/chess-pwa/workflows/GH-Pages/badge.svg" alt="GH-Pages">
+    </a>
+    <a href="https://codecov.io/gh/ildar-icoosoft/chess-pwa">
+        <img alt="codecov" src="https://codecov.io/gh/ildar-icoosoft/chess-pwa/branch/master/graph/badge.svg?token=rJTLOuHE76">
+    </a>
+    <a href="https://github.com/semantic-release/semantic-release">
+        <img alt="semantic-release" src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg">
+    </a>
+</p>
+
 <div align="center">
-
-Renders a chess board using React
-
-![CI](https://github.com/ildar-icoosoft/chess-pwa/workflows/CI/badge.svg)
-![GH-Pages](https://github.com/ildar-icoosoft/chess-pwa/workflows/GH-Pages/badge.svg)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-[![codecov][codecov-image]][codecov-url]
-
-[codecov-image]: https://codecov.io/gh/ildar-icoosoft/chess-pwa/branch/master/graph/badge.svg
-[codecov-url]: https://codecov.io/gh/ildar-icoosoft/chess-pwa
-
+    <img src="./src/assets/images/screenshot1.png" alt="Home page screenshot" width="600">
+</div>
+<div align="center">
+    <img src="./src/assets/images/screenshot2.png" alt="Single Game screenshot" width="600">
 </div>
 
+[Chess backend](https://github.com/ildar-icoosoft/chess-backend) is written in Node.js and relies on [Sails](https://sailsjs.com/) framework.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The application is very small, I made it for demonstration purposes. It contains only 2 pages, but a lot of functionality.
 
-## Available Scripts
+The Home page contains list of users. You can see their online/offline status. On Home page you can accept a game request 
+from another person. Or you can create a public seek, to start a game with a random player. Also you can play with the 
+computer with 4 levels of strength. Also home page contains previews of ongoing and finished games. All data is updated in real-time via Web Sockets.
 
-In the project directory, you can run:
+The Single game page contains a board to play the game. Control panel with toolbars and moves list.
+Game info panel where you can see information about the game. And a Chat to talk with your opponent.
 
-### `yarn start`
+[Chessboard component](https://github.com/ildar-icoosoft/chess-pwa) which is used on Home page to show
+game previews and on Single game page to play chess, has flexible settings. It supports Drag and Drop, squares highlighting, animation, premoves, resize and many other functions.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Installation
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+```bash
+git clone https://github.com/ildar-icoosoft/chess-pwa.git
+cd chess-pwa
+yarn install
+```
 
-### `yarn test`
+Note that this repo contains only frontend. So that the application can work with data, you will need to install the [backend](https://github.com/ildar-icoosoft/chess-backend) as well.
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Start server
 
-### `yarn build`
+```bash
+yarn start
+```
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Runs the app in development mode. Open http://localhost:3000 to view it in the browser.
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+The page will automatically reload if you make changes to the code. You will see the build errors and lint warnings in the console.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Run tests
 
-### `yarn eject`
+```bash
+yarn test
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+Runs the test watcher in an interactive mode. By default, runs tests related to files changed since the last commit.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Build
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+```bash
+yarn build
+```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Builds the app for production to the build folder. It correctly bundles React in production mode and optimizes the build for the best performance.
 
-## Learn More
+The build is minified and the filenames include the hashes.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Live Demo
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+[Link](https://ildar-icoosoft.github.io/chess-pwa/)
