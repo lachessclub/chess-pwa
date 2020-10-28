@@ -5,6 +5,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# [1.6.0](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.5.0...v1.6.0) (2020-10-28)
+
+
+### Features
+
+* CHESSPWA-73 create config from environment variables ([#100](https://github.com/ildar-icoosoft/chess-pwa/issues/100)) ([7609fb4](https://github.com/ildar-icoosoft/chess-pwa/commit/7609fb4137c5acf5d23c9edc862e0bc84ba18389))
+
 # [1.5.0](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.4.0...v1.5.0) (2020-10-28)
 
 
