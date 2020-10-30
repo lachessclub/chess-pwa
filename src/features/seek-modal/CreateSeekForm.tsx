@@ -31,7 +31,7 @@ export const CreateSeekForm: FC<CreateSeekFormProps> = ({
       initialValues={{
         color: "",
         clockLimit: 300,
-        clockIncrement: 3,
+        clockIncrement: 0,
       }}
       onSubmit={(values, formikHelpers): Promise<any> | void => {
         if (onSubmit) {
