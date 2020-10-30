@@ -5,6 +5,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.1](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.6.0...v1.6.1) (2020-10-30)
+
+
+### Performance Improvements
+
+* CHESSPWA-74 reduced the number of components renders ([#101](https://github.com/ildar-icoosoft/chess-pwa/issues/101)) ([b604002](https://github.com/ildar-icoosoft/chess-pwa/commit/b604002bc467f795f227348964266a7bd71ffab9))
+
 # [1.6.0](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.5.0...v1.6.0) (2020-10-28)
 
 
