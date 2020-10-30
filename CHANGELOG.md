@@ -5,6 +5,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.3](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.6.2...v1.6.3) (2020-10-30)
+
+
+### Bug Fixes
+
+* CHESSPWA-76 change clock increment default value ([#104](https://github.com/ildar-icoosoft/chess-pwa/issues/104)) ([44ffef1](https://github.com/ildar-icoosoft/chess-pwa/commit/44ffef1b3a5de647e0e1a1a0914240a9ffbfe011))
+
 ## [1.6.2](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.6.1...v1.6.2) (2020-10-30)
 
 
