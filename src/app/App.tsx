@@ -8,6 +8,7 @@ import GamePage from "../features/single-game/GamePage";
 import { fetchCurrentUser } from "../features/current-user/currentUserSlice";
 import {
   watchChatMessages,
+  watchConnection,
   watchGames,
   watchSeeks,
   watchUsers,
@@ -34,6 +35,7 @@ const App: FC = () => {
     dispatch(fetchGames());
     dispatch(fetchUsers());
     dispatch(fetchSeeks());
+    dispatch(watchConnection());
 
     return () => {
       stopGameClock();

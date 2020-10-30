@@ -9,20 +9,15 @@ import mountTest from "../../../test-utils/mountTest";
 import MessagesContainer from "../MessagesContainer";
 import { Messages } from "../Messages";
 import { hideMessage } from "../messagesSlice";
+import {
+  messageSample1,
+  messageSample2,
+} from "../../../test-utils/data-sample/message";
 
 jest.mock("../messagesSlice");
 
 const stateWithMessages = makeStateSample({
-  messages: [
-    {
-      id: "message1",
-      body: "message text 1",
-    },
-    {
-      id: "message2",
-      body: "message text 2",
-    },
-  ],
+  messages: [messageSample1, messageSample2],
 });
 
 describe("MessagesContainer", () => {
@@ -58,14 +53,8 @@ describe("MessagesContainer", () => {
         testRenderer.update(<MessagesContainer />);
 
         expect(seeksListComponent.props.items).toEqual([
-          {
-            id: "message1",
-            body: "message text 1",
-          },
-          {
-            id: "message2",
-            body: "message text 2",
-          },
+          messageSample1,
+          messageSample2,
         ]);
       });
     });

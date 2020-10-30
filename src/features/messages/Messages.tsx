@@ -28,7 +28,7 @@ export const Messages: FC<MessagesProps> = ({ items = [], onHideMessage }) => {
           onClose={makeHideMessageHandler(item.id)}
           show
           delay={3000}
-          autohide
+          autohide={item.autoHide === undefined ? true : item.autoHide}
           animation={false}
         >
           <Toast.Body>{item.body}</Toast.Body>

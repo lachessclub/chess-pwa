@@ -13,6 +13,14 @@ import {
   resignGameError,
 } from "../../single-game/singleGameSlice";
 import { createChatMessageError } from "../../chat/chatSlice";
+import {
+  messageSample1,
+  messageSample2,
+} from "../../../test-utils/data-sample/message";
+import {
+  disconnectSocket,
+  reconnectSocket,
+} from "../../data-subscription/dataSubscriptionSlice";
 
 describe("messagesSlice reducer", () => {
   it("should handle initial state", () => {
@@ -25,336 +33,229 @@ describe("messagesSlice reducer", () => {
 
   it("should handle showMessage", () => {
     expect(
-      messagesReducer(
-        [
-          {
-            id: "message1",
-            body: "some message",
-          },
-        ],
-        {
-          type: showMessage.type,
-          payload: {
-            id: "message2",
-            body: "some message 2",
-          },
-        }
-      )
-    ).toEqual([
-      {
-        id: "message1",
-        body: "some message",
-      },
-      {
-        id: "message2",
-        body: "some message 2",
-      },
-    ]);
+      messagesReducer([messageSample1], {
+        type: showMessage.type,
+        payload: messageSample2,
+      })
+    ).toEqual([messageSample1, messageSample2]);
   });
 
   it("should handle hideMessage", () => {
     expect(
-      messagesReducer(
-        [
-          {
-            id: "message1",
-            body: "some message",
-          },
-          {
-            id: "message2",
-            body: "some message 2",
-          },
-        ],
-        {
-          type: hideMessage.type,
-          payload: "message2",
-        }
-      )
-    ).toEqual([
-      {
-        id: "message1",
-        body: "some message",
-      },
-    ]);
+      messagesReducer([messageSample1, messageSample2], {
+        type: hideMessage.type,
+        payload: "message2",
+      })
+    ).toEqual([messageSample1]);
   });
 
   it("should handle acceptSeekError", () => {
     expect(
-      messagesReducer(
-        [
-          {
-            id: "message1",
-            body: "some message",
-          },
-        ],
-        {
-          type: acceptSeekError.type,
-          payload: {
-            itemId: 5,
-            error: "error text",
-          },
-        }
-      )
+      messagesReducer([messageSample1], {
+        type: acceptSeekError.type,
+        payload: {
+          itemId: 5,
+          error: "error text",
+        },
+      })
     ).toEqual([
-      {
-        id: "message1",
-        body: "some message",
-      },
+      messageSample1,
       {
         id: "acceptSeekError",
         body: "error text",
+        autoHide: true,
       },
     ]);
   });
 
   it("should handle createChatMessageError", () => {
     expect(
-      messagesReducer(
-        [
-          {
-            id: "message1",
-            body: "some message",
-          },
-        ],
-        {
-          type: createChatMessageError.type,
-          payload: {
-            itemId: 5,
-            error: "error text",
-          },
-        }
-      )
+      messagesReducer([messageSample1], {
+        type: createChatMessageError.type,
+        payload: {
+          itemId: 5,
+          error: "error text",
+        },
+      })
     ).toEqual([
-      {
-        id: "message1",
-        body: "some message",
-      },
+      messageSample1,
       {
         id: "createChatMessageError",
         body: "error text",
+        autoHide: true,
       },
     ]);
   });
 
   it("should handle makeMoveError", () => {
     expect(
-      messagesReducer(
-        [
-          {
-            id: "message1",
-            body: "some message",
-          },
-        ],
-        {
-          type: makeMoveError.type,
-          payload: "error text",
-        }
-      )
+      messagesReducer([messageSample1], {
+        type: makeMoveError.type,
+        payload: "error text",
+      })
     ).toEqual([
-      {
-        id: "message1",
-        body: "some message",
-      },
+      messageSample1,
       {
         id: "makeMoveError",
         body: "error text",
+        autoHide: true,
       },
     ]);
   });
 
   it("should handle getCurrentUserError", () => {
     expect(
-      messagesReducer(
-        [
-          {
-            id: "message1",
-            body: "some message",
-          },
-        ],
-        {
-          type: getCurrentUserError.type,
-          payload: "error text",
-        }
-      )
+      messagesReducer([messageSample1], {
+        type: getCurrentUserError.type,
+        payload: "error text",
+      })
     ).toEqual([
-      {
-        id: "message1",
-        body: "some message",
-      },
+      messageSample1,
       {
         id: "getCurrentUserError",
         body: "error text",
+        autoHide: true,
       },
     ]);
   });
 
   it("should handle logoutError", () => {
     expect(
-      messagesReducer(
-        [
-          {
-            id: "message1",
-            body: "some message",
-          },
-        ],
-        {
-          type: logoutError.type,
-          payload: "error text",
-        }
-      )
+      messagesReducer([messageSample1], {
+        type: logoutError.type,
+        payload: "error text",
+      })
     ).toEqual([
-      {
-        id: "message1",
-        body: "some message",
-      },
+      messageSample1,
       {
         id: "logoutError",
         body: "error text",
+        autoHide: true,
       },
     ]);
   });
 
   it("should handle abortGameError", () => {
     expect(
-      messagesReducer(
-        [
-          {
-            id: "message1",
-            body: "some message",
-          },
-        ],
-        {
-          type: abortGameError.type,
-          payload: {
-            itemId: 1,
-            error: "error text",
-          },
-        }
-      )
+      messagesReducer([messageSample1], {
+        type: abortGameError.type,
+        payload: {
+          itemId: 1,
+          error: "error text",
+        },
+      })
     ).toEqual([
-      {
-        id: "message1",
-        body: "some message",
-      },
+      messageSample1,
       {
         id: "abortGameError",
         body: "error text",
+        autoHide: true,
       },
     ]);
   });
 
   it("should handle resignGameError", () => {
     expect(
-      messagesReducer(
-        [
-          {
-            id: "message1",
-            body: "some message",
-          },
-        ],
-        {
-          type: resignGameError.type,
-          payload: {
-            itemId: 1,
-            error: "error text",
-          },
-        }
-      )
+      messagesReducer([messageSample1], {
+        type: resignGameError.type,
+        payload: {
+          itemId: 1,
+          error: "error text",
+        },
+      })
     ).toEqual([
-      {
-        id: "message1",
-        body: "some message",
-      },
+      messageSample1,
       {
         id: "resignGameError",
         body: "error text",
+        autoHide: true,
       },
     ]);
   });
 
   it("should handle offerDrawError", () => {
     expect(
-      messagesReducer(
-        [
-          {
-            id: "message1",
-            body: "some message",
-          },
-        ],
-        {
-          type: offerDrawError.type,
-          payload: {
-            itemId: 1,
-            error: "error text",
-          },
-        }
-      )
+      messagesReducer([messageSample1], {
+        type: offerDrawError.type,
+        payload: {
+          itemId: 1,
+          error: "error text",
+        },
+      })
     ).toEqual([
-      {
-        id: "message1",
-        body: "some message",
-      },
+      messageSample1,
       {
         id: "offerDrawError",
         body: "error text",
+        autoHide: true,
       },
     ]);
   });
 
   it("should handle acceptDrawOfferError", () => {
     expect(
-      messagesReducer(
-        [
-          {
-            id: "message1",
-            body: "some message",
-          },
-        ],
-        {
-          type: acceptDrawOfferError.type,
-          payload: {
-            itemId: 1,
-            error: "error text",
-          },
-        }
-      )
+      messagesReducer([messageSample1], {
+        type: acceptDrawOfferError.type,
+        payload: {
+          itemId: 1,
+          error: "error text",
+        },
+      })
     ).toEqual([
-      {
-        id: "message1",
-        body: "some message",
-      },
+      messageSample1,
       {
         id: "acceptDrawOfferError",
         body: "error text",
+        autoHide: true,
       },
     ]);
   });
 
   it("should handle declineDrawOfferError", () => {
     expect(
-      messagesReducer(
-        [
-          {
-            id: "message1",
-            body: "some message",
-          },
-        ],
-        {
-          type: declineDrawOfferError.type,
-          payload: {
-            itemId: 1,
-            error: "error text",
-          },
-        }
-      )
+      messagesReducer([messageSample1], {
+        type: declineDrawOfferError.type,
+        payload: {
+          itemId: 1,
+          error: "error text",
+        },
+      })
     ).toEqual([
-      {
-        id: "message1",
-        body: "some message",
-      },
+      messageSample1,
       {
         id: "declineDrawOfferError",
         body: "error text",
+        autoHide: true,
+      },
+    ]);
+  });
+
+  it("should handle disconnectSocket", () => {
+    expect(
+      messagesReducer([messageSample1], {
+        type: disconnectSocket.type,
+      })
+    ).toEqual([
+      messageSample1,
+      {
+        id: "disconnectSocket",
+        body: "The Connection to the Server has been Lost",
+        autoHide: false,
+      },
+    ]);
+  });
+
+  it("should handle reconnectSocket", () => {
+    expect(
+      messagesReducer([messageSample1], {
+        type: reconnectSocket.type,
+      })
+    ).toEqual([
+      messageSample1,
+      {
+        id: "reconnectSocket",
+        body: "The connection was restored. Page will be reloaded in 3 seconds",
+        autoHide: true,
       },
     ]);
   });

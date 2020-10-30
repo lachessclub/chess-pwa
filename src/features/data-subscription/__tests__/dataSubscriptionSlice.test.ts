@@ -13,6 +13,9 @@ import dataSubscriptionReducer, {
   watchSeeks,
   watchUsers,
   watchChatMessages,
+  disconnectSocket,
+  reconnectSocket,
+  watchConnection,
 } from "../dataSubscriptionSlice";
 import ioClient from "../../../services/ioClient";
 import { defaultState } from "../../../test-utils/data-sample/state";
@@ -35,6 +38,8 @@ import {
 } from "../../../test-utils/data-sample/chat-message";
 
 jest.mock("../../../services/ioClient");
+
+jest.useFakeTimers();
 
 describe("dataSubscriptionSlice reducer", () => {
   it("should handle initial state", () => {
@@ -530,6 +535,84 @@ describe("dataSubscriptionSlice reducer", () => {
       watchChatMessages()(dispatch, () => defaultState, null);
 
       expect(dispatch).toBeCalledTimes(0);
+    });
+  });
+
+  it("should handle disconnectSocket", () => {
+    expect(
+      dataSubscriptionReducer(
+        {},
+        {
+          type: disconnectSocket.type,
+        }
+      )
+    ).toEqual({});
+  });
+
+  it("should handle reconnectSocket", () => {
+    expect(
+      dataSubscriptionReducer(
+        {},
+        {
+          type: reconnectSocket.type,
+        }
+      )
+    ).toEqual({});
+  });
+
+  describe("should handle watchConnection", () => {
+    it("disconnect", () => {
+      const dispatch = jest.fn();
+
+      // disconnect implementation
+      (ioClient.socket.on as jest.Mock).mockImplementationOnce(
+        (url: string, cb: (...args: Array<any>) => any) => {
+          cb();
+        }
+      );
+
+      watchConnection()(dispatch, () => defaultState, null);
+
+      expect(dispatch).toBeCalledTimes(1);
+      expect(dispatch).toBeCalledWith({
+        type: disconnectSocket.type,
+      });
+    });
+
+    it("reconnect", () => {
+      const dispatch = jest.fn();
+
+      // ignore disconnect
+      (ioClient.socket.on as jest.Mock).mockImplementationOnce(() => {});
+
+      // reconnect implementation
+      (ioClient.socket.on as jest.Mock).mockImplementationOnce(
+        (url: string, cb: (...args: Array<any>) => any) => {
+          cb();
+        }
+      );
+
+      const locationReloadFn = jest.fn();
+
+      const { reload } = document.location;
+      delete document.location.reload;
+      document.location.reload = locationReloadFn;
+
+      watchConnection()(dispatch, () => defaultState, null);
+
+      expect(dispatch).toBeCalledTimes(1);
+      expect(dispatch).toBeCalledWith({
+        type: reconnectSocket.type,
+      });
+
+      expect(locationReloadFn).toBeCalledTimes(0);
+
+      jest.advanceTimersByTime(3000);
+
+      expect(locationReloadFn).toBeCalledTimes(1);
+      expect(locationReloadFn).toBeCalledWith();
+
+      document.location.reload = reload;
     });
   });
 });

@@ -39,7 +39,7 @@ describe("Messages", () => {
         const toasts = testInstance.findAllByType(Toast);
 
         expect(toasts[0].props.autohide).toBeTruthy();
-        expect(toasts[1].props.autohide).toBeTruthy();
+        expect(toasts[1].props.autohide).toBeFalsy();
       });
 
       it("show", () => {
