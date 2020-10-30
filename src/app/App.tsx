@@ -1,5 +1,5 @@
 import React, { FC, useEffect } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { HashRouter, Switch, Route } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.scss";
@@ -42,7 +42,7 @@ const App: FC = () => {
 
   return (
     <div className="container-fluid">
-      <Router>
+      <HashRouter basename="/">
         <HeaderContainer />
         <AuthModalContainer />
         <MessagesContainer />
@@ -55,7 +55,7 @@ const App: FC = () => {
             <HomePage />
           </Route>
         </Switch>
-      </Router>
+      </HashRouter>
     </div>
   );
 };
