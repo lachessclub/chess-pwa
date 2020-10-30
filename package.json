@@ -1,6 +1,6 @@
 {
   "name": "chess-pwa",
-  "version": "1.6.3",
+  "version": "1.6.4",
   "private": true,
   "homepage": "https://ildar-icoosoft.github.io/chess-pwa",
   "dependencies": {

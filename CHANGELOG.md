@@ -5,6 +5,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.6.4](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.6.3...v1.6.4) (2020-10-30)
+
+
+### Bug Fixes
+
+* CHESSPWA-79 use HashRouter to work on github pages ([#106](https://github.com/ildar-icoosoft/chess-pwa/issues/106)) ([2fa4004](https://github.com/ildar-icoosoft/chess-pwa/commit/2fa40048dae238f95961bb5bca3f21a92dbb7e38))
+
 ## [1.6.3](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.6.2...v1.6.3) (2020-10-30)
 
 
