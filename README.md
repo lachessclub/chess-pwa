@@ -35,7 +35,7 @@ computer with 4 levels of strength. Also home page contains previews of ongoing 
 The Single game page contains a board to play the game. Control panel with toolbars and moves list.
 Game info panel where you can see information about the game. And a Chat to talk with your opponent.
 
-[Chessboard component](https://github.com/ildar-icoosoft/chess-pwa) which is used on Home page to show
+[Chessboard component](https://github.com/ildar-icoosoft/react-chessboard) which is used on Home page to show
 game previews and on Single game page to play chess, has flexible settings. It supports Drag and Drop, squares highlighting, animation, premoves, resize and many other functions.
 
 ## Installation
