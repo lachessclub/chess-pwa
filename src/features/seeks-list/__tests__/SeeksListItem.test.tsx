@@ -164,5 +164,13 @@ describe("SeeksListItem", () => {
       expect(onPlay).toBeCalledTimes(1);
       expect(onPlay).toBeCalledWith(1);
     });
+
+    it("play click if no onPlay callback", () => {
+      const { getByTestId } = render(<SeeksListItem seek={seekSample1} />);
+
+      expect(() => {
+        fireEvent.click(getByTestId("play-btn"));
+      }).not.toThrow();
+    });
   });
 });

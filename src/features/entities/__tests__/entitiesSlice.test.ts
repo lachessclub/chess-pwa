@@ -190,13 +190,25 @@ describe("entitiesSlice reducer", () => {
 
   it("should handle makeMoveRequest", () => {
     expect(
-      entitiesReducer(entitiesSample, {
-        type: makeMoveRequest.type,
-        payload: {
-          gameId: 1,
-          move: "e2e4",
+      entitiesReducer(
+        {
+          ...entitiesSample,
+          games: {
+            1: {
+              ...normalizedGameSample1,
+              turn: "white",
+              moves: "",
+            },
+          },
         },
-      })
+        {
+          type: makeMoveRequest.type,
+          payload: {
+            gameId: 1,
+            move: "e2e4",
+          },
+        }
+      )
     ).toEqual({
       ...entitiesSample,
       games: {
@@ -204,6 +216,37 @@ describe("entitiesSlice reducer", () => {
           ...normalizedGameSample1,
           turn: "black",
           moves: "e2e4",
+        },
+      },
+    });
+
+    expect(
+      entitiesReducer(
+        {
+          ...entitiesSample,
+          games: {
+            1: {
+              ...normalizedGameSample1,
+              turn: "black",
+              moves: "e2e4",
+            },
+          },
+        },
+        {
+          type: makeMoveRequest.type,
+          payload: {
+            gameId: 1,
+            move: "e7e5",
+          },
+        }
+      )
+    ).toEqual({
+      ...entitiesSample,
+      games: {
+        1: {
+          ...normalizedGameSample1,
+          turn: "white",
+          moves: "e2e4 e7e5",
         },
       },
     });

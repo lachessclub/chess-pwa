@@ -164,6 +164,24 @@ describe("dataSubscriptionSlice reducer", () => {
         },
       });
     });
+
+    it("invalid verb", () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.on as jest.Mock).mockImplementationOnce(
+        (url: string, cb: (...args: Array<any>) => any) => {
+          cb({
+            verb: "invalid",
+            data: null,
+            id: 1,
+          });
+        }
+      );
+
+      watchGames()(dispatch, () => defaultState, null);
+
+      expect(dispatch).toBeCalledTimes(0);
+    });
   });
 
   it("should handle updateSeekBySubscription", () => {
@@ -313,6 +331,24 @@ describe("dataSubscriptionSlice reducer", () => {
         payload: 1,
       });
     });
+
+    it("invalid verb", () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.on as jest.Mock).mockImplementationOnce(
+        (url: string, cb: (...args: Array<any>) => any) => {
+          cb({
+            verb: "invalid",
+            data: null,
+            id: 1,
+          });
+        }
+      );
+
+      watchSeeks()(dispatch, () => defaultState, null);
+
+      expect(dispatch).toBeCalledTimes(0);
+    });
   });
 
   it("should handle updateUserBySubscription", () => {
@@ -425,6 +461,24 @@ describe("dataSubscriptionSlice reducer", () => {
         },
       });
     });
+
+    it("invalid verb", () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.on as jest.Mock).mockImplementationOnce(
+        (url: string, cb: (...args: Array<any>) => any) => {
+          cb({
+            verb: "invalid",
+            data: null,
+            id: 1,
+          });
+        }
+      );
+
+      watchUsers()(dispatch, () => defaultState, null);
+
+      expect(dispatch).toBeCalledTimes(0);
+    });
   });
 
   describe("should handle watchChatMessages", () => {
@@ -458,6 +512,24 @@ describe("dataSubscriptionSlice reducer", () => {
           },
         },
       });
+    });
+
+    it("invalid verb", () => {
+      const dispatch = jest.fn();
+
+      (ioClient.socket.on as jest.Mock).mockImplementationOnce(
+        (url: string, cb: (...args: Array<any>) => any) => {
+          cb({
+            verb: "invalid",
+            data: null,
+            id: 1,
+          });
+        }
+      );
+
+      watchChatMessages()(dispatch, () => defaultState, null);
+
+      expect(dispatch).toBeCalledTimes(0);
     });
   });
 });

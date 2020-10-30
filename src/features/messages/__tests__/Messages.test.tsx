@@ -77,5 +77,19 @@ describe("Messages", () => {
       expect(onHideMessage).toHaveBeenNthCalledWith(1, "message1");
       expect(onHideMessage).toHaveBeenNthCalledWith(2, "message2");
     });
+
+    it("close click without onHideMessage callback", () => {
+      const testRenderer = TestRenderer.create(
+        <Messages items={[messageSample1, messageSample2]} />
+      );
+      const testInstance = testRenderer.root;
+
+      const toasts = testInstance.findAllByType(Toast);
+
+      expect(() => {
+        toasts[0].props.onClose();
+        toasts[1].props.onClose();
+      }).not.toThrow();
+    });
   });
 });

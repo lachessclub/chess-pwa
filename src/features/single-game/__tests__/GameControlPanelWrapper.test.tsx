@@ -486,6 +486,20 @@ describe("GameControlPanelWrapper", () => {
         expect(onRewindToMove).toHaveBeenNthCalledWith(2, null);
       });
 
+      it("handle gameControlPanel.onRewindToMove if no onRewindToMove callback", () => {
+        const testInstance = TestRenderer.create(
+          <GameControlPanelWrapper game={gameWithMovesSample} />
+        ).root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        expect(() => {
+          gameControlPanel.props.onRewindToMove(2);
+        }).not.toThrow();
+      });
+
       it("from onRewindToFirstMove", () => {
         const onRewindToMove = jest.fn();
 
@@ -506,6 +520,20 @@ describe("GameControlPanelWrapper", () => {
         expect(onRewindToMove).toBeCalledWith(0);
       });
 
+      it("handle gameControlPanel.onRewindToFirstMove if no onRewindToMove callback", () => {
+        const testInstance = TestRenderer.create(
+          <GameControlPanelWrapper game={gameWithMovesSample} />
+        ).root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        expect(() => {
+          gameControlPanel.props.onRewindToFirstMove();
+        }).not.toThrow();
+      });
+
       it("from onRewindToLastMove", () => {
         const onRewindToMove = jest.fn();
 
@@ -524,6 +552,20 @@ describe("GameControlPanelWrapper", () => {
 
         expect(onRewindToMove).toBeCalledTimes(1);
         expect(onRewindToMove).toBeCalledWith(null);
+      });
+
+      it("handle gameControlPanel.onRewindToLastMove if no onRewindToMove callback", () => {
+        const testInstance = TestRenderer.create(
+          <GameControlPanelWrapper game={gameWithMovesSample} />
+        ).root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        expect(() => {
+          gameControlPanel.props.onRewindToLastMove();
+        }).not.toThrow();
       });
 
       it("from onRewindToPrevMove", () => {
@@ -560,6 +602,21 @@ describe("GameControlPanelWrapper", () => {
         expect(onRewindToMove).toHaveBeenNthCalledWith(2, 1);
       });
 
+      it("handle gameControlPanel.onRewindToPrevMove if no onRewindToMove callback", () => {
+        const testRenderer = TestRenderer.create(
+          <GameControlPanelWrapper game={gameWithMovesSample} />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        expect(() => {
+          gameControlPanel.props.onRewindToPrevMove();
+        }).not.toThrow();
+      });
+
       it("from onRewindToNextMove", () => {
         const onRewindToMove = jest.fn();
 
@@ -593,6 +650,24 @@ describe("GameControlPanelWrapper", () => {
 
         expect(onRewindToMove).toBeCalledTimes(2);
         expect(onRewindToMove).toHaveBeenNthCalledWith(2, null);
+      });
+
+      it("handle gameControlPanel.onRewindToNextMove if no onRewindToMove callback", () => {
+        const testRenderer = TestRenderer.create(
+          <GameControlPanelWrapper
+            game={gameWithMovesSample}
+            rewindToMoveIndex={0}
+          />
+        );
+        const testInstance = testRenderer.root;
+
+        const gameControlPanel: TestRenderer.ReactTestInstance = testInstance.findByType(
+          GameControlPanel
+        );
+
+        expect(() => {
+          gameControlPanel.props.onRewindToNextMove();
+        }).not.toThrow();
       });
     });
   });

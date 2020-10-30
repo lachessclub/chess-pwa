@@ -17,6 +17,14 @@ describe("GameControlPanelTopToolbar", () => {
       expect(onFlipBoard).toBeCalledWith();
     });
 
+    it("handle flip board if no onFlipBoard callback", () => {
+      const { getByTestId } = render(<GameControlPanelTopToolbar />);
+
+      expect(() => {
+        fireEvent.click(getByTestId("flip-board-btn"));
+      }).not.toThrow();
+    });
+
     it("onRewindToPrevMove", () => {
       const onRewindToPrevMove = jest.fn();
 
@@ -31,6 +39,16 @@ describe("GameControlPanelTopToolbar", () => {
 
       expect(onRewindToPrevMove).toBeCalledTimes(1);
       expect(onRewindToPrevMove).toBeCalledWith();
+    });
+
+    it("handle rewind-to-prev-move if no onRewindToPrevMove callback", () => {
+      const { getByTestId } = render(
+        <GameControlPanelTopToolbar hasPrevMove />
+      );
+
+      expect(() => {
+        fireEvent.click(getByTestId("rewind-to-prev-move-btn"));
+      }).not.toThrow();
     });
 
     it("onRewindToNextMove", () => {
@@ -49,6 +67,16 @@ describe("GameControlPanelTopToolbar", () => {
       expect(onRewindToNextMove).toBeCalledWith();
     });
 
+    it("handle rewind-to-next-move if no onRewindToNextMove callback", () => {
+      const { getByTestId } = render(
+        <GameControlPanelTopToolbar hasNextMove />
+      );
+
+      expect(() => {
+        fireEvent.click(getByTestId("rewind-to-next-move-btn"));
+      }).not.toThrow();
+    });
+
     it("onRewindToFirstMove", () => {
       const onRewindToFirstMove = jest.fn();
 
@@ -62,6 +90,14 @@ describe("GameControlPanelTopToolbar", () => {
       expect(onRewindToFirstMove).toBeCalledWith();
     });
 
+    it("handle rewind-to-first-move if no onRewindToFirstMove callback", () => {
+      const { getByTestId } = render(<GameControlPanelTopToolbar />);
+
+      expect(() => {
+        fireEvent.click(getByTestId("rewind-to-first-move-btn"));
+      }).not.toThrow();
+    });
+
     it("onRewindToLastMove", () => {
       const onRewindToLastMove = jest.fn();
 
@@ -73,6 +109,14 @@ describe("GameControlPanelTopToolbar", () => {
 
       expect(onRewindToLastMove).toBeCalledTimes(1);
       expect(onRewindToLastMove).toBeCalledWith();
+    });
+
+    it("handle rewind-to-last-move if no onRewindToLastMove callback", () => {
+      const { getByTestId } = render(<GameControlPanelTopToolbar />);
+
+      expect(() => {
+        fireEvent.click(getByTestId("rewind-to-last-move-btn"));
+      }).not.toThrow();
     });
   });
 

@@ -20,6 +20,14 @@ describe("ChallengeButtons", () => {
       expect(onChallengeAi).toBeCalledWith();
     });
 
+    it("challenge ai click if no onChallengeAI callback", () => {
+      const { getByTestId } = render(<ChallengeButtons />);
+
+      expect(() => {
+        fireEvent.click(getByTestId("challenge-ai-btn"));
+      }).not.toThrow();
+    });
+
     it("onCreateGame", () => {
       const onCreateGame = jest.fn();
 
@@ -31,6 +39,14 @@ describe("ChallengeButtons", () => {
 
       expect(onCreateGame).toBeCalledTimes(1);
       expect(onCreateGame).toBeCalledWith();
+    });
+
+    it("create game click if no onCreateGame callback", () => {
+      const { getByTestId } = render(<ChallengeButtons />);
+
+      expect(() => {
+        fireEvent.click(getByTestId("create-game-btn"));
+      }).not.toThrow();
     });
   });
 });

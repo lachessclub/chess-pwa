@@ -24,6 +24,14 @@ it("getGameStatusText", () => {
     "Time out • White is victorious"
   );
 
+  const invalidOutOfTimeGameSample = makeGameSample({
+    status: "outoftime",
+    winner: null,
+  });
+  expect(getGameStatusText(invalidOutOfTimeGameSample)).toBe(
+    "Playing right now"
+  );
+
   const blackResignedGameSample = makeGameSample({
     status: "resign",
     winner: "white",
@@ -38,6 +46,13 @@ it("getGameStatusText", () => {
   });
   expect(getGameStatusText(whiteResignedGameSample)).toBe(
     "White resigned • Black is victorious"
+  );
+  const invalidResignedGameSample = makeGameSample({
+    status: "resign",
+    winner: null,
+  });
+  expect(getGameStatusText(invalidResignedGameSample)).toBe(
+    "Playing right now"
   );
 
   const abortedGameSample = makeGameSample({
@@ -59,6 +74,14 @@ it("getGameStatusText", () => {
   });
   expect(getGameStatusText(gameWithCheckmateByBlackSample)).toBe(
     "Checkmate • Black is victorious"
+  );
+
+  const invalidCheckmateGameSample = makeGameSample({
+    status: "mate",
+    winner: null,
+  });
+  expect(getGameStatusText(invalidCheckmateGameSample)).toBe(
+    "Playing right now"
   );
 
   const gameWithDrawSample = makeGameSample({

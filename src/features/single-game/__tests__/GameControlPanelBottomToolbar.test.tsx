@@ -17,6 +17,16 @@ describe("GameControlPanelBottomToolbar", () => {
       expect(onAbortGame).toBeCalledWith();
     });
 
+    it("handle abort-game if no onAbortGame callback", () => {
+      const { getByTestId } = render(
+        <GameControlPanelBottomToolbar canAbortGame />
+      );
+
+      expect(() => {
+        fireEvent.click(getByTestId("abort-game-btn"));
+      }).not.toThrow();
+    });
+
     it("onOfferDraw", () => {
       const onOfferDraw = jest.fn();
 
@@ -28,6 +38,16 @@ describe("GameControlPanelBottomToolbar", () => {
 
       expect(onOfferDraw).toBeCalledTimes(1);
       expect(onOfferDraw).toBeCalledWith();
+    });
+
+    it("handle offer-draw if no onOfferDraw callback", () => {
+      const { getByTestId } = render(
+        <GameControlPanelBottomToolbar canOfferDraw />
+      );
+
+      expect(() => {
+        fireEvent.click(getByTestId("offer-draw-btn"));
+      }).not.toThrow();
     });
 
     it("onResignGame", () => {
@@ -44,6 +64,16 @@ describe("GameControlPanelBottomToolbar", () => {
 
       expect(onResignGame).toBeCalledTimes(1);
       expect(onResignGame).toBeCalledWith();
+    });
+
+    it("handle resign-game if no onResignGame callback", () => {
+      const { getByTestId } = render(
+        <GameControlPanelBottomToolbar canResignGame />
+      );
+
+      expect(() => {
+        fireEvent.click(getByTestId("resign-game-btn"));
+      }).not.toThrow();
     });
   });
 

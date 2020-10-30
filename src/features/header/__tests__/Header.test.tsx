@@ -47,6 +47,14 @@ describe("Header", () => {
       expect(onLogout).toBeCalledWith();
     });
 
+    it("logout click if no onLogout callback", () => {
+      const { getByTestId } = render(<Header currentUser={userSample1} />);
+
+      expect(() => {
+        fireEvent.click(getByTestId("logout-btn"));
+      }).not.toThrow();
+    });
+
     it("onShowAuthModal", () => {
       const onShowAuthModal = jest.fn();
 
@@ -58,6 +66,14 @@ describe("Header", () => {
 
       expect(onShowAuthModal).toBeCalledTimes(1);
       expect(onShowAuthModal).toBeCalledWith();
+    });
+
+    it("login click if no onShowAuthModal callback", () => {
+      const { getByTestId } = render(<Header />);
+
+      expect(() => {
+        fireEvent.click(getByTestId("login-btn"));
+      }).not.toThrow();
     });
   });
 });
