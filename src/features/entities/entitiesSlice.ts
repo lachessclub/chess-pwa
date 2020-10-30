@@ -42,7 +42,6 @@ import {
 } from "../move/moveSlice";
 import NormalizedUserEntity from "../../normalizr/interfaces/NormalizedUserEntity";
 import NormalizedGameEntity from "../../normalizr/interfaces/NormalizedGameEntity";
-import makeChessInstance from "../../utils/makeChessInstance";
 import NormalizedSeekEntity from "../../normalizr/interfaces/NormalizedSeekEntity";
 import NormalizedChatMessageEntity from "../../normalizr/interfaces/NormalizedChatMessageEntity";
 import {
@@ -50,6 +49,7 @@ import {
   GetChatMessagesListSuccessPayload,
   createChatMessageSuccess,
 } from "../chat/chatSlice";
+import { getMovesQnt } from "../../utils/chess";
 
 export interface EntitiesState {
   users: Record<string, NormalizedUserEntity>;
@@ -150,9 +150,7 @@ const entitiesSlice = createSlice({
         const game = state.games[gameId];
 
         if (game.status === "started") {
-          const chess = makeChessInstance(game);
-
-          if (chess.history().length > 1) {
+          if (getMovesQnt(game) > 1) {
             const timePropName = game.turn === "white" ? "wtime" : "btime";
 
             game[timePropName] -= 1000;

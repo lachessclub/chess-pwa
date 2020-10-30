@@ -1,5 +1,5 @@
 import { makeGameSample } from "../../test-utils/data-sample/game";
-import { isPromotionMove } from "../chess";
+import { getMovesQnt, isPromotionMove } from "../chess";
 
 it("isPromotionMove()", () => {
   const prePromotionGameSample = makeGameSample({
@@ -26,4 +26,30 @@ it("isPromotionMove()", () => {
       to: "e4",
     })
   ).toBeFalsy(); // 1. e2 e4 - invalid move
+});
+
+it("getMovesQnt()", () => {
+  expect(
+    getMovesQnt(
+      makeGameSample({
+        moves: "",
+      })
+    )
+  ).toBe(0);
+
+  expect(
+    getMovesQnt(
+      makeGameSample({
+        moves: "e2e4",
+      })
+    )
+  ).toBe(1);
+
+  expect(
+    getMovesQnt(
+      makeGameSample({
+        moves: "e2e4 e7e5",
+      })
+    )
+  ).toBe(2);
 });

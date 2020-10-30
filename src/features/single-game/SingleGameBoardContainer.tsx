@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import React, { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { ShortMove } from "chess.js";
@@ -26,7 +24,7 @@ export const SingleGameBoardContainer: FC<SingleGameBoardProps> = ({ id }) => {
 
   const game = useDeepEqualSelector(
     (state: RootState) => denormalize(id, gameSchema, state.entities),
-    (_value: any, _other: any, indexOrKey: any) => {
+    (_value: unknown, _other: unknown, indexOrKey: unknown) => {
       // ignore time to improve performance
       if (indexOrKey === "wtime" || indexOrKey === "btime") {
         return true;

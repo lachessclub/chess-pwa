@@ -9,13 +9,24 @@ import Game from "../../interfaces/Game";
 const limit = 9;
 
 const CompletedGamesContainer: FC<unknown> = () => {
-  const games = useSelector((state: RootState) =>
-    denormalize(Object.keys(state.entities.games), [gameSchema], state.entities)
-      .filter(
-        (game: Game) => game.status !== "started" && game.status !== "aborted"
+  const games = useSelector(
+    (state: RootState) =>
+      denormalize(
+        Object.keys(state.entities.games),
+        [gameSchema],
+        state.entities
       )
-      .sort((a: Game, b: Game) => b.createdAt - a.createdAt)
-      .slice(0, limit)
+        .filter(
+          (game: Game) => game.status !== "started" && game.status !== "aborted"
+        )
+        .sort((a: Game, b: Game) => b.createdAt - a.createdAt)
+        .slice(0, limit),
+    (a: Game[], b: Game[]) => {
+      return (
+        JSON.stringify(a.map((item) => item.id)) ===
+        JSON.stringify(b.map((item) => item.id))
+      );
+    } // since the games are over, we check only arrays of ids to improve performance
   );
 
   const isLoading = useSelector(

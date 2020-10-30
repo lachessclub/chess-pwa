@@ -21,7 +21,7 @@ import {
   playMoveSound,
   playStartGameSound,
 } from "../../utils/sounds";
-import { isPromotionMove } from "../../utils/chess";
+import { getMovesQnt, isPromotionMove } from "../../utils/chess";
 import { PromotionChoiceModal } from "./PromotionChoiceModal";
 
 export interface SingleGameBoardProps {
@@ -80,15 +80,14 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
       return;
     }
 
-    const chess: ChessInstance = makeChessInstance(game);
-    const movesHistory = chess.history();
+    const movesQnt = getMovesQnt(game);
 
-    if (lastSelectedMoveIndex.current === null && movesHistory.length === 0) {
+    if (lastSelectedMoveIndex.current === null && movesQnt === 0) {
       playStartGameSound();
     }
 
     const selectedMoveIndex =
-      rewindToMoveIndex === null ? movesHistory.length : rewindToMoveIndex;
+      rewindToMoveIndex === null ? movesQnt : rewindToMoveIndex;
 
     if (
       lastSelectedMoveIndex.current !== null &&
@@ -108,10 +107,7 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
       return;
     }
 
-    const chess: ChessInstance = makeChessInstance(game);
-    const movesHistory = chess.history();
-
-    const movesQnt = movesHistory.length;
+    const movesQnt = getMovesQnt(game);
 
     if (
       premove.current &&
@@ -120,6 +116,8 @@ export const SingleGameBoard: FC<SingleGameBoardProps> = ({
       game.status === "started" &&
       rewindToMoveIndex === null
     ) {
+      const chess: ChessInstance = makeChessInstance(game);
+
       if (isValidMove(chess, premove.current[0])) {
         premove.current[1](); // playPremove()
         premove.current = null;

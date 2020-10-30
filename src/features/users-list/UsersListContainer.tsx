@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 import { useSelector } from "react-redux";
 import { denormalize } from "normalizr";
+import { useDeepEqualSelector } from "ii-react-libraries";
 import { UsersList } from "./UsersList";
 import { RootState } from "../../app/rootReducer";
 import userSchema from "../../normalizr/schemas/userSchema";
@@ -10,7 +11,7 @@ const UsersListContainer: FC<unknown> = () => {
     (state: RootState) => state.currentUser.userId
   );
 
-  const users = useSelector((state: RootState) =>
+  const users = useDeepEqualSelector((state: RootState) =>
     denormalize(state.usersList.items, [userSchema], state.entities)
   );
 

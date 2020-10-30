@@ -7,8 +7,8 @@ import { GameMoves } from "./GameMoves";
 import { GameControlPanelUserName } from "./GameControlPanelUserName";
 import { GameControlPanelTopToolbar } from "./GameControlPanelTopToolbar";
 import { GameControlPanelBottomToolbar } from "./GameControlPanelBottomToolbar";
-import makeChessInstance from "../../utils/makeChessInstance";
 import { DrawOfferDialog } from "./DrawOfferDialog";
+import { getMovesQnt } from "../../utils/chess";
 
 export interface GameControlPanelProps {
   game?: Game;
@@ -58,15 +58,13 @@ export const GameControlPanel: FC<GameControlPanelProps> = ({
     return null;
   }
 
-  const chess = makeChessInstance(game);
+  const movesQnt = getMovesQnt(game);
 
-  const movesHistory = chess.history();
-
-  const isFirstMove = movesHistory.length === 0 || rewindToMoveIndex === 0;
+  const isFirstMove = movesQnt === 0 || rewindToMoveIndex === 0;
 
   const isLastMove = rewindToMoveIndex === null;
 
-  const hasPrevMove = movesHistory.length !== 0 && rewindToMoveIndex !== 0;
+  const hasPrevMove = movesQnt !== 0 && rewindToMoveIndex !== 0;
 
   const hasNextMove = rewindToMoveIndex !== null;
 

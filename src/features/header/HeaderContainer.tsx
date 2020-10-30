@@ -1,6 +1,7 @@
 import React, { FC, useCallback } from "react";
 import { denormalize } from "normalizr";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useShallowEqualSelector } from "ii-react-libraries";
 import { Header } from "./Header";
 import User from "../../interfaces/User";
 import { RootState } from "../../app/rootReducer";
@@ -9,12 +10,18 @@ import { logout } from "../current-user/currentUserSlice";
 import { showModal } from "../modal/modalSlice";
 
 const HeaderContainer: FC<unknown> = () => {
-  const currentUser: User | null = useSelector((state: RootState) => {
-    if (state.currentUser.userId) {
-      return denormalize(state.currentUser.userId, userSchema, state.entities);
+  const currentUser: User | null = useShallowEqualSelector(
+    (state: RootState) => {
+      if (state.currentUser.userId) {
+        return denormalize(
+          state.currentUser.userId,
+          userSchema,
+          state.entities
+        );
+      }
+      return null;
     }
-    return null;
-  });
+  );
 
   const dispatch = useDispatch();
 

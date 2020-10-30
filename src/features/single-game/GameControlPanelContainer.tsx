@@ -1,6 +1,10 @@
 import React, { FC, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { denormalize } from "normalizr";
+import {
+  useDeepEqualSelector,
+  useShallowEqualSelector,
+} from "ii-react-libraries";
 import { RootState } from "../../app/rootReducer";
 import gameSchema from "../../normalizr/schemas/gameSchema";
 import { GameControlPanelWrapper } from "./GameControlPanelWrapper";
@@ -27,7 +31,7 @@ export const GameControlPanelContainer: FC<SingleGameControlPanelContainerProps>
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const game = useSelector((state: RootState) =>
+  const game = useDeepEqualSelector((state: RootState) =>
     denormalize(id, gameSchema, state.entities)
   );
 
@@ -35,12 +39,18 @@ export const GameControlPanelContainer: FC<SingleGameControlPanelContainerProps>
     useSelector((state: RootState) => state.singleGame[id]) ||
     defaultSingleGameItemState;
 
-  const currentUser: User | undefined = useSelector((state: RootState) => {
-    if (state.currentUser.userId) {
-      return denormalize(state.currentUser.userId, userSchema, state.entities);
+  const currentUser: User | undefined = useShallowEqualSelector(
+    (state: RootState) => {
+      if (state.currentUser.userId) {
+        return denormalize(
+          state.currentUser.userId,
+          userSchema,
+          state.entities
+        );
+      }
+      return undefined;
     }
-    return undefined;
-  });
+  );
 
   const handleFlipBoard = useCallback(() => {
     dispatch(flipBoard(id));
