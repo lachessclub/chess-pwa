@@ -5,6 +5,13 @@
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
  and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.7.1](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.7.0...v1.7.1) (2020-10-30)
+
+
+### Bug Fixes
+
+* update favicon ([#109](https://github.com/ildar-icoosoft/chess-pwa/issues/109)) ([cf982f2](https://github.com/ildar-icoosoft/chess-pwa/commit/cf982f2692342adc327273abb336ab90218c1c40))
+
 # [1.7.0](https://github.com/ildar-icoosoft/chess-pwa/compare/v1.6.4...v1.7.0) (2020-10-30)
 
 
